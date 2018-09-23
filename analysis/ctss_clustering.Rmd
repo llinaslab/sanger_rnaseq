@@ -1,0 +1,373 @@
+---
+title: "CTSS clustering"
+author: "Philipp Ross"
+date: 2017-03-27
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Generate CTSS files
+
+First thing we need to do is convert the BAM files to CTSS files for CAGEr. Running the following command on each BAM files and combining the stranded files into one individual file will get you the CTSS files:
+
+```{bash,eval=F}
+bedtools genomecov -dz -strand "+" \
+  -ibam data/bam/modified_tso/sorted.modified_1nt.sorted.modified.fateseq_3d7_tp1.both.mod.all.out.bam | \
+  awk '{print $1,$2,"+",$3}' > out_plus.ctss
+
+bedtools genomecov -dz -strand "-" \
+  -ibam data/bam/modified_tso/sorted.modified_1nt.sorted.modified.fateseq_3d7_tp1.both.mod.all.out.bam | \
+  awk '{print $1,$2,"-",$3}' > out_minus.ctss
+  
+cat out_plus.ctss out_minus.ctss | sort -k1,1 -2,2n > out.ctss
+```
+
+## Run CAGEr
+
+Now we can run CAGEr on the CTSS files to cluster the tag counts into tag clusters (TCs) and promoter clusters (PCs). The TCs can be thought of as TSSs while the PCs can be thought of as promoter regions with varying architectures.
+
+```
+Rscript code/ctss_clustering run_cager.R data/bam/modified_tso output/ctss_clustering/modified
+```
+
+## Exploratory analysis
+
+### How many tag clusters do we see and where do we see them?
+
+First we'll import the tag clusters:
+
+```{r}
+for (tp in seq(1,7)) {
+  # generate the file name
+  f <- paste0("../output/ctss_clustering/modified/tc",tp,".gff")
+  # assign the in read file to a variable
+  assign(x = paste0("tc",tp),
+         value = rtracklayer::import.gff(f)
+         )
+  # group by chromosome and count the number of TCs
+  dplyr::group_by(tibble::as_tibble(eval(parse(text=paste0("tc",tp)))),seqnames) %>% 
+    summarise(n=n())
+}
+rm(f)
+```
+
+Next we'll import data on exons, introns, and genes and calculate the proportion of TCs that overlap:
+ 
+```{r}
+exons.bed    <- rtracklayer::import.bed("../data/annotations/exons_nuclear_3D7_v24.bed") %>%
+  tibble::as_tibble() %>%
+  dplyr::mutate(anno_name=name,anno_start=start,anno_end=end) %>%
+  GenomicRanges::GRanges()
+genes.bed    <- rtracklayer::import.bed("../data/annotations/genes_nuclear_3D7_v24.bed")%>%
+  tibble::as_tibble() %>%
+  dplyr::mutate(anno_name=name,anno_start=start,anno_end=end) %>%
+  GenomicRanges::GRanges()
+introns.bed  <- rtracklayer::import.bed("../data/annotations/introns_nuclear_3D7_v24.bed")%>%
+  tibble::as_tibble() %>%
+  dplyr::mutate(anno_name=name,anno_start=start,anno_end=end) %>%
+  GenomicRanges::GRanges()
+
+for (tp in seq(1,7)) {
+  sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), genes.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
+  sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), exons.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
+  sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), introns.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
+}
+```
+
+### What is the size distribution of the tag clusters?
+
+CAGEr creates it's own plots for this, but we can plot them here as well and do a little more analysis. Let's import the interquartile widths:
+
+```{r}
+for (tp in seq(1,7)) {
+  s <- as_tibble(eval(parse(text=paste0("tc",tp)))) %>% 
+    filter(tpm>=2) %$% 
+    summary(width)
+  print(s)
+  g <- as_tibble(eval(parse(text=paste0("tc",tp)))) %>%
+    filter(tpm>=2) %>%
+    ggplot(aes(x=width)) +
+    geom_histogram(color="grey70") +
+    ggtitle(paste0("TC",tp))
+  print(g)
+}
+rm(g,s)
+```
+
+### What is the coverage of promoter clusters?
+
+We can overlap promoter clusters with tag clusters to calculate the TPM of each and identify the dominant TPM found in each. We can also identify whether there are multiple possible TSSs in each based on how far apart dominant CTSS sites are.
+
+```{bash,eval=F}
+for i in 1 2 3 4 5 6 7; do 
+  bedtools intersect -s -wo \
+  -a output/ctss_clustering/modified/promoter_clusters.gff \
+  -b output/ctss_clustering/modified/tc${i}.gff | \
+  awk '{print $1,$2,$3,$4,$5,$6,$7,$8,$18}' > \
+  output/ctss_clustering/modified/tc${i}_inter_promoter_clusters.gff
+done
+```
+
+Now let's import those and calculate the total TPM for each:
+
+```{r}
+for (tp in seq(1,7)) {
+  f <- paste0("../output/ctss_clustering/modified/tc",tp,"_inter_promoter_clusters.gff")
+  assign(x=paste0("pc",tp),value=tibble::as_tibble(rtracklayer::import.gff(f))%>%mutate(tp=tp))
+}
+```
+
+Lastly we want to create a set of ranges that identify "orphan" TSSs. If a TSS falls between two converging genes, then don't annotate it by skipping genes.
+
+```{r}
+# create intergenic regions that appear between convergent genes
+genes <- tibble::as_tibble(rtracklayer::import.gff3("../data/annotations/genes_nuclear_3D7_v24.gff"))
+convergent <- readr::read_tsv("../output/neighboring_genes/3d7_convergent.tsv")
+
+convergent_ranges <- tibble::tibble(seqnames=character(),start=integer(),end=integer(),strand=character(),left_id=character(),right_id=character())
+
+for (i in 1:nrow(convergent)) {
+  left <- genes %>% dplyr::filter(ID %in% convergent$left_gene[i])
+  right <- genes %>% dplyr::filter(ID %in% convergent$right_gene[i])
+  convergent_ranges <- dplyr::bind_rows(convergent_ranges,
+                                        tibble::tibble(seqnames=left$seqnames,
+                                        start=left$end,
+                                        end=right$start,
+                                        strand="*",
+                                        left_id=left$ID,
+                                        right_id=right$ID))
+}
+
+convergent_ranges <- convergent_ranges %>%
+  dplyr::filter(end-start>=0) %>%
+  GenomicRanges::GRanges()
+```
+
+## Annotating clustered tags
+
+Now that we've predicted and explored some characteristics of TCs and PCs, we need to annotate each of them. First we need to annotate those that intersect exons and introns. Then remove those from the tag clusters that don't. Then annotate the intergenic tag clusters and calculate the distances to their annotated features.
+
+```{r}
+tcl <- list(tc1,tc2,tc3,tc4,tc5,tc6,tc7)
+
+for (i in 1:length(tcl)) {
+  # one tag cluster sample at a time
+  # change to single nucleotide length
+  # to ensure proper annotation
+  tc <- tcl[[i]] %>%
+    tibble::as_tibble() %>%
+    dplyr::rename(full_end=end) %>%
+    dplyr::mutate(end=start) %>%
+    GenomicRanges::GRanges()
+
+  # overlap with known exons
+  # bind the columns together
+  one <- tibble::as_tibble(tc[tibble::as_tibble(GenomicRanges::findOverlaps(tc,exons.bed))$queryHits])
+  two <- tibble::as_tibble(exons.bed[tibble::as_tibble(GenomicRanges::findOverlaps(tc,exons.bed))$subjectHits]) %>%
+    dplyr::select(name,anno_start,anno_end)
+  assign(paste0("tc",i,"_exons"),value=dplyr::bind_cols(one,two) %>% mutate(tp=i))
+  
+  # overlap with known introns
+  # bind columns together
+  one <- tibble::as_tibble(tc[tibble::as_tibble(GenomicRanges::findOverlaps(tc,introns.bed))$queryHits])
+  two <- tibble::as_tibble(introns.bed[tibble::as_tibble(GenomicRanges::findOverlaps(tc,introns.bed))$subjectHits]) %>%
+    dplyr::select(name,anno_start,anno_end)
+  assign(paste0("tc",i,"_introns"),value=dplyr::bind_cols(one,two) %>% mutate(tp=i))
+  
+  # remove tag clusters that overlap with known genes and fall between convergent genes
+  # find which feature in 'subject' the tag cluster precedes
+  # bind columns together
+  tc <- tc[!1:length(tc) %in% tibble::as_tibble(GenomicRanges::findOverlaps(tc,genes.bed))$queryHits]
+  tc <- tc[!1:length(tc) %in% tibble::as_tibble(GenomicRanges::findOverlaps(tc,convergent_ranges))$queryHits]
+  one <- tibble::as_tibble(tc[!is.na(GenomicRanges::precede(tc,genes.bed))])
+  two <- tibble::as_tibble(genes.bed[na.omit(GenomicRanges::precede(tc,genes.bed))]) %>%
+    dplyr::select(name,anno_start,anno_end)
+  assign(paste0("tc",i,"_intergenic"),value=dplyr::bind_cols(one,two) %>% mutate(tp=i))
+}
+# combine into a single table
+tc_intergenic <- dplyr::bind_rows(tc1_intergenic,tc2_intergenic,
+                                  tc3_intergenic,tc4_intergenic,
+                                  tc5_intergenic,tc6_intergenic,
+                                  tc7_intergenic) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+
+# combine into a single table
+tc_exons <- dplyr::bind_rows(tc1_exons,tc2_exons,
+                                  tc3_exons,tc4_exons,
+                                  tc5_exons,tc6_exons,
+                                  tc7_exons) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+
+# combine into a single table
+tc_introns <- dplyr::bind_rows(tc1_introns,tc2_introns,
+                                  tc3_introns,tc4_introns,
+                                  tc5_introns,tc6_introns,
+                                  tc7_introns) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+
+rm(one,two,tc,tcl)
+```
+
+```{r}
+rtracklayer::export.gff3(GenomicRanges::GRanges(tc_intergenic),"../output/ctss_clustering/modified/tag_clusters_annotated_intergenic.gff")
+rtracklayer::export.gff3(GenomicRanges::GRanges(tc_exons),"../output/ctss_clustering/modified/tag_clusters_annotated_exons.gff")
+rtracklayer::export.gff3(GenomicRanges::GRanges(tc_introns),"../output/ctss_clustering/modified/tag_clusters_annotated_introns.gff")
+```
+
+Now let's do the same for PCs that have been intersect with TCs as seen above:
+
+```{r}
+pc <- dplyr::bind_rows(pc1,pc2,pc3,pc4,pc5,pc6,pc7) %>%
+  dplyr::rename(full_end=end) %>%
+  dplyr::mutate(end=start)
+
+# overlap known exons
+# bind columns together
+one <- pc[tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),exons.bed))$queryHits,]
+two <- tibble::as_tibble(exons.bed[tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),exons.bed))$subjectHits]) %>%
+  dplyr::select(name,anno_start,anno_end)
+pc_exons <- dplyr::bind_cols(one,two) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+  
+# overlap with known introns
+# bind columns together
+one <- pc[tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),introns.bed))$queryHits,]
+two <- tibble::as_tibble(introns.bed[tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),introns.bed))$subjectHits]) %>%
+  dplyr::select(name,anno_start,anno_end)
+pc_introns <- dplyr::bind_cols(one,two) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+  
+# remove tag clusters that overlap with known genes and fall between convergent genes
+# find which feature in 'subject' the tag cluster precedes
+# bind columns together
+tmp <- pc[!1:length(pc) %in% tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),genes.bed))$queryHits,]
+tmp <- pc[!1:length(pc) %in% tibble::as_tibble(GenomicRanges::findOverlaps(GenomicRanges::GRanges(pc),convergent_ranges))$queryHits,]
+one <- tmp[!is.na(GenomicRanges::precede(GenomicRanges::GRanges(tmp),genes.bed)),]
+two <- tibble::as_tibble(genes.bed[na.omit(GenomicRanges::precede(GenomicRanges::GRanges(tmp),genes.bed))]) %>%
+  dplyr::select(name,anno_start,anno_end)
+pc_intergenic <- dplyr::bind_cols(one,two) %>%
+  dplyr::select(-width,-source,-type,-score,-phase)
+
+rm(one,two,tmp)
+```
+
+Before we continue, we should write these to a file:
+
+```{r}
+rtracklayer::export.gff3(GenomicRanges::GRanges(pc_intergenic),"../output/ctss_clustering/modified/promoter_clusters_annotated_intergenic.gff")
+rtracklayer::export.gff3(GenomicRanges::GRanges(pc_exons),"../output/ctss_clustering/modified/promoter_clusters_annotated_exons.gff")
+rtracklayer::export.gff3(GenomicRanges::GRanges(pc_introns),"../output/ctss_clustering/modified/promoter_clusters_annotated_introns.gff")
+```
+
+Finally, we can look at the distribution of annotations. Which genes have many TCs? Many PCs? And how many do we see on average? To do this we need to first remove duplicates from our list and then filter by expression levels.
+
+Here we will divide the tag clusters into individual time points:
+
+```{r}
+tc_intergenic %>% 
+  dplyr::group_by(seqnames,start,end,name,tp) %>% 
+  dplyr::filter(as.numeric(tpm.dominant_ctss) >= 5) %>%
+  dplyr::group_by(name,tp) %>% 
+  dplyr::summarise(n=n()) %>% 
+  dplyr::group_by(tp) %>%
+  dplyr::summarise(mean=mean(n),median=median(n),min=min(n),max=max(n))
+
+tc_intergenic %>% 
+  dplyr::group_by(seqnames,start,end,name,tp) %>% 
+  dplyr::filter(as.numeric(tpm.dominant_ctss) >= 2) %>%
+  dplyr::group_by(name,tp) %>% 
+  dplyr::summarise(n=n()) %>% 
+  ggplot(aes(x=n)) + 
+  geom_bar(colour="black",fill="grey70") +
+  facet_grid(~tp) +
+  scale_x_continuous(breaks=c(1,5,9,13)) +
+  ylab("Frequency") +
+  xlab("# of Tag Clusters")
+```
+
+And here we'll look at promoter clusters all together:
+
+```{r}
+pc_intergenic %>% 
+  dplyr::group_by(seqnames,start,end,name) %>% 
+  dplyr::summarise(tpm=sum(as.numeric(tpm))) %>% 
+  dplyr::filter(tpm >= 5) %>%
+  dplyr::group_by(name) %>% 
+  dplyr::summarise(n=n()) %>% 
+  summary()
+
+pc_intergenic %>% 
+  dplyr::group_by(seqnames,start,end,name) %>% 
+  dplyr::summarise(tpm=sum(as.numeric(tpm))) %>% 
+  dplyr::filter(tpm >= 5) %>%
+  dplyr::group_by(name) %>% 
+  dplyr::summarise(n=n()) %>% 
+  ggplot(aes(x=n)) + 
+  geom_histogram(color="grey70")
+```
+
+## Annotating 'shifting promoters'
+
+CAGEr can also detect 'shifting promoters'. These are promoters where we see significant changes in the dominant CTSS within a single promoter.
+
+```{r}
+files <- list.files(path="../output/ctss_clustering/modified",pattern="shifting_promoters",full.names=TRUE)
+
+shifting <- tibble::tibble(
+  consensus.cluster=integer(),
+  chr=character(),
+  start=integer(),
+  end=integer(),
+  strand=character(),
+  shifting.score=double(),
+  groupX.pos=integer(),
+  groupY.pos=integer(),
+  groupX.tpm=double(),
+  groupY.tpm=double(),
+  pvalue.KS=double(),
+  fdr.KS=double())
+
+for (file in files) {
+  shifting <- dplyr::bind_rows(shifting,read_tsv(file,col_names=TRUE))
+}
+```
+
+Not every detected shift is spatial so we can calculate the degree of spatial shifting and filter only those that shift significantly:
+
+```{r}
+annotated_shifting <- shifting %>% 
+  dplyr::mutate(shift=abs(groupX.pos-groupY.pos)) %>% 
+  dplyr::filter(shift>=100) %>% 
+  dplyr::distinct(chr,start,end,strand,groupX.pos,groupY.pos) %>% 
+  dplyr::arrange(chr,start) %>%
+  dplyr::inner_join(pc_intergenic, by = c("chr"="seqnames","start","strand")) %>%
+  dplyr::distinct(chr,start,end.x,name,groupX.pos,groupY.pos) %>%
+  dplyr::rename(end=end.x)
+```
+
+Now we can write that to output:
+
+```{r}
+write_tsv(x=annotated_shifting,path="../output/ctss_clustering/modified/annotated_shifting.tsv")
+```
+
+## Session Information
+
+```{r session-info}
+```

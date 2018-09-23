@@ -1,0 +1,129 @@
+---
+title: "Make final UTRs"
+author: "Philipp Ross"
+date: 2017-03-08
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Making final/longest UTRs
+
+There were several methods and data sets used to predict 5' and 3' UTRs.
+
+The first method was using the RNA-seq data sets and continuous read coverage. Any continuous coverage found surrounding known transcripts that met a read threshold cutoff of 5 reads or more was added as a UTR to the transcript from which it extended depending on whether it was on the 5' or 3' end of the transcript. This was done for each strain inidividually.
+
+The second method to predict 5' UTRs was done by using a variant of nanoCAGE in order to tag the extreme ends of mRNA molecules and sequence them along with a synthetic oligo used for the pull down of these extreme ends. No 3' UTRs of transcripts was predicted using this approach although both ends were tagged.
+
+Finally, the 5' mRNA capture data was used to correct 5' UTR predictions in all strains IF there was coverage support from the RNA-seq data in that loci where the capture data predicted it to be. If there was no prediction based on the 5' capture data, then coverage from the 3D7 strain was used to "repair" the 5' UTRs as well.
+
+These predictions were all combined into lists of "longest possible transcripts" for each strain. Priority was given to predictions:
+
+1. 5' mRNA capture prediction
+2. 5' mRNA capture prediction used to repair the coverage prediction
+3. 3D7 coverage repaired UTRs
+4. Original RNA-seq UTR predictions
+
+First we should read in the resulting data:
+
+```{r read}
+# function to read in the data
+read_utrs <- function(file, input_strain) {
+  df <- as.data.frame(rtracklayer::import.gff3(file)) %>%
+    dplyr::select(Parent,type,width)
+  df$strain <- input_strain
+  df$Parent <- as.character(df$Parent)
+  return(df)
+}
+
+utrs3d7 <- read_utrs("../output/final_utrs/longest_utrs_3d7_plasmodb_compatible.gff", "3D7")
+utrshb3 <- read_utrs("../output/final_utrs/longest_utrs_hb3_plasmodb_compatible.gff", "HB3")
+utrsit <- read_utrs("../output/final_utrs/longest_utrs_it_plasmodb_compatible.gff", "IT")
+utrs <- rbind(utrs3d7,utrshb3,utrsit)
+```
+
+## 5' UTRs
+
+What does the distribution of 5' UTRs look like?
+
+```{r 5utrs-hist}
+utrs %>% 
+  dplyr::filter(type == "5UTR") %>% 
+  ggplot(aes(x=width)) + 
+  geom_histogram(color="grey90",bins=30) + 
+  facet_grid(.~strain) +
+  theme(axis.text.x = element_text(angle = 55, hjust = 1))
+```
+
+```{r 5utrs-boxplots}
+utrs %>% 
+  dplyr::filter(type == "5UTR") %>% 
+  ggplot(aes(x=strain,y=width)) + 
+  geom_boxplot(fill="grey70")
+```
+
+How do summary statistics vary between strains?
+
+```{r 5utrs-summary}
+utrs %>% 
+  dplyr::filter(type == "5UTR") %>% 
+  dplyr::group_by(strain) %>% 
+  dplyr::summarise(mean=mean(width),median=median(width),sd=sd(width))
+```
+
+## 3' UTRs
+
+What does the distribution of 3' UTRs look like?
+
+```{r 3utrs-hist}
+utrs %>% 
+  dplyr::filter(type == "3UTR") %>% 
+  ggplot(aes(x=width)) + 
+  geom_histogram(color="grey90",bins=30) + 
+  facet_grid(.~strain) + 
+  theme(axis.text.x = element_text(angle = 55, hjust = 1))
+```
+
+```{r 3utrs-boxplots}
+utrs %>% 
+  dplyr::filter(type == "3UTR") %>% 
+  ggplot(aes(x=strain,y=width)) + 
+  geom_boxplot(fill="grey70")
+```
+
+How do summary statistics vary between strains?
+
+```{r 3utrs-summary}
+utrs %>% 
+  dplyr::filter(type == "3UTR") %>% 
+  dplyr::group_by(strain) %>% 
+  dplyr::summarise(mean=mean(width),median=median(width),sd=sd(width))
+```
+
+## Homopolymer analysis
+
+One thing we were also interested in looking at was why the coverage UTRs some times suffered from "coverage drops". If we assume that the AT content of the genome isn't as much of an issue anymore now that we are using PCR-free library preparation and better priming of RNA molecules, then one other issue that could be causing these coverage drops are homopolymer tracts. Another reason we are making this assumption is because the CAGE tags support this conclusion. Where the 5' UTR often falls short, there is a lack of supporting CAGE tags. If we look upstream, however, we can see CAGE tags AND coverage if we look at the DAFT-seq data.
+
+In the current analysis, I'm forgetting to take into account introns when looking for the presence of long homopolymer tracts within predicted UTRs. Important questions include:
+
+1. Do long homopolymer tracts exist within prediced coverage UTRs?
+2. Are UTRs containing long homopolymer tracts on average shorter than those that don't?
+
+To address these questions, I extended 5' and 3' UTRs 100 base pairs beyond their predicted coverage TSS and TES, removed intron sequences, counted the number and length of homopolymer tracts, and compared whether longer homopolymer tracts tend to occur in UTRs that are shorter and vice versa.
+
+## Session Information
+
+```{r session-info}
+```

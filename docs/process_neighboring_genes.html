@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+<meta name="date" content="2017-03-02" />
+
+<title>Neighboring genes</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Neighboring genes</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>2017-03-02</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-04-08</p>
+<p><strong>Code version:</strong> 0e2e80a</p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>We want to know what all neighboring genes in the <em>P. falciparum</em> genome are, their orientations relative to one another, the distance between them, and their degree of co-expression.</p>
+</div>
+<div id="workflow" class="section level2">
+<h2>Workflow</h2>
+<ol style="list-style-type: decimal">
+<li>Create GFF file of full-sized transcripts for which we have UTR predictions</li>
+<li>Calculate all neighboring gene pairs within the P. falciparum genome</li>
+<li>Calculate the distance between gene pairs for which we have appropriate UTR predictions i.e. for head-to-head we have 5’ UTR predictions for both, for tail-to-tail we have 3’ UTR predictions for both, and for head-to-tail we have 5’ and 3’ UTR predictions for both</li>
+<li>Calculate the correlation between gene pair expression profiles</li>
+<li>Bin gene pairs based on distance apart</li>
+<li>Perform gene ontology enrichment of gene pairs under the control of putative bidirectional promoters and involved in potential transcriptional interference</li>
+</ol>
+</div>
+<div id="processing" class="section level2">
+<h2>Processing</h2>
+<div id="generate-transcript-models" class="section level3">
+<h3>Generate transcript models</h3>
+<p>To stay consistent, we’ll first generate the non-UTR transcripts:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> data/annotations/exons_nuclear_3D7_v24.gff <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">gffread</span> -F -E -o- <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">awk</span> <span class="st">&#39;$3 == &quot;transcript&quot; {split($9,x,&quot;;&quot;); gsub(&quot;rna_&quot;,&quot;&quot;,x[1]); gsub(&quot;-1&quot;,&quot;&quot;,x[1]); print $1,$2,$3,$4,$5,$6,$7,$8,x[1]}&#39;</span> <span class="kw">&gt;</span> <span class="dt">\ </span>        
+  <span class="kw">output/neighboring_genes/transcripts_without_utrs.gff</span></code></pre></div>
+<p>Before we generate the full transcripts we need to manually go into <code>output/neighboring_genes/transcripts_without_utrs.gff</code> and remove transcript isoforms. We only want to keep the largest transcript isoform for each gene.</p>
+<p>Then we’ll run the same command, but include the UTR predictions and generate “full” transcripts:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">for</span> <span class="kw">strain</span> in 3d7 hb3 it<span class="kw">;</span> <span class="kw">do</span>
+  <span class="kw">cat</span> output/neighboring_genes/transcripts_without_utrs.gff output/final_utrs/final_utrs_<span class="ot">${strain}</span>.gff <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">gffread</span> -E -F -o- -O <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">awk</span> <span class="st">&#39;$3 == &quot;transcript&quot;{print $0}&#39;</span> <span class="kw">&gt;</span> output/neighboring_genes/full_transcripts_<span class="ot">${strain}</span>.gff
+<span class="kw">done</span></code></pre></div>
+</div>
+<div id="calculate-distances-between-neighboring-transcripts" class="section level3">
+<h3>Calculate distances between neighboring transcripts</h3>
+<p>First we’ll calculate the distances between the non-UTR containing transcripts:</p>
+<pre><code>python code/neighboring_genes/find_neighboring_genes.py \
+  -g output/neighboring_genes/transcripts_without_utrs.gff \
+  -p output/neighboring_genes/non_utr \
+  -i output/neighboring_genes/genes_to_ignore.txt </code></pre>
+<p>And calculate the distances when we consider the full transcript lengths with UTRs:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x3d7gff &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(<span class="kw">import.gff</span>(<span class="st">&quot;../output/neighboring_genes/full_transcripts_3d7.gff&quot;</span>))
+xhb3gff &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(<span class="kw">import.gff</span>(<span class="st">&quot;../output/neighboring_genes/full_transcripts_hb3.gff&quot;</span>))
+xitgff  &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(<span class="kw">import.gff</span>(<span class="st">&quot;../output/neighboring_genes/full_transcripts_it.gff&quot;</span>))
+
+convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_convergent.tsv&quot;</span>)
+divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_divergent.tsv&quot;</span>)
+tandem     &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_tandem.tsv&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calc_distances &lt;-<span class="st"> </span>function(neighboring,gff) {
+  <span class="co"># generate empty tibble</span>
+  ti &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">left_gene=</span><span class="kw">character</span>(),<span class="dt">right_gene=</span><span class="kw">character</span>(),<span class="dt">dist=</span><span class="kw">integer</span>())
+  <span class="co"># go through each gene pair</span>
+  <span class="co"># calculate the distance</span>
+  <span class="co"># start position of right gene minus end position of left gene</span>
+  for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(neighboring)) {
+    ti &lt;-<span class="st">  </span>dplyr::<span class="kw">bind_rows</span>(ti,
+                            <span class="kw">tibble</span>(
+                              <span class="dt">left_gene =</span> neighboring[i,]$left_gene,
+                              <span class="dt">right_gene =</span> neighboring[i,]$right_gene,
+                              <span class="dt">dist =</span> gff[gff$ID ==<span class="st"> </span>neighboring[i,]$right_gene,]$start -<span class="st"> </span>gff[gff$ID ==<span class="st"> </span>neighboring[i,]$left_gene,]$end
+                            ))
+  }
+  <span class="kw">return</span>(ti)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for 3D7</span>
+x3d7_convergent &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(convergent,x3d7gff)
+x3d7_divergent  &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(divergent,x3d7gff)
+x3d7_tandem     &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(tandem,x3d7gff)
+<span class="co"># for HB3</span>
+xhb3_convergent &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(convergent,xhb3gff)
+xhb3_divergent  &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(divergent,xhb3gff)
+xhb3_tandem     &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(tandem,xhb3gff)
+<span class="co"># for IT</span>
+xit_convergent &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(convergent,xitgff)
+xit_divergent  &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(divergent,xitgff)
+xit_tandem     &lt;-<span class="st"> </span><span class="kw">calc_distances</span>(tandem,xitgff)</code></pre></div>
+<div id="calculate-correlations-between-neighboring-genes" class="section level4">
+<h4>Calculate correlations between neighboring genes</h4>
+<p>Now we’ll import the gene expression abundances and calculate correlations between them all. However, there are a few caveats: we have UTR predictions for genes, not transcripts, meaning we’ll need to reduce the transcript caluclations to gene abundances. We’ll keep it simple and just use the isoform with the highest TPM for each gene with multiple isoforms.</p>
+<p>We’ll first do this for 3D7:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Function to keep only the most highly expressed isoforms for calculating correlations</span>
+reduce_to_genes &lt;-<span class="st"> </span>function(abund) {
+  
+  max_isoforms &lt;-<span class="st"> </span>abund %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(stringr::<span class="kw">str_count</span>(transcript_id,<span class="st">&quot;[.]&quot;</span>)&gt;<span class="dv">0</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">group_by</span>(transcript_id) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">summarise</span>(<span class="dt">total=</span><span class="kw">sum</span>(TPM)) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">ungroup</span>() %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">id=</span>stringr::<span class="kw">str_replace</span>(transcript_id,<span class="st">&quot;[.][0-9]&quot;</span>,<span class="st">&quot;&quot;</span>)) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">group_by</span>(id) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">summarise</span>(<span class="dt">max_isoform=</span><span class="kw">which.max</span>(total))
+
+  isoforms_to_keep &lt;-<span class="st"> </span>abund %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(stringr::<span class="kw">str_count</span>(transcript_id,<span class="st">&quot;[.]&quot;</span>)&gt;<span class="dv">0</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">rowwise</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">isoform=</span><span class="kw">as.integer</span>(stringr::<span class="kw">str_split</span>(transcript_id,<span class="st">&quot;[.]&quot;</span>)[[<span class="dv">1</span>]][<span class="dv">2</span>])) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">id=</span>stringr::<span class="kw">str_replace</span>(transcript_id,<span class="st">&quot;[.][0-9]&quot;</span>,<span class="st">&quot;&quot;</span>)) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">inner_join</span>(max_isoforms) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(max_isoform==isoform) %$%
+<span class="st">    </span><span class="kw">unique</span>(transcript_id)
+
+  genes_to_keep &lt;-<span class="st"> </span>abund %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(stringr::<span class="kw">str_count</span>(transcript_id,<span class="st">&quot;[.]&quot;</span>)==<span class="dv">0</span>) %$%
+<span class="st">    </span><span class="kw">unique</span>(transcript_id)
+
+  fabund &lt;-<span class="st"> </span>abund %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(transcript_id %in%<span class="st"> </span><span class="kw">c</span>(isoforms_to_keep,genes_to_keep)) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">gene_id=</span>stringr::<span class="kw">str_replace</span>(transcript_id,<span class="st">&quot;[.][0-9]&quot;</span>,<span class="st">&quot;&quot;</span>)) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(gene_id,TPM,strain,tp)
+  
+  <span class="kw">return</span>(fabund)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x3d7_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/transcript_abundance/stringtie_3d7_abund.rds&quot;</span>)
+xhb3_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/transcript_abundance/stringtie_hb3_abund.rds&quot;</span>)
+xit_abund  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/transcript_abundance/stringtie_it_abund.rds&quot;</span>)
+
+x3d7_abund &lt;-<span class="st"> </span><span class="kw">reduce_to_genes</span>(x3d7_abund)
+xhb3_abund &lt;-<span class="st"> </span><span class="kw">reduce_to_genes</span>(xhb3_abund)
+xit_abund  &lt;-<span class="st"> </span><span class="kw">reduce_to_genes</span>(xit_abund)</code></pre></div>
+<p>It’ll be useful to save these to a file for future use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(<span class="dt">object=</span>x3d7_abund,<span class="dt">file=</span><span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)
+<span class="kw">saveRDS</span>(<span class="dt">object=</span>xhb3_abund,<span class="dt">file=</span><span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)
+<span class="kw">saveRDS</span>(<span class="dt">object=</span>xit_abund,<span class="dt">file=</span><span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)</code></pre></div>
+<p>Now we can actually calculate the correlations between every gene and every other gene:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calc_correlations &lt;-<span class="st"> </span>function(abund,neighboring) {
+  df &lt;-<span class="st"> </span>abund %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">select</span>(gene_id,TPM,tp) %&gt;%<span class="st"> </span>
+<span class="st">    </span>tidyr::<span class="kw">spread</span>(tp,TPM)
+  c &lt;-<span class="st"> </span><span class="kw">cor</span>(<span class="kw">t</span>(df[,<span class="dv">2</span>:<span class="dv">8</span>]))
+  <span class="kw">rownames</span>(c) &lt;-<span class="st"> </span>df$gene_id
+  <span class="kw">colnames</span>(c) &lt;-<span class="st"> </span>df$gene_id
+  
+  new &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">left_gene=</span><span class="kw">character</span>(),
+                <span class="dt">right_gene=</span><span class="kw">character</span>(),
+                <span class="dt">dist=</span><span class="kw">integer</span>(),
+                <span class="dt">cor=</span><span class="kw">double</span>())
+  for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(neighboring)) {
+    new &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(new,
+                            <span class="kw">tibble</span>(
+                              <span class="dt">left_gene=</span>neighboring[i,]$left_gene,
+                              <span class="dt">right_gene=</span>neighboring[i,]$right_gene,
+                              <span class="dt">dist=</span>neighboring[i,]$dist,
+                              <span class="dt">cor=</span>c[neighboring[i,]$left_gene,neighboring[i,]$right_gene]
+                            ))
+  }
+  <span class="kw">return</span>(new)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for non UTR genes</span>
+convergent &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,convergent)
+divergent  &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,divergent)
+tandem     &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,tandem)
+<span class="co"># for 3D7</span>
+x3d7_convergent &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,x3d7_convergent)
+x3d7_divergent  &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,x3d7_divergent)
+x3d7_tandem     &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(x3d7_abund,x3d7_tandem)
+<span class="co"># for HB3</span>
+xhb3_convergent &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xhb3_abund,xhb3_convergent)
+xhb3_divergent  &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xhb3_abund,xhb3_divergent)
+xhb3_tandem     &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xhb3_abund,xhb3_tandem)
+<span class="co"># for IT</span>
+xit_convergent &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xit_abund,xit_convergent)
+xit_divergent  &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xit_abund,xit_divergent)
+xit_tandem     &lt;-<span class="st"> </span><span class="kw">calc_correlations</span>(xit_abund,xit_tandem)</code></pre></div>
+<p>And finally, let’s write that to a file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># for non UTR genes </span>
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>convergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/non_utr_convergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>divergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/non_utr_divergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>tandem,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/non_utr_tandem.tsv&quot;</span>)
+<span class="co"># for 3D7</span>
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>x3d7_convergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/3d7_convergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>x3d7_divergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/3d7_divergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>x3d7_tandem,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/3d7_tandem.tsv&quot;</span>)
+<span class="co"># for HB3</span>
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xhb3_convergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/hb3_convergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xhb3_divergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/hb3_divergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xhb3_tandem,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/hb3_tandem.tsv&quot;</span>)
+<span class="co"># for IT</span>
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xit_convergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/it_convergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xit_divergent,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/it_divergent.tsv&quot;</span>)
+readr::<span class="kw">write_tsv</span>(<span class="dt">x=</span>xit_tandem,<span class="dt">path=</span><span class="st">&quot;../output/neighboring_genes/it_tandem.tsv&quot;</span>)</code></pre></div>
+<p>All done!</p>
+</div>
+</div>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
+<pre><code>R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] scales_0.4.1    cowplot_0.7.0   magrittr_1.5    stringr_1.2.0  
+ [5] dplyr_0.5.0     purrr_0.2.2     readr_1.0.0     tidyr_0.6.1    
+ [9] tibble_1.2      ggplot2_2.2.1   tidyverse_1.1.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9      git2r_0.18.0     workflowr_0.3.0  plyr_1.8.4      
+ [5] forcats_0.2.0    tools_3.3.2      digest_0.6.12    jsonlite_1.3    
+ [9] lubridate_1.6.0  evaluate_0.10    gtable_0.2.0     nlme_3.1-131    
+[13] lattice_0.20-34  psych_1.6.12     DBI_0.5-1        yaml_2.1.14     
+[17] parallel_3.3.2   haven_1.0.0      xml2_1.1.1       httr_1.2.1      
+[21] knitr_1.15.1     hms_0.3          rprojroot_1.2    grid_3.3.2      
+[25] R6_2.2.0         readxl_0.1.1     foreign_0.8-67   rmarkdown_1.3   
+[29] reshape2_1.4.2   modelr_0.1.0     backports_1.0.5  htmltools_0.3.5 
+[33] rvest_0.3.2      assertthat_0.1   mnormt_1.5-5     colorspace_1.3-2
+[37] stringi_1.1.2    lazyeval_0.2.0   munsell_0.4.3    broom_0.4.2     </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

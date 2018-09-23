@@ -1,0 +1,7 @@
+samples:
+  3d7:
+    include: TRUE
+  hb3:
+    include: FALSE
+  it:
+    include: FALSE

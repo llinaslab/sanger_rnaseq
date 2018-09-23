@@ -1,0 +1,388 @@
+---
+title: "Differential phase detection"
+author: "Philipp Ross"
+date: 2017-04-17
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Calculating the phases for each gene
+
+First let's import and process the data we need to use for this:
+
+```{r}
+# import expression data
+x3d7exp <- readRDS("../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+xhb3exp <- readRDS("../output/neighboring_genes/gene_reduced_hb3_abund.rds")
+xitexp  <- readRDS("../output/neighboring_genes/gene_reduced_it_abund.rds")
+exp <- dplyr::bind_rows(x3d7exp,xhb3exp,xitexp)
+
+rm(x3d7exp,xhb3exp,xitexp)
+
+# import core genes for comparison
+core_genes <- readr::read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+
+# only consider genes with a TPM of 5 within at least one sample
+detected  <- exp %>%
+  dplyr::filter(gene_id %in% core_genes) %>%
+  dplyr::group_by(gene_id, strain) %>%
+  dplyr::summarise(n = sum(TPM >= 5)) %>%
+  dplyr::mutate(on = ifelse(n > 0, 1, 0)) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-n)
+
+on3d7 <- detected %>% dplyr::filter(strain == "3d7" & on == 1) %$% gene_id
+onhb3 <- detected %>% dplyr::filter(strain == "hb3" & on == 1) %$% gene_id
+onit  <- detected %>% dplyr::filter(strain == "it" & on == 1) %$% gene_id
+
+on3d7hb3 <- intersect(on3d7,onhb3)
+on3d7it  <- intersect(on3d7,onit)
+onhb3it  <- intersect(onhb3,onit)
+# create a list of all genes on between strains
+onall <- Reduce(intersect, list(on3d7, onhb3, onit))
+```
+
+We also only want to consider genes with a decent amplitude to remove genes that are constitutively on:
+
+```{r}
+amps <- abund %>%
+  dplyr::filter(gene_id %in% onall) %>%
+  dplyr::group_by(gene_id, strain) %>%
+  dplyr::summarise(min=min(TPM),max=max(TPM)) %>%
+  dplyr::mutate(amp=max/(min+1)) %>%
+  dplyr::ungroup()
+
+amps <- amps %>% dplyr::inner_join(as.data.frame(org.Pf.plasmoGENENAME), by = "gene_id")
+
+amps %>%
+  dplyr::mutate(strain = toupper(strain)) %>%
+  ggplot(aes(x=amp,group=strain,color=strain)) +
+  geom_line(stat="density",size=1) +
+  fill_colors +
+  outline_colors +
+  xlab("Amplitude") +
+  ylab("Density") + 
+  scale_x_continuous(trans="log10", breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x))) +
+  theme(legend.title=element_blank(),axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
+  panel_border(colour="black")
+
+high_amp <- amps %>% dplyr::filter(log2(amp) > 0.5) %$% unique(gene_id)
+```
+
+In Broadbent et al. they generate a circular plot to represent the different timepoints as x and y coordinates following dimensional reduction using multidimensional scaling. Prior to this we need to correct for impure Plasmodium cell populations as demonstrated in the following plot:
+
+```{r}
+wide_uncorrected <- exp %>% 
+  dplyr::filter(gene_id %in% onall & gene_id %in% high_amp) %>%
+  dplyr::group_by(gene_id,strain) %>% 
+  dplyr::summarise(m=mean(TPM)) %>% 
+  dplyr::inner_join(exp) %>% 
+  dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
+  dplyr::select(gene_id,tp,norm_tpm,strain) %>% 
+  dplyr::ungroup() %>%
+  tidyr::unite(tp_strain, tp, strain, sep = "-") %>%
+  dplyr::select(tp_strain, norm_tpm, gene_id) %>%
+  tidyr::spread(tp_strain, norm_tpm) %>%
+  dplyr::select(-gene_id)
+
+d <- as.dist((1 - cor(wide_uncorrected))/2)
+
+fit <- MASS::isoMDS(d, k = 2)
+
+timepoint_phase <- as.data.frame(fit$points)
+timepoint_phase$rows <- rownames(fit$points)
+timepoint_phase <- timepoint_phase %>%
+  tidyr::separate(col=rows, into=c("tp","strain"), sep="-") %>%
+  dplyr::rename(x=V1,y=V2)
+
+write_tsv(x = timepoint_phase, path = "../output/differential_phase/uncorected_timepoint_phase.tsv" )
+
+timepoint_phase %>% 
+  ggplot(aes(x=x,y=y,label=tp,color=toupper(strain))) + 
+  geom_point() + 
+  geom_text(check_overlap=F,nudge_x=0.05) +
+  ggtitle("Non-Corrected MDS Plot") +
+  panel_border(colour="black",size=1) +
+  theme(panel.grid = element_line(size=1)) +
+  outline_colors
+```
+
+To correct for the phases we can do the following:
+
+```{r}
+array_3d7 <- read.delim ("../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt")
+
+df1 <- exp %>% 
+  dplyr::filter(gene_id %in% onall & gene_id %in% high_amp) %>%
+  dplyr::group_by(gene_id,strain) %>% 
+  dplyr::summarise(m=mean(TPM)) %>% 
+  dplyr::inner_join(exp) %>% 
+  dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
+  dplyr::select(gene_id,tp,norm_tpm,strain) %>% 
+  dplyr::ungroup() %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(hpi=ifelse(tp==1,1,if(tp==2){8}else if(tp==3){16}else if(tp==4){24}else if(tp==5){32}else if(tp==6){40}else{48})) %>%
+  dplyr::ungroup() %>%
+  dplyr::do(fit = predict(splines::periodicSpline(norm_tpm ~ hpi, ., period = 48), seq(1,53,1))) %>%
+  broom::tidy(fit) %>%
+  dplyr::ungroup() %>%
+  dplyr::rename(tp=x,exp=y)
+
+dups <- as.character(array_3d7$GeneID[duplicated(array_3d7 %$% GeneID)])
+
+df2 <- array_3d7 %>%
+  filter(GeneID %nin% dups) %>%
+  gather(tp,exp,-GeneID) %>%
+  dplyr::rename(gene_id = GeneID)
+
+df1_3d7 <- df1 %>% filter(strain == "3d7") %>% dplyr::select(-strain)
+df1_hb3 <- df1 %>% filter(strain == "hb3") %>% dplyr::select(-strain)
+df1_it <- df1 %>% filter(strain == "it") %>% dplyr::select(-strain)
+
+df2$gene_id <- as.character(df2$gene_id)
+df2 <- df2 %>% mutate(tp = ifelse(as.numeric(str_replace_all(tp, "Timepoint.","")) > 9, paste0("array_",str_replace_all(tp, "Timepoint.","")), paste0("array_0",str_replace_all(tp, "Timepoint.",""))))
+df1_3d7$tp <- ifelse(df1_3d7$tp > 9, paste(paste0("rnaseq_",df1_3d7$tp)), paste(paste0("rnaseq_0",df1_3d7$tp)))
+df1_hb3$tp <- ifelse(df1_hb3$tp > 9, paste(paste0("rnaseq_",df1_hb3$tp)), paste(paste0("rnaseq_0",df1_hb3$tp)))
+df1_it$tp <- ifelse(df1_it$tp > 9, paste(paste0("rnaseq_",df1_it$tp)), paste(paste0("rnaseq_0",df1_it$tp)))
+
+wide2 <- df2 %>% spread(tp,exp)
+```
+
+```{r}
+wide1 <- df1_3d7 %>% spread(tp,exp)
+
+joined <- inner_join(wide1,wide2, by = "gene_id")
+
+c3d7 <- max.col(t(cor(joined[,2:54], joined[,55:107], use = "na.or.complete")))
+
+wide1 <- wide1[c(1,c3d7[c(1,8,16,24,32,40,48)])]
+colnames(wide1) <- c("gene_id",1,8,16,24,32,40,48)
+
+exp_3d7 <- wide1 %>%
+  gather(tp,exp,-gene_id) %>%
+  group_by(gene_id) %>%
+  do(fit = predict(splines::periodicSpline(exp ~ tp, ., period = 48), seq(1,48,1))) %>%
+  tidy(fit) %>%
+  ungroup()
+
+exp_3d7 %<>% mutate(strain = "3d7") %>% dplyr::rename(tp = x, exp = y)
+
+
+wide1 <- df1_hb3 %>% spread(tp,exp)
+
+joined <- inner_join(wide1,wide2, by = "gene_id")
+
+chb3 <- max.col(t(cor(joined[,2:54], joined[,55:107], use = "na.or.complete")))
+
+wide1 <- wide1[c(1,chb3[c(1,8,16,24,32,40,48)])]
+colnames(wide1) <- c("gene_id",1,8,16,24,32,40,48)
+
+exp_hb3 <- wide1 %>%
+  gather(tp, exp,-gene_id) %>%
+  group_by(gene_id) %>%
+  do(fit = predict( splines::periodicSpline(exp ~ tp, ., period = 48), seq(1,48,1))) %>%
+  tidy(fit) %>%
+  ungroup()
+
+exp_hb3 %<>% mutate(strain = "hb3") %>% dplyr::rename(tp = x, exp = y)
+
+
+wide1 <- df1_it %>% spread(tp,exp)
+
+joined <- inner_join(wide1,wide2, by = "gene_id")
+
+cit <- max.col(t(cor(joined[,2:54], joined[,55:107], use = "na.or.complete")))
+
+wide1 <- wide1[c(1,cit[c(1,8,16,24,32,40,48)])]
+colnames(wide1) <- c("gene_id",1,8,16,24,32,40,48)
+
+exp_it <- wide1 %>%
+  gather(tp, exp,-gene_id) %>%
+  group_by(gene_id) %>%
+  do(fit = predict( splines::periodicSpline(exp ~ tp, ., period = 48), seq(1,48,1))) %>%
+  tidy(fit) %>%
+  ungroup()
+
+exp_it %<>% mutate(strain = "it") %>% dplyr::rename(tp = x, exp = y)
+
+final <- bind_rows(exp_3d7,exp_hb3,exp_it) %>% filter(tp %in% c(1,8,16,24,32,40,48))
+
+wide <- final %>% 
+  unite(tp_strain, tp, strain) %>% 
+  dplyr::select(gene_id, tp_strain, exp) %>% 
+  spread(tp_strain, exp) %>% 
+  dplyr::select(-gene_id)
+
+d <- as.dist((1 - cor(wide))/2)
+
+fit <- isoMDS(d+0.0000001, k = 2)
+
+dfit <- as.data.frame(fit$points)
+dfit$tp_strain <- rownames(dfit)
+rownames(dfit) <- NULL
+
+dfit %>% 
+  separate(tp_strain, c("tp" ,"strain"), "_") %>% 
+  ggplot(aes(x=V1,y=V2,label=tp,color=toupper(strain))) + 
+  geom_point() + 
+  geom_text(check_overlap=F,nudge_x=0.05) +
+  ggtitle("Locally Shifted MDS Plot") +
+  panel_border(colour="black",size=1) +
+  theme(panel.grid = element_line(size=1)) +
+  outline_colors
+
+```
+
+```{r,eval=F}
+wide <- exp %>% 
+  dplyr::filter(gene_id %in% onall & gene_id %in% high_amp) %>%
+  dplyr::group_by(gene_id,strain) %>% 
+  dplyr::summarise(m=mean(TPM)) %>% 
+  dplyr::inner_join(exp) %>% 
+  dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
+  dplyr::select(gene_id,tp,norm_tpm,strain) %>% 
+  dplyr::ungroup() %>%
+  tidyr::unite(gene_strain, gene_id, strain, sep = "-") %>%
+  dplyr::select(gene_strain, norm_tpm, tp) %>%
+  tidyr::spread(gene_strain, norm_tpm)
+
+d <- as.dist((1 - cor(wide))/2)
+
+fit <- MASS::isoMDS(d, k = 2)
+
+gene_phase <- as.data.frame(fit$points)
+gene_phase$rows <- rownames(fit$points)
+gene_phase <- gene_phase %>%
+  tidyr::separate(col=rows, into=c("gene_id","strain"), sep="-") %>%
+  dplyr::rename(x=V1,y=V2)
+
+gene_phase$phase <- apply(gene_phase[,1:2], 1, function(x) {atan2(x[1], x[2])})
+rownames(gene_phase) <- NULL
+
+gene_phase <- gene_phase %>% 
+  dplyr::select(gene_id,strain,x,y,phase)
+
+readr::write_tsv(x = gene_phase, path = "../output/differential_phase/gene_phase.tsv" )
+```
+
+## Phase comparison histograms
+
+```{r}
+# Prepare phase shifts between strains
+s <- gene_phase %>%
+  dplyr::select(gene_id, strain, phase) %>%
+  tidyr::spread(strain, phase) %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(`3D7 - HB3` = min(c(abs(`3d7`-hb3),2*pi-abs(`3d7`-hb3))),
+         `3D7 - IT` = min(c(abs(`3d7`-it),2*pi-abs(`3d7`-it))),
+         `HB3 - IT` = min(c(abs(hb3-it),2*pi-abs(hb3-it))))
+
+# calculate median that 3D7 is off by
+m <- s %>%
+  rowwise() %>%
+  mutate(offset = min(c(abs(`3d7`-mean(c(hb3,it))),2*pi-abs(`3d7`-mean(c(hb3,it)))))) %$%
+  median(offset)
+
+# Recalculate phase shifts
+s <- s %>%
+  mutate(`3d7` = ifelse(`3d7` > 0, `3d7` - m, `3d7` + m)) %>%
+  mutate(`3D7 - HB3` = min(c(abs(`3d7`-hb3),2*pi-abs(`3d7`-hb3))),
+         `3D7 - IT` = min(c(abs(`3d7`-it),2*pi-abs(`3d7`-it))),
+         `HB3 - IT` = min(c(abs(hb3-it),2*pi-abs(hb3-it))))
+
+# plot histograms
+s %>%
+  ungroup() %>%
+  filter(gene_id %in% onall) %>%
+  dplyr::select(-`3d7`,-hb3,-it) %>%
+  gather(strains,diff,-gene_id) %>%
+  filter(strains == "3D7 - HB3") %>%
+  ggplot(aes(x=diff)) +
+  geom_histogram(color="grey70") +
+  xlab("Phase Difference") +
+  ylab("Frequency") +
+  panel_border(colour="black",size=1) +
+  scale_x_continuous(limits=c(0,3),breaks=c(0,pi/2,pi),labels=c("0","pi/2","pi")) +
+  theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
+  ggtitle("3D7 vs. HB3")
+
+s %>%
+  ungroup() %>%
+  filter(gene_id %in% onall) %>%
+  dplyr::select(-`3d7`,-hb3,-it) %>%
+  gather(strains,diff,-gene_id) %>%
+  filter(strains == "3D7 - IT") %>%
+  ggplot(aes(x=diff)) +
+  geom_histogram(color="grey70") +
+  xlab("Phase Difference") +
+  ylab("Frequency") +
+    panel_border(colour="black",size=1) +
+  scale_x_continuous(limits=c(0,3),breaks=c(0,pi/2,pi),labels=c("0","pi/2","pi")) +
+  theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
+  ggtitle("3D7 vs. IT")
+
+s %>%
+  ungroup() %>%
+  filter(gene_id %in% onall) %>%
+  dplyr::select(-`3d7`,-hb3,-it) %>%
+  gather(strains,diff,-gene_id) %>%
+  filter(strains == "HB3 - IT") %>%
+  ggplot(aes(x=diff)) +
+  geom_histogram(color="grey70") +
+  xlab("Phase Difference") +
+  ylab("Frequency") +
+    panel_border(colour="black",size=1) +
+  scale_x_continuous(limits=c(0,3),breaks=c(0,pi/2,pi),labels=c("0","pi/2","pi")) +
+  theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
+  ggtitle("HB3 vs. IT")
+  
+
+# plot scatterplots
+s %>%
+  filter(gene_id %in% onall) %>%
+  ggplot(aes(y=`3d7`,x=hb3)) +
+  geom_point(alpha=0.50,color="grey50") +
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  theme(axis.line = element_blank())
+
+s %>%
+  filter(gene_id %in% onall) %>%
+  ggplot(aes(y=`3d7`,x=it)) +
+  geom_point(alpha=0.50,color="grey50") +
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  theme(axis.line = element_blank())
+
+s %>%
+  filter(gene_id %in% onall) %>%
+  ggplot(aes(y=hb3,x=it)) +
+  geom_point(alpha=0.50,color="grey50") +
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  theme(axis.line = element_blank())
+```
+
+## Session Information
+
+```{r session-info}
+```

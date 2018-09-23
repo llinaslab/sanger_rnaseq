@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+<meta name="date" content="2017-03-02" />
+
+<title>Extensive transcription</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Extensive transcription</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>2017-03-02</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-03-08</p>
+<p><strong>Code version:</strong> 0e2e80a</p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The falciparum genomes sequences show extensive amounts of transcription. A very high percentage of the genome is transcribed, measured here by the number of base pairs covered by at least 5 reads.</p>
+</div>
+<div id="workflow" class="section level2">
+<h2>Workflow</h2>
+<ol style="list-style-type: decimal">
+<li>Calculate genome wide coverage for each individual nucleotide</li>
+<li>Plot the cumulative distribution for each strain</li>
+</ol>
+<div id="generate-genome-coverage-data" class="section level3">
+<h3>Generate genome coverage data</h3>
+<pre><code>for strain in 3d7 hb3 it;
+do
+  bedtools genomecov -ibam &quot;data/bam/mapped_to_3d7/${strain}.3d7_v3_chr.idc.bam&quot; \
+  -g &quot;data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.lengths&quot; &gt; &quot;output/extensive_transcription/${strain}_genomecov.tsv&quot;
+done</code></pre>
+</div>
+<div id="plot-data" class="section level3">
+<h3>Plot data</h3>
+<pre class="r"><code>read_genome_cov &lt;- function(file,input_strain) {
+  df &lt;- read_tsv(file, col_names=c(&quot;seqid&quot;,&quot;cov&quot;,&quot;nbases&quot;,&quot;length&quot;,&quot;fraction&quot;)) %&gt;%
+    filter(seqid == &quot;genome&quot;) %&gt;% 
+    arrange(desc(cov)) %&gt;% 
+    mutate(cum = cumsum(fraction))
+  df$strain &lt;- input_strain
+  return(df)
+}
+
+cov3d7 &lt;- read_genome_cov(&quot;../output/extensive_transcription/3d7_idc_genomecov.tsv&quot;, &quot;3D7&quot;)</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  seqid = col_character(),
+  cov = col_integer(),
+  nbases = col_integer(),
+  length = col_integer(),
+  fraction = col_double()
+)</code></pre>
+<pre><code>
+|                                                                               |   0%           
+|=                                                                              |   1%           
+|==                                                                             |   2%           
+|===                                                                            |   3%           
+|===                                                                            |   4%           
+|====                                                                           |   5%           
+|=====                                                                          |   6%           
+|======                                                                         |   7%           
+|=======                                                                        |   8%           
+|=======                                                                        |   9%           
+|========                                                                       |  10%           
+|=========                                                                      |  11%           
+|==========                                                                     |  12%           
+|==========                                                                     |  13%    1 MB
+|===========                                                                    |  14%    1 MB
+|============                                                                   |  15%    1 MB
+|=============                                                                  |  16%    1 MB
+|==============                                                                 |  17%    1 MB
+|==============                                                                 |  18%    1 MB
+|===============                                                                |  19%    1 MB
+|================                                                               |  20%    1 MB
+|=================                                                              |  21%    1 MB
+|==================                                                             |  22%    1 MB
+|==================                                                             |  23%    1 MB
+|===================                                                            |  24%    1 MB
+|====================                                                           |  25%    1 MB
+|=====================                                                          |  26%    2 MB
+|======================                                                         |  27%    2 MB
+|=======================                                                        |  28%    2 MB
+|=======================                                                        |  29%    2 MB
+|========================                                                       |  30%    2 MB
+|=========================                                                      |  31%    2 MB
+|==========================                                                     |  32%    2 MB
+|===========================                                                    |  33%    2 MB
+|===========================                                                    |  34%    2 MB
+|============================                                                   |  35%    2 MB
+|=============================                                                  |  36%    2 MB
+|==============================                                                 |  37%    2 MB
+|===============================                                                |  38%    2 MB
+|===============================                                                |  39%    2 MB
+|================================                                               |  40%    3 MB
+|=================================                                              |  41%    3 MB
+|==================================                                             |  42%    3 MB
+|===================================                                            |  43%    3 MB
+|===================================                                            |  44%    3 MB
+|====================================                                           |  45%    3 MB
+|=====================================                                          |  46%    3 MB
+|======================================                                         |  47%    3 MB
+|=======================================                                        |  48%    3 MB
+|=======================================                                        |  49%    3 MB
+|========================================                                       |  50%    3 MB
+|=========================================                                      |  51%    3 MB
+|==========================================                                     |  52%    3 MB
+|===========================================                                    |  53%    4 MB
+|===========================================                                    |  54%    4 MB
+|============================================                                   |  55%    4 MB
+|=============================================                                  |  56%    4 MB
+|==============================================                                 |  57%    4 MB
+|===============================================                                |  58%    4 MB
+|===============================================                                |  59%    4 MB
+|================================================                               |  60%    4 MB
+|=================================================                              |  61%    4 MB
+|==================================================                             |  62%    4 MB
+|===================================================                            |  63%    4 MB
+|===================================================                            |  64%    4 MB
+|====================================================                           |  65%    4 MB
+|=====================================================                          |  66%    5 MB
+|======================================================                         |  67%    5 MB
+|=======================================================                        |  68%    5 MB
+|=======================================================                        |  69%    5 MB
+|========================================================                       |  70%    5 MB
+|=========================================================                      |  71%    5 MB
+|==========================================================                     |  72%    5 MB
+|===========================================================                    |  73%    5 MB
+|===========================================================                    |  74%    5 MB
+|============================================================                   |  75%    5 MB
+|=============================================================                  |  76%    5 MB
+|==============================================================                 |  77%    5 MB
+|===============================================================                |  78%    5 MB
+|===============================================================                |  79%    6 MB
+|================================================================               |  80%    6 MB
+|=================================================================              |  81%    6 MB
+|==================================================================             |  82%    6 MB
+|===================================================================            |  83%    6 MB
+|===================================================================            |  84%    6 MB
+|====================================================================           |  85%    6 MB
+|=====================================================================          |  86%    6 MB
+|======================================================================         |  87%    6 MB
+|======================================================================         |  88%    6 MB
+|=======================================================================        |  89%    6 MB
+|========================================================================       |  90%    6 MB
+|=========================================================================      |  91%    6 MB
+|=========================================================================      |  92%    6 MB
+|==========================================================================     |  93%    7 MB
+|===========================================================================    |  94%    7 MB
+|===========================================================================    |  94%    7 MB
+|============================================================================   |  95%    7 MB
+|=============================================================================  |  96%    7 MB
+|============================================================================== |  97%    7 MB
+|============================================================================== |  98%    7 MB
+|===============================================================================|  99%    7 MB
+|================================================================================| 100%    7 MB</code></pre>
+<pre class="r"><code>covhb3 &lt;- read_genome_cov(&quot;../output/extensive_transcription/hb3_idc_genomecov.tsv&quot;, &quot;HB3&quot;)</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  seqid = col_character(),
+  cov = col_integer(),
+  nbases = col_integer(),
+  length = col_integer(),
+  fraction = col_double()
+)</code></pre>
+<pre class="r"><code>covit &lt;- read_genome_cov(&quot;../output/extensive_transcription/it_idc_genomecov.tsv&quot;, &quot;IT4&quot;)</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  seqid = col_character(),
+  cov = col_integer(),
+  nbases = col_integer(),
+  length = col_integer(),
+  fraction = col_double()
+)</code></pre>
+<pre class="r"><code>cov &lt;- rbind(cov3d7,covhb3,covit)</code></pre>
+<pre class="r"><code>g &lt;- cov %&gt;% 
+  ggplot(aes(x=cov,y=cum,color=strain)) + 
+  geom_line(size=1) + 
+  scale_x_continuous(trans=&quot;log10&quot;, breaks=c(1,10,100,1000,10000,100000),labels=trans_format(&#39;log10&#39;,math_format(10^.x))) +
+  outline_colors +
+  labs(x=&quot;Coverage&quot;,y=&quot;Cumulative Genome Fraction&quot;) +
+  geom_vline(xintercept=5,linetype=2)
+ggsave(filename=&quot;../output/extensive_transcription/extensive_transcription.pdf&quot;,plot=g)</code></pre>
+<pre><code>Saving 7 x 5 in image</code></pre>
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+<pre class="r"><code>print(g)</code></pre>
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+<p><img src="figure/extensive_transcription.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] scales_0.4.1    cowplot_0.7.0   magrittr_1.5    stringr_1.2.0  
+ [5] dplyr_0.5.0     purrr_0.2.2     readr_1.0.0     tidyr_0.6.1    
+ [9] tibble_1.2      ggplot2_2.2.1   tidyverse_1.1.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9      git2r_0.18.0     plyr_1.8.4       workflowr_0.3.0 
+ [5] forcats_0.2.0    tools_3.3.2      digest_0.6.12    lubridate_1.6.0 
+ [9] jsonlite_1.3     evaluate_0.10    gtable_0.2.0     nlme_3.1-131    
+[13] lattice_0.20-34  psych_1.6.12     DBI_0.5-1        rstudioapi_0.6  
+[17] yaml_2.1.14      parallel_3.3.2   haven_1.0.0      xml2_1.1.1      
+[21] httr_1.2.1       knitr_1.15.1     hms_0.3          rprojroot_1.2   
+[25] grid_3.3.2       R6_2.2.0         readxl_0.1.1     foreign_0.8-67  
+[29] rmarkdown_1.3    modelr_0.1.0     reshape2_1.4.2   backports_1.0.5 
+[33] htmltools_0.3.5  rvest_0.3.2      assertthat_0.1   mnormt_1.5-5    
+[37] colorspace_1.3-2 labeling_0.3     stringi_1.1.2    lazyeval_0.2.0  
+[41] munsell_0.4.3    broom_0.4.2     </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

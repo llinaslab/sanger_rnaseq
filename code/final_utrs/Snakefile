@@ -1,0 +1,165 @@
+# vim: set ft=python:
+shell.prefix("set -eo pipefail; ")
+
+from os.path import join, basename, dirname
+from os import getcwd
+from subprocess import check_output
+import re
+
+# Globals ---------------------------------------------------------------------
+
+include: "../../config.py"
+configfile: "config.yml"
+
+STRAINS = list(config["samples"].keys())
+
+# Job Handlers ----------------------------------------------------------------
+
+onsuccess:
+  print("Workflow finished, without any errors!")
+
+#onerror:
+#  shell("send_email.py -t philippross369@gmail.com -s 'Snakefile error' -b {log}")
+
+# Rules -----------------------------------------------------------------------
+
+rule all:
+  input:
+    "results/report.html"
+
+rule final_utrs:
+  input:
+    tso_repaired = "../../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.{strain}.filtered.rescued_5utrs.gff",
+    cov_repaired = "../../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.{strain}.filtered.rescued_5utrs.gff",
+    five_utrs    = "../../data/utrs/original_utrs/final.5utrs.{strain}.3d7_v3_chr.idc.gff",
+    tso_utrs     = "../../data/utrs/original_utrs/tso_thr5.gff",
+    three_utrs   = "../../data/utrs/original_utrs/final.3utrs.{strain}.3d7_v3_chr.idc.gff"
+  output:
+    "data/final_utrs_{strain}.gff"
+  params:
+    include = lambda wildcards: str(config["samples"][wildcards.strain]["include"])
+  shell:
+    "Rscript scripts/create_final_utrs.R "
+    "{input.tso_repaired} "
+    "{input.cov_repaired} "
+    "{input.five_utrs} "
+    "{input.tso_utrs} "
+    "{input.three_utrs} "
+    "{params.include} "
+    "{output}"
+
+
+rule reformat_final_utrs:
+  input:
+    gff  = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7.gff",
+    utrs = "data/final_utrs_{strain}.gff"
+  output:
+    "data/longest_utrs_{strain}_plasmodb_compatible.gff"
+  run:
+    out = open(output[0], "w")
+    isoforms = dict()
+    with open(input.gff) as gff_file:
+      for line in gff_file:
+        if not line.startswith("#"):
+          line = line.split("\t")
+          if line[2] == "mRNA":
+            ID = line[8].split(";")[0].split("=")
+            if ID[0] == "ID":
+              if re.search(r"\.", ID[1]):
+                first = ID[1].split("_")[1]
+                second = ID[1].split("_")[2].split(".")[0]
+                num = ID[1].split("_")[2].split(".")[1].split("-")[0]
+                isoforms[first+"_"+second] = int(num)
+    # The isoforms dictionary shouldn't be empty
+    if len(isoforms.keys()) == 0:
+      print("\nIsoforms dictionary is empty...\n")
+      sys.exit(1)
+    with open(input.utrs) as utrs_file:
+      for line in utrs_file:
+        if not line.startswith("#"):
+          line = line.split("\t")
+          ID = line[8].split(";")[0].split("=")[1]
+          if ID in list(isoforms.keys()):
+            for i in range(isoforms[ID]):
+              print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\tParent=rna_{8}.{9}-1".format(line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],ID,str(i+1)),end="\n",file=out)
+          else:
+            print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\tParent=rna_{8}-1".format(line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],ID),end="\n",file=out)
+    out.close()
+
+
+rule make_3d7_5utr_sequences:
+  input:
+    "data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff"
+  output:
+    "data/homopolymer_analysis/3d7_5utrs.fasta"
+  params:
+    lengths = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.lengths",
+    reference = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.fasta"
+  shell:
+    "cat {input} | "
+    "awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | "
+    "bedtools getfasta -fi {params.reference} -bed - -fo {output} -s -name"
+
+
+rule make_3d7_5utr_minus_100bp_flank:
+  input:
+    "data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff"
+  output:
+    "data/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta"
+  params:
+    lengths = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.lengths",
+    reference = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.fasta"
+  shell:
+    "bedtools flank -i {input} "
+    "-g {params.lengths} "
+    "-s -l 100 -r 0 | "
+    "awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | "
+    "bedtools getfasta -fi {params.reference} -bed - -fo {output} -s -name"
+
+
+rule make_3d7_5utr_minus_100bp_slop:
+  input:
+    "data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff"
+  output:
+    "data/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta"
+  params:
+    lengths = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.lengths",
+    reference = "../../data/genomes/pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.fasta"
+  shell:
+    "bedtools slop -i {input} "
+    "-g {params.lengths} "
+    "-s -l 100 -r 0 | "
+    "awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | "
+    "bedtools getfasta -fi {params.reference} -bed - -fo {output} -s -name"
+
+
+rule count_homopolymers:
+  input:
+    "data/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta",
+    "data/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta",
+    "data/homopolymer_analysis/3d7_5utrs.fasta"
+  output:
+    "data/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv",
+    "data/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv",
+    "data/homopolymer_analysis/3d7_5utrs_counts.tsv"
+  params:
+    length = "50"
+  run:
+    for i in range(len(input)):
+      if len(input) == len(output):
+        shell("Rscript scripts/count_homopolymers.R -f "+input[i]+" -l {params.length} -o "+output[i])
+      else:
+        print("Inputs and outputs aren't the same length in rule 'count_homopolymers'")
+
+
+rule report:
+  input:
+    expand("data/longest_utrs_{strain}_plasmodb_compatible.gff", strain=STRAINS),
+    "data/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv",
+    "data/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv",
+    "data/homopolymer_analysis/3d7_5utrs_counts.tsv",
+    script = "scripts/report.Rmd"
+  output:
+    "results/report.html"
+  run:
+    shell(source_rmd(getcwd(), input.script))

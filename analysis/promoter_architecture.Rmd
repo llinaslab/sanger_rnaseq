@@ -1,0 +1,681 @@
+---
+title: "Promoter Architecture"
+author: "Philipp Ross"
+date: 03-31-2017
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Sequence features surrounding transcription start sites
+
+For this analysis we want to plot nucleotide frequencies up and downstream of predicted transcription start sites. We can do this by looking at tag clusters, promoter clusters, or most heavily used TSSs defined earlier.
+
+```{r}
+# import genome
+library(BSgenome.Pfalciparum.PlasmoDB.v24)
+
+# import tag clusters
+tc_intergenic <- rtracklayer::import.gff3("../output/ctss_clustering/modified/tag_clusters_annotated_intergenic.gff")
+tc_exonic     <- rtracklayer::import.gff3("../output/ctss_clustering/modified/tag_clusters_annotated_exons.gff")
+tc_intronic   <- rtracklayer::import.gff3("../output/ctss_clustering/modified/tag_clusters_annotated_introns.gff")
+
+# import promoter clusters
+pc_intergenic <- rtracklayer::import.gff3("../output/ctss_clustering/modified/promoter_clusters_annotated_intergenic.gff")
+pc_exonic     <- rtracklayer::import.gff3("../output/ctss_clustering/modified/promoter_clusters_annotated_exons.gff")
+pc_intronic   <- rtracklayer::import.gff3("../output/ctss_clustering/modified/promoter_clusters_annotated_introns.gff")
+
+# import telomere ranges
+telomeres  <- rtracklayer::import.gff3("../data/annotations/Pf3D7_v3_subtelomeres.gff")
+
+# import genes as well
+genes <- rtracklayer::import.gff3("../data/annotations/genes_nuclear_3D7_v24.gff")
+
+distance_to_add <- 500
+
+# import most heavily used TSSs
+x3d7_tss <- rtracklayer::import.gff3("../output/final_utrs/final_utrs_3d7.gff") %>% 
+  tibble::as_tibble() %>% 
+  dplyr::mutate(end=ifelse(strand=="+",start+distance_to_add,end+distance_to_add),start=ifelse(strand=="+",start-distance_to_add,end-distance_to_add)) %>%
+  dplyr::filter(type=="5UTR") %>%
+  GenomicRanges::GRanges()
+
+# import TTS for 3D7
+x3d7_tts <- rtracklayer::import.gff3("../output/final_utrs/final_utrs_3d7.gff") %>% 
+  tibble::as_tibble() %>% 
+  dplyr::mutate(end=ifelse(strand=="+",end+distance_to_add,start+distance_to_add),start=ifelse(strand=="+",end-distance_to_add,start-distance_to_add)) %>%
+  dplyr::filter(type=="3UTR") %>%
+  GenomicRanges::GRanges()
+
+# HB3
+xhb3_tss <- rtracklayer::import.gff3("../output/final_utrs/final_utrs_hb3.gff") %>% 
+  tibble::as_tibble() %>% 
+  dplyr::mutate(end=ifelse(strand=="+",start+distance_to_add,end+distance_to_add),start=ifelse(strand=="+",start-distance_to_add,end-distance_to_add)) %>%
+  dplyr::filter(type=="5UTR") %>%
+  GenomicRanges::GRanges()
+
+# IT
+xit_tss <- rtracklayer::import.gff3("../output/final_utrs/final_utrs_it.gff") %>% 
+  tibble::as_tibble() %>% 
+  dplyr::mutate(end=ifelse(strand=="+",start+distance_to_add,end+distance_to_add),start=ifelse(strand=="+",start-distance_to_add,end-distance_to_add)) %>%
+  dplyr::filter(type=="5UTR") %>%
+  GenomicRanges::GRanges()
+```
+
+Let's set the nucleotide colors to be what we want them to be:
+
+```{r}
+# set colors
+set_colors <- function(colors, vars, iname) {
+  myColors <- c(colors)
+  names(myColors) <- levels(vars)
+  output <- ggplot2::scale_colour_manual(name = iname, values = myColors)
+  return(output)
+}
+# custom nucleotide colors
+base_colors <- set_colors(c("#E41A1C", "#377EB8", "#F0E442", "#4DAF4A"), 
+                          c("A", "T", "C", "G"), "base")
+```
+
+Now let's write the functions to generate the frequency diagrams, information content, and sequence logos:
+
+```{r}
+# Use this function to filter tag clusters
+# filter_tag_clusters <- function(tcs,tpm_threshold,width_threshold) {
+#   sharp_ftcs <- tcs %>% 
+#     tibble::as_tibble() %>% 
+#     dplyr::filter(as.numeric(tpm.dominant_ctss)>=tpm_threshold & as.numeric(tpm.dominant_ctss)/as.numeric(tpm) >= width_threshold) %>% 
+#     dplyr::select(seqnames,dominant_ctss,strand,name) %>% 
+#     dplyr::distinct(seqnames,dominant_ctss,strand,name) %>%
+#     dplyr::mutate(start=ifelse(strand=="+",as.numeric(dominant_ctss)-500,as.numeric(dominant_ctss)-498),
+#                   end=ifelse(strand=="+",as.numeric(dominant_ctss)+500,as.numeric(dominant_ctss)+502)) %>%
+#     GenomicRanges::GRanges()
+#   
+#   broad_ftcs <- tcs %>% 
+#     tibble::as_tibble() %>% 
+#     dplyr::filter(as.numeric(tpm.dominant_ctss)>=tpm_threshold & as.numeric(tpm.dominant_ctss)/as.numeric(tpm) < width_threshold) %>% 
+#     dplyr::select(seqnames,dominant_ctss,strand,name) %>% 
+#     dplyr::distinct(seqnames,dominant_ctss,strand,name) %>%
+#     dplyr::mutate(start=ifelse(strand=="+",as.numeric(dominant_ctss)-500,as.numeric(dominant_ctss)-498),
+#                   end=ifelse(strand=="+",as.numeric(dominant_ctss)+500,as.numeric(dominant_ctss)+502)) %>%
+#     GenomicRanges::GRanges()
+#   return(list(sharp=sharp_ftcs,broad=broad_ftcs))
+# }
+# This doesn't currently work as expected...
+# Use this function to filter promoter clusters
+# filter_promoter_clusters <- function(pcs,tpm_threshold,width_threshold) {
+#   sharp_fpcs <- pcs %>% 
+#     tibble::as_tibble() %>%
+#     dplyr::group_by(seqnames,start,strand,full_end,name,dominant_ctss) %>% 
+#     dplyr::summarise(tpm=sum(as.numeric(tpm)),tpm_dominant_ctss=sum(as.numeric(tpm.dominant_ctss))) %>% 
+#     dplyr::ungroup() %>%
+#     dplyr::filter(tpm >= tpm_threshold & tpm_dominant_ctss/tpm >= width_threshold) %>%
+#     dplyr::group_by(seqnames,start,strand,name,dominant_ctss) %>%
+#     dplyr::summarise(tpm_dominant_ctss=max(tpm_dominant_ctss)) %>%
+#     dplyr::ungroup() %>%
+#     dplyr::mutate(start=ifelse(strand=="+",as.numeric(dominant_ctss)-500,as.numeric(dominant_ctss)-498),
+#                   end=ifelse(strand=="+",as.numeric(dominant_ctss)+500,as.numeric(dominant_ctss)+502)) %>%
+#     GenomicRanges::GRanges()
+#   
+#   broad_fpcs <- pcs %>% 
+#     tibble::as_tibble() %>%
+#     dplyr::group_by(seqnames,start,strand,full_end,name,dominant_ctss) %>% 
+#     dplyr::summarise(tpm=sum(as.numeric(tpm)),tpm_dominant_ctss=sum(as.numeric(tpm.dominant_ctss))) %>% 
+#     dplyr::ungroup() %>%
+#     dplyr::filter(tpm >= tpm_threshold & tpm_dominant_ctss/tpm < width_threshold) %>%
+#     dplyr::group_by(seqnames,start,strand,name,dominant_ctss) %>%
+#     dplyr::summarise(tpm_dominant_ctss=max(tpm_dominant_ctss)) %>%
+#     dplyr::ungroup() %>%
+#     dplyr::mutate(start=ifelse(strand=="+",as.numeric(dominant_ctss)-500,as.numeric(dominant_ctss)-498),
+#                   end=ifelse(strand=="+",as.numeric(dominant_ctss)+500,as.numeric(dominant_ctss)+502)) %>%
+#     GenomicRanges::GRanges()
+#   return(list(sharp=sharp_fpcs,broad=broad_fpcs))
+# }
+# Use this function to generate position weight matrices
+generate_pwm <- function(clusters) {
+  # extract sequences from the genome
+  seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,clusters)
+  # convert those sequences into a data frame
+  tmp <- lapply(seqs,function(x) stringr::str_split(as.character(x),"")[[1]])
+  tmp <- as.data.frame(tmp)
+  colnames(tmp) <- 1:ncol(tmp)
+  tmp$pos <- 1:nrow(tmp)
+  tmp <- tmp %>% tidyr::gather(seq, base, -pos)
+  # calculate the proportion of nucleotides at each position
+  pwm <- tmp %>% 
+    dplyr::group_by(as.numeric(pos)) %>% 
+    dplyr::summarise(A = sum(base == "A")/n(), 
+            C = sum(base == "C")/n(), 
+            G = sum(base == "G")/n(), 
+            T = sum(base == "T")/n()) %>%
+    dplyr::ungroup()
+  colnames(pwm)[1] <- "pos"
+  return(list(pwm=pwm,seqs=seqs))
+}
+# Plot the nucleotide frequencies at each position
+plot_frequencies <- function(ipwm) {
+  ipwm %>% 
+    tidyr::gather(base, freq, -pos) %>% 
+    ggplot(aes(x = pos, y = freq, color = base)) +
+    geom_line(size = 1) + 
+    geom_point(size = 1.5) +
+    xlab("") +
+    ylab("Frequency") +
+    scale_y_continuous(limits = c(0,1)) +
+    theme(legend.position="top", 
+    legend.direction="horizontal",
+    legend.title = element_blank()) +
+    base_colors
+}
+# Plot the sequence logo
+plot_logo <- function(ipwm,limits) {
+  logo <- ipwm[,2:5]
+  seqLogo::seqLogo(seqLogo::makePWM((t(logo[limits[1]:limits[2],]))),ic.scale = T)
+}
+# Plot the information content at each position
+plot_info <- function(ipwm) {
+  ipwm %>% 
+    dplyr::mutate(i = (A * log2(A/0.42)) + (T * log2(T/0.45)) + (G * log2(G/0.07)) + (C * log2(C/0.06))) %>% 
+    gather(base, freq, -pos, -i) %>% 
+    ggplot(aes(x = pos, y = i)) + 
+    geom_line() +
+    xlab("") +
+    ylab("Information")
+}
+```
+
+### Most commonly used 5' TSS
+
+Now let's look at these plots for each of our data sets. First we will look at the most commonly used TSSs for each strain:
+
+#### 3D7
+
+```{r}
+x3d7pwm <- generate_pwm(x3d7_tss)
+plot_frequencies(x3d7pwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TTS","20")) + ggtitle("TSS")
+plot_info(x3d7pwm$pwm) + scale_x_continuous(breaks=c(1,251,501,751,1001),labels=c("-500","-250","TTS","250","500"))
+plot_logo(x3d7pwm$pwm,c(481,521))
+```
+
+#### HB3
+
+```{r}
+xhb3pwm <- generate_pwm(xhb3_tss)
+plot_frequencies(xhb3pwm)
+plot_info(xhb3pwm)
+plot_logo(xhb3pwm)
+```
+
+#### IT
+
+```{r}
+xitpwm <- generate_pwm(xit_tss)
+plot_frequencies(xitpwm)
+plot_info(xitpwm)
+plot_logo(xitpwm)
+```
+
+### Tag clusters
+
+#### Intergenic
+
+```{r}
+# filter clusters found in telomeres
+tc_intergenic <- tc_intergenic[is.na(GenomicRanges::findOverlaps(tc_intergenic,telomeres,select="arbitrary"))]
+ftcs <- filter_tag_clusters(tc_intergenic,5,0.75)
+sharp_tcipwm <- generate_pwm(ftcs$sharp)
+broad_tcipwm <- generate_pwm(ftcs$broad)
+Biostrings::writeXStringSet(x=sharp_tcipwm$seqs,filepath="../output/promoter_architecture/sharp_intergenic_tc_seqs.fasta")
+Biostrings::writeXStringSet(x=broad_tcipwm$seqs,filepath="../output/promoter_architecture/broad_intergenic_tc_seqs.fasta")
+plot_frequencies(sharp_tcipwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TSS","20")) + ggtitle("Sharp")
+plot_frequencies(broad_tcipwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TSS","20")) + ggtitle("Broad")
+plot_info(sharp_tcipwm$pwm) + ggtitle("Sharp") + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,251,501,751,1001),labels=c("-500","-250","TSS","250","500"))
+plot_info(broad_tcipwm$pwm) + ggtitle("Broad") + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,251,501,751,1001),labels=c("-500","-250","TSS","250","500"))
+plot_logo(sharp_tcipwm$pwm,c(481,521))
+plot_logo(broad_tcipwm$pwm,c(481,521))
+```
+
+Now compare this to random intergenic sequences:
+
+```{r}
+intergenic <- GenomicRanges::gaps(genes)
+intergenic <- intergenic[is.na(GenomicRanges::findOverlaps(intergenic,telomeres,select="arbitrary"))]
+intergenic_seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)
+
+# create random seqs to compare to
+extract_random_seqs <- function(seqs,widths) {
+  # start with the first sequence,
+  # filter by width to avoid errors,
+  # sample randomly from filtered sequences,
+  # grab random interval that matches the length of the
+  # promoter sequence
+  fseqs       <- seqs[width(seqs) > widths[1]]
+  rsample     <- sample(1:length(fseqs),size=1)
+  rseq        <- fseqs[rsample][[1]]
+  rstart      <- sample(x=1:(length(rseq)-widths[1]),size=1)
+  random_seqs <- rseq[rstart:(rstart+widths[1]-1)]
+  # do this for all sequences
+  for (i in 2:length(widths)) {
+    fseqs       <- seqs[width(seqs) > widths[i]]
+    rsample     <- sample(1:length(fseqs),size=1)
+    rseq        <- fseqs[rsample][[1]]
+    rstart      <- sample(x=1:(length(rseq)-widths[i]-1),size=1)
+    random_seqs <- unlist(Biostrings::DNAStringSetList(
+      Biostrings::DNAStringSet(random_seqs),
+      Biostrings::DNAStringSet(rseq[rstart:(rstart+widths[i]-1)])))
+  }
+  return(random_seqs)
+}
+
+random_seqs <- extract_random_seqs(intergenic_seqs,rep(1001,1000))
+
+generate_random_pwm <- function(seqs) {
+  # convert those sequences into a data frame
+  tmp <- lapply(seqs,function(x) stringr::str_split(as.character(x),"")[[1]])
+  tmp <- as.data.frame(tmp)
+  colnames(tmp) <- 1:ncol(tmp)
+  tmp$pos <- 1:nrow(tmp)
+  tmp <- tmp %>% tidyr::gather(seq, base, -pos)
+  # calculate the proportion of nucleotides at each position
+  pwm <- tmp %>% 
+  dplyr::group_by(as.numeric(pos)) %>% 
+  dplyr::summarise(A = sum(base == "A")/n(), 
+            C = sum(base == "C")/n(), 
+            G = sum(base == "G")/n(), 
+            T = sum(base == "T")/n()) %>%
+  dplyr::ungroup()
+  colnames(pwm)[1] <- "pos"
+  return(list(pwm=pwm,seqs=seqs))
+}
+
+random_pwm <- generate_random_pwm(random_seqs)
+
+plot_frequencies(random_pwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TSS","20")) + ggtitle("Random")
+plot_info(random_pwm$pwm)
+plot_logo(random_pwm$pwm,c(481,521))
+
+Biostrings::writeXStringSet(x=random_pwm$seqs,filepath="../output/promoter_architecture/random_intergenic_seqs.fasta")
+```
+
+#### Exonic
+
+```{r}
+ftcs <- filter_tag_clusters(tc_exonic,5)
+tcepwm <- generate_pwm(ftcs)
+plot_frequencies(tcepwm)
+plot_info(tcepwm)
+plot_logo(tcepwm)
+```
+
+#### Intronic
+
+```{r}
+ftcs <- filter_tag_clusters(tc_intronic,5)
+tcinpwm <- generate_pwm(ftcs)
+plot_frequencies(tcinpwm)
+plot_info(tcinpwm)
+plot_logo(tcinpwm)
+```
+
+### Promoter clusters
+
+#### Intergenic
+
+```{r}
+ifpcs <- filter_promoter_clusters(pc_intergenic,5,0.75)
+sharp_pcipwm <- generate_pwm(ifpcs$sharp)
+broad_pcipwm <- generate_pwm(ifpcs$broad)
+plot_frequencies(sharp_pcipwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TSS","20")) + ggtitle("Sharp")
+plot_frequencies(broad_pcipwm$pwm) + scale_x_continuous(limits=c(481,521),breaks=c(481,501,521),labels=c("-20","TSS","20")) + ggtitle("Broad")
+plot_info(sharp_pcipwm) + ggtitle("Sharp") + scale_y_continuous(limits=c(0,1))
+plot_info(broad_pcipwm) + ggtitle("Broad") + scale_y_continuous(limits=c(0,1))
+plot_logo(sharp_pcipwm,c(480,520))
+plot_logo(broad_pcipwm,c(480,520))
+```
+
+#### Exonic
+
+```{r}
+efpcs <- filter_promoter_clusters(pc_exonic,5,0.5)
+sharp_pcepwm <- generate_pwm(efpcs$sharp)
+broad_pcepwm <- generate_pwm(efpcs$broad)
+plot_frequencies(sharp_pcepwm) + scale_x_continuous(limits=c(480,520)) + ggtitle("Sharp")
+plot_frequencies(broad_pcepwm) + scale_x_continuous(limits=c(480,520)) + ggtitle("Broad")
+plot_info(sharp_pcepwm) + ggtitle("Sharp") + scale_y_continuous(limits=c(0,1))
+plot_info(broad_pcepwm) + ggtitle("Broad") + scale_y_continuous(limits=c(0,1))
+plot_logo(sharp_pcepwm,c(480,520))
+plot_logo(broad_pcepwm,c(480,520))
+```
+
+#### Intronic
+
+```{r}
+infpcs <- filter_promoter_clusters(pc_intronic,5,0.5)
+sharp_pcinpwm <- generate_pwm(infpcs$sharp)
+broad_pcinpwm <- generate_pwm(infpcs$broad)
+plot_frequencies(sharp_pcinpwm) + scale_x_continuous(limits=c(480,520)) + ggtitle("Sharp")
+plot_frequencies(broad_pcinpwm) + scale_x_continuous(limits=c(480,520)) + ggtitle("Broad")
+plot_info(sharp_pcinpwm) + ggtitle("Sharp") + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,251,501,751,1001),labels=c("-500","-250","TSS","250","500"))
+plot_info(broad_pcinpwm) + ggtitle("Broad") + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,251,501,751,1001),labels=c("-500","-250","TSS","250","500"))
+plot_logo(sharp_pcinpwm,c(480,520))
+plot_logo(broad_pcinpwm,c(480,520))
+```
+
+## Sequence features of sharp and broad promoters
+
+In order to determine whether sharp and broad promoters are of significantly different nucleotide compositions, we first need to divide them up into sharp and broad promoters, then generate random sequences of similar length distributions, and compare the nucleotide content of the actual promoters to those of the randomly generated ones.
+
+First let's create random intergenic sequences:
+
+```{r}
+# filter by total TPM
+filter_clusters <- function(pcs,tpm_threshold) {
+  # remove duplicates, add up total TPM, filter by threshold
+  fpcs <- tibble::as_tibble(pcs) %>% 
+    dplyr::group_by(seqnames,start,strand,full_end,name) %>% 
+    dplyr::summarise(tpm=sum(as.numeric(tpm)),dominant_ctss=max(dominant_ctss)) %>% 
+    dplyr::filter(tpm >= tpm_threshold) %>%
+    dplyr::ungroup() %>%
+    dplyr::rename(end=full_end) %>%
+    dplyr::mutate(end=as.numeric(end))
+  return(fpcs)
+}
+
+# split by an arbitrary width and extract broad and sharp sequences
+extract_cluster_seqs <- function(pcs, width) {
+  # split them by promoter width
+  broad_pcs <- GenomicRanges::GRanges(filter(pcs, end-start >= width))
+  sharp_pcs <- GenomicRanges::GRanges(filter(pcs, end-start < width))
+  # retrieve the sequences
+  broad_seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,broad_pcs)
+  sharp_seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,sharp_pcs)
+  return(list(broad=broad_seqs,sharp=sharp_seqs))
+}
+
+# create random seqs to compare to
+extract_random_seqs <- function(seqs,widths) {
+  # start with the first sequence,
+  # filter by width to avoid errors,
+  # sample randomly from filtered sequences,
+  # grab random interval that matches the length of the
+  # promoter sequence
+  fseqs       <- seqs[width(seqs) > widths[1]]
+  rsample     <- sample(1:length(fseqs),size=1)
+  rseq        <- fseqs[rsample][[1]]
+  rstart      <- sample(x=1:(length(rseq)-widths[1]),size=1)
+  random_seqs <- rseq[rstart:(rstart+widths[1]-1)]
+  # do this for all sequences
+  for (i in 2:length(widths)) {
+    fseqs       <- seqs[width(seqs) > widths[i]]
+    rsample     <- sample(1:length(fseqs),size=1)
+    rseq        <- fseqs[rsample][[1]]
+    rstart      <- sample(x=1:(length(rseq)-widths[i]-1),size=1)
+    random_seqs <- unlist(Biostrings::DNAStringSetList(
+      Biostrings::DNAStringSet(random_seqs),
+      Biostrings::DNAStringSet(rseq[rstart:(rstart+widths[i]-1)])))
+  }
+  return(random_seqs)
+}
+
+# calculate promoter cluster nucleotide frequencies 
+# and normalize by random cluster frequences
+normalize_frequencies <- function(cluster_seqs,random_seqs) {
+  # calculate nucleotide frequencies for broad promoters
+  clengths <- BSgenome::width(cluster_seqs$broad)
+  cfreqs   <- BSgenome::oligonucleotideFrequency(x=cluster_seqs$broad,width=1,step=1,as.prob=TRUE)
+  rlengths <- BSgenome::width(random_seqs$broad)
+  rfreqs   <- BSgenome::oligonucleotideFrequency(x=random_seqs$broad,width=1,step=1,as.prob=TRUE)
+  broad_tibble <- tibble::tibble(length=clengths,
+                                 AT=(cfreqs[,1]+cfreqs[,4])/ifelse((rfreqs[,1]+rfreqs[,4])>0,(rfreqs[,1]+rfreqs[,4]),0.01),
+                                 GC=(cfreqs[,2]+cfreqs[,3])/ifelse((rfreqs[,2]+rfreqs[,3])>0,(rfreqs[,1]+rfreqs[,4]),0.01),
+                                 shape="broad") %>%
+    dplyr::select(AT,GC,shape)
+  # for sharp promoters
+  clengths <- BSgenome::width(cluster_seqs$sharp)
+  cfreqs   <- BSgenome::oligonucleotideFrequency(x=cluster_seqs$sharp,width=1,step=1,as.prob=TRUE)
+  rlengths <- BSgenome::width(random_seqs$sharp)
+  rfreqs   <- BSgenome::oligonucleotideFrequency(x=random_seqs$sharp,width=1,step=1,as.prob=TRUE)
+  sharp_tibble <- tibble::tibble(length=clengths,
+                                 AT=(cfreqs[,1]+cfreqs[,4])/ifelse((rfreqs[,1]+rfreqs[,4])>0,(rfreqs[,1]+rfreqs[,4]),0.01),
+                                 GC=(cfreqs[,2]+cfreqs[,3])/ifelse((rfreqs[,2]+rfreqs[,3])>0,(rfreqs[,1]+rfreqs[,4]),0.01),
+                                 shape="sharp") %>%
+    dplyr::select(AT,GC,shape)
+  # combine into one tibble
+  shape_tibble <- dplyr::bind_rows(broad_tibble,sharp_tibble)
+  return(shape_tibble)
+}
+
+# calculate promoter cluster nucleotide frequencies 
+calculate_frequencies <- function(cluster_seqs,random_seqs) {
+  # calculate nucleotide frequencies for broad promoters
+  clengths <- BSgenome::width(cluster_seqs$broad)
+  cfreqs   <- BSgenome::oligonucleotideFrequency(x=cluster_seqs$broad,width=1,step=1,as.prob=TRUE)
+  broad_tibble <- tibble::tibble(length=clengths,
+                                 AT=(cfreqs[,1]+cfreqs[,4]),
+                                 GC=(cfreqs[,2]+cfreqs[,3]),
+                                 shape="broad") %>%
+    dplyr::select(AT,GC,shape)
+  # for sharp promoters
+  clengths <- BSgenome::width(cluster_seqs$sharp)
+  cfreqs   <- BSgenome::oligonucleotideFrequency(x=cluster_seqs$sharp,width=1,step=1,as.prob=TRUE)
+  sharp_tibble <- tibble::tibble(length=clengths,
+                                 AT=(cfreqs[,1]+cfreqs[,4]),
+                                 GC=(cfreqs[,2]+cfreqs[,3]),
+                                 shape="sharp") %>%
+    dplyr::select(AT,GC,shape)
+  # combine into one tibble
+  shape_tibble <- dplyr::bind_rows(broad_tibble,sharp_tibble)
+  return(shape_tibble)
+}
+
+# generate shape nucleotide frequency
+generate_shape_frequencies <- function(pcs,seqs,filter_threshold,split_width,freq_fun) {
+  # filter by TPM threshold
+  fpcs <- filter_clusters(pcs,filter_threshold)
+  # split by arbitrary width
+  cluster_seqs <- extract_cluster_seqs(fpcs,split_width)
+  # generate random promoter clusters of similar widths
+  random_seqs <- list(broad=extract_random_seqs(seqs=seqs,widths=width(cluster_seqs$broad)),
+                      sharp=extract_random_seqs(seqs=seqs,widths=width(cluster_seqs$sharp))
+                  )
+  # normalize by nucleotide frequencies of random sequences
+  shape_tibble <- do.call(freq_fun,list(cluster_seqs=cluster_seqs,random_seqs=list(broad=random_seqs$broad,sharp=random_seqs$sharp)))
+  return(shape_tibble)
+}
+```
+
+First we can look at the nucleotide composition for intergenic promoters:
+
+```{r}
+# first we can do this for intergenic sequences
+genes      <- rtracklayer::import.gff3("../data/annotations/genes_nuclear_3D7_v24.gff")
+telomeres  <- rtracklayer::import.gff3("../data/annotations/Pf3D7_v3_subtelomeres.gff")
+intergenic <- GenomicRanges::gaps(genes)
+intergenic <- intergenic[is.na(GenomicRanges::findOverlaps(intergenic,telomeres,select="arbitrary"))]
+intergenic_seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)
+```
+
+Now we'll generate the frequencies without normalization:
+
+```{r}
+shape_tibble <- generate_shape_frequencies(pcs=pc_intergenic,
+                                           seqs=intergenic_seqs,
+                                           filter_threshold=5,
+                                           split_width=15,
+                                           freq_fun=calculate_frequencies)
+write_tsv(x=shape_tibble,path="../output/promoter_architecture/shape_frequencies.tsv")
+```
+
+But we'll also generate them within normalization and repeat the random sampling 100 times:
+
+```{r}
+normalized_shape_tibble <- generate_shape_frequencies(pcs=pc_intergenic,
+                                           seqs=intergenic_seqs,
+                                           filter_threshold=5,
+                                           split_width=15,
+                                           freq_fun=normalize_frequencies)
+
+shapes <- normalized_shape_tibble$shape
+normalized_shape_tibble$shape <- NULL
+colnames(normalized_shape_tibble) <- c("AT1","GC1")
+
+for (i in 2:100) {
+  tmp <- generate_shape_frequencies(pcs=pc_intergenic,
+                                           seqs=intergenic_seqs,
+                                           filter_threshold=5,
+                                           split_width=15,
+                                           freq_fun=normalize_frequencies)
+  tmp$shape <- NULL
+  colnames(tmp) <- c(paste0("AT",i),paste0("GC",i))
+  normalized_shape_tibble <- dplyr::bind_cols(normalized_shape_tibble,tmp)
+}
+
+AT <- select(normalized_shape_tibble,contains("AT"))
+mAT <- rowMeans(AT)
+
+GC <- select(normalized_shape_tibble,contains("GC"))
+mGC <- rowMeans(GC)
+
+normalized_shape_tibble <- tibble::tibble(shape=shapes,AT=mAT,GC=mGC)
+write_tsv(x=normalized_shape_tibble,path="../output/promoter_architecture/normalized_shape_frequencies.tsv")
+```
+
+Now we can look at some plots of the frequencies:
+
+```{r}
+# plot nucleotide frequencies
+shape_tibble %>% ggplot(aes(x=shape,y=GC)) + geom_boxplot()
+normalized_shape_tibble %>% ggplot(aes(x=shape,y=GC)) + geom_boxplot()
+```
+
+## Manuscript numbers
+
+### How many tag clusters?
+
+```{r}
+tc_intergenic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+tc_exonic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+tc_intronic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+```
+
+### How many promoter clusters?
+
+```{r}
+pc_intergenic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+pc_exonic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+pc_intronic %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+```
+
+### Is there anything functionally enriched in the set of genes with many TSSs?
+
+```{r}
+out <- tc_intergenic %>% 
+  dplyr::group_by(seqnames,start,end,name,tp) %>% 
+  dplyr::filter(as.numeric(tpm.dominant_ctss) >= 2) %>%
+  dplyr::group_by(name,tp) %>% 
+  dplyr::summarise(n=n()) %>% filter(n >= 5 & name %in% core_genes) %$% 
+  unique(name)
+
+write_lines(x=out,path="../output/promoter_architecture/5_annotated_tcs.txt")
+```
+
+```{r,engine='bash',eval=F}
+# Then run this from the command line
+Rscript code/topgo.R --gene_list output/promoter_architecture/5_annotated_tcs.txt --go_terms data/gene_ontology/Pf3D7_go_sept2014.txt --anno data/gene_ontology/Pf3D7_desc_sept2014.txt --out_prefix output/promoter_architecture/5_annotated_tcs
+```
+
+### How many broad/sharp promoters per timepoint?
+
+```{r}
+# abundance estimates
+x3d7_abund <- readRDS("../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+xhb3_abund <- readRDS("../output/neighboring_genes/gene_reduced_hb3_abund.rds")
+xit_abund  <- readRDS("../output/neighboring_genes/gene_reduced_it_abund.rds")
+
+pcg <- tibble::as_tibble(rtracklayer::import.gff3("../data/annotations/PF3D7_codinggenes_for_bedtools.gff"))$ID
+get_filtered_ids <- function(abund,tpm_threshold) {
+  fabund <- abund %>%
+    dplyr::group_by(gene_id) %>%
+    dplyr::summarise(f=sum(TPM>=tpm_threshold)) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(f>0 & gene_id %in% pcg)
+  return(fabund$gene_id)
+}
+
+fx3d7 <- get_filtered_ids(x3d7_abund,5)
+fxhb3 <- get_filtered_ids(xhb3_abund,5)
+fxit  <- get_filtered_ids(xit_abund,5)
+
+intertags <- dplyr::inner_join(as_tibble(tc_intergenic) %>% dplyr::mutate(tp=as.integer(tp)),x3d7_abund,by=c("name" = "gene_id","tp"))
+
+intertags$type <- ifelse(intertags$interquantile_width >= 15, "broad", "sharp")
+intertags %>% 
+  filter(as.numeric(tpm.dominant_ctss) >= 2 & abs(as.numeric(anno_start) - as.numeric(dominant_ctss)) <= 2500) %>% 
+  ggplot(aes(x=tp,fill=type)) + 
+  geom_bar(colour="black",size=1.0) + 
+  scale_fill_brewer(palette="Greys") + 
+  ylab("Frequency") +
+  xlab("Timepoint") +
+  theme(axis.text=element_text(size=18),
+        axis.title=element_text(size=20,face="bold"),
+        axis.line.x=element_line(colour="black",size=1.5),
+        axis.ticks.x=element_line(colour="black",size=1.5),
+        axis.line.y=element_line(colour="black",size=1.5),
+        axis.ticks.y=element_line(colour="black",size=1.5),
+        legend.text=element_text(size=16),
+        legend.title=element_blank()) +
+  labs("") +
+  scale_x_continuous(breaks=c(1,2,3,4,5,6,7))
+```
+
+### Is there actually an expression difference between genes annotated with sharp and genes annotated with broad PCs?
+
+```{r}
+s <- dplyr::filter(intertags, type=="sharp")
+b <- dplyr::filter(intertags, type=="broad")
+
+sabund <- abund %>% dplyr::filter(gene_id %in% s$name) %>% dplyr::mutate(type="sharp")
+babund <- abund %>% dplyr::filter(gene_id %in% b$name) %>% dplyr::mutate(type="broad")
+
+nabund <- dplyr::bind_rows(sabund,babund)
+
+nabund %>% filter(strain == "3d7") %>% 
+  ggplot(aes(x=type,y=log2(TPM+1))) + 
+  geom_boxplot() + 
+  facet_grid(~tp) +
+  ylab("Log2 TPM") +
+  xlab("")
+
+for (i in c(1,2,3,4,5,6,7)) {
+  h1 <- sabund %>% filter(tp==i)
+  h2 <- babund %>% filter(tp==i)
+  print(t.test(log2(h1$TPM+1),log2(h2$TPM+1)))
+}
+```
+
+### Is there anything significant about gene annotated with shifting TSSs?
+
+```{r}
+shifting <- read_tsv("../output/ctss_clustering/modified/annotated_shifting.tsv")
+
+write_lines(x=unique(shifting$name),path="../output/ctss_clustering/modified/annotated_shifting_genes.txt")
+```
+
+## Session Information
+
+```{r session-info}
+```

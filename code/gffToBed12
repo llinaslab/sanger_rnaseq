@@ -1,0 +1,5 @@
+# Convert to BED12 from GFF3
+cat /Users/philippross/Dropbox/sync/data/gff/PlasmoDB-24_Pfalciparum3D7.gff | gffread -E -F -o- -T > genes.gtf
+gtfToGenePred -genePredExt -geneNameAsName2 genes.gtf genes.tmp
+awk 'lengths=""; {split($9,starts,","); split($10,stops,","); for(i=1;i<=length(starts)-1;i++) {lengths=lengths","stops[i]-starts[i]}; sub(",","",lengths); gsub("rna_","",$1); gsub(/-1$/,"",$1); print $2,$4,$5,$1,0,$3,$6,$7,0,$8,lengths,$9}' gene.tmp > genes.bed12
+rm -rf genes.tmp genes.gtf

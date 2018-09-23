@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+
+<title>Promoter Architecture</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Promoter Architecture</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>03-31-2017</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-04-04</p>
+<p><strong>Code version:</strong> 0e2e80a</p>
+<div id="sequence-features-surrounding-transcription-start-sites" class="section level2">
+<h2>Sequence features surrounding transcription start sites</h2>
+<p>For this analysis we want to plot nucleotide frequencies up and downstream of predicted transcription start sites. We can do this by looking at tag clusters, promoter clusters, or most heavily used TSSs defined earlier.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># import genome</span>
+<span class="kw">library</span>(BSgenome.Pfalciparum.PlasmoDB.v24)
+
+<span class="co"># import tag clusters</span>
+tc_intergenic &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_intergenic.gff&quot;</span>)
+tc_exonic     &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_exons.gff&quot;</span>)
+tc_intronic   &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_introns.gff&quot;</span>)
+
+<span class="co"># import promoter clusters</span>
+pc_intergenic &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_intergenic.gff&quot;</span>)
+pc_exonic     &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_exons.gff&quot;</span>)
+pc_intronic   &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_introns.gff&quot;</span>)
+
+<span class="co"># import most heavily used TSSs</span>
+x3d7_tss &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_3d7.gff&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span>start<span class="dv">+499</span>,<span class="dt">start=</span>start<span class="dv">-499</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(type==<span class="st">&quot;5UTR&quot;</span>) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()
+
+<span class="co"># import most heavily used TSSs</span>
+xhb3_tss &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_hb3.gff&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span>start<span class="dv">+499</span>,<span class="dt">start=</span>start<span class="dv">-499</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(type==<span class="st">&quot;5UTR&quot;</span>) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()
+
+<span class="co"># import most heavily used TSSs</span>
+xit_tss &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_it.gff&quot;</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span>start<span class="dv">+499</span>,<span class="dt">start=</span>start<span class="dv">-499</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(type==<span class="st">&quot;5UTR&quot;</span>) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()</code></pre></div>
+<p>Let’s set the nucleotide colors to be what we want them to be:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set colors</span>
+set_colors &lt;-<span class="st"> </span>function(colors, vars, iname) {
+  myColors &lt;-<span class="st"> </span><span class="kw">c</span>(colors)
+  <span class="kw">names</span>(myColors) &lt;-<span class="st"> </span><span class="kw">levels</span>(vars)
+  output &lt;-<span class="st"> </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> iname, <span class="dt">values =</span> myColors)
+  <span class="kw">return</span>(output)
+}
+<span class="co"># custom nucleotide colors</span>
+base_colors &lt;-<span class="st"> </span><span class="kw">set_colors</span>(<span class="kw">c</span>(<span class="st">&quot;#E41A1C&quot;</span>, <span class="st">&quot;#377EB8&quot;</span>, <span class="st">&quot;#F0E442&quot;</span>, <span class="st">&quot;#4DAF4A&quot;</span>), 
+                          <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;T&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;G&quot;</span>), <span class="st">&quot;base&quot;</span>)</code></pre></div>
+<p>Now let’s write the functions to generate the frequency diagrams, information content, and sequence logos:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use this function to filter tag clusters</span>
+filter_tag_clusters &lt;-<span class="st"> </span>function(tcs,tpm_threshold) {
+  ftcs &lt;-<span class="st"> </span>tcs %&gt;%<span class="st"> </span>
+<span class="st">    </span>tibble::<span class="kw">as_tibble</span>() %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss)&gt;=tpm_threshold) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">select</span>(seqnames,dominant_ctss,strand,name) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">start=</span><span class="kw">as.numeric</span>(dominant_ctss)-<span class="dv">499</span>,<span class="dt">end=</span><span class="kw">as.numeric</span>(dominant_ctss)+<span class="dv">499</span>) %&gt;%<span class="st"> </span>
+<span class="st">    </span>GenomicRanges::<span class="kw">GRanges</span>()
+  <span class="kw">return</span>(ftcs)
+}
+<span class="co"># Use this function to filter promoter clusters</span>
+filter_promoter_clusters &lt;-<span class="st"> </span>function(pcs,tpm_threshold) {
+  fpcs &lt;-<span class="st"> </span>pcs %&gt;%<span class="st"> </span>
+<span class="st">    </span>tibble::<span class="kw">as_tibble</span>() %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">group_by</span>(seqnames,start,strand,full_end,name) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm)),<span class="dt">dominant_ctss=</span><span class="kw">max</span>(dominant_ctss)) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(tpm &gt;=<span class="st"> </span>tpm_threshold) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">ungroup</span>() %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">rename</span>(<span class="dt">end=</span>full_end) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span><span class="kw">as.numeric</span>(end)) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">start=</span><span class="kw">as.numeric</span>(dominant_ctss)-<span class="dv">499</span>,<span class="dt">end=</span><span class="kw">as.numeric</span>(dominant_ctss)+<span class="dv">499</span>) %&gt;%
+<span class="st">    </span>GenomicRanges::<span class="kw">GRanges</span>()
+  <span class="kw">return</span>(fpcs)
+}
+<span class="co"># Use this function to generate position weight matrices</span>
+generate_pwm &lt;-<span class="st"> </span>function(clusters) {
+  <span class="co"># extract sequences from the genome</span>
+  seqs &lt;-<span class="st"> </span>BSgenome::<span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,clusters)
+  <span class="co"># convert those sequences into a data frame</span>
+  tmp &lt;-<span class="st"> </span><span class="kw">lapply</span>(seqs,function(x) <span class="kw">str_split</span>(<span class="kw">as.character</span>(x),<span class="st">&quot;&quot;</span>)[[<span class="dv">1</span>]])
+  tmp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(tmp)
+  <span class="kw">colnames</span>(tmp) &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">ncol</span>(tmp)
+  tmp$pos &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">nrow</span>(tmp)
+  tmp &lt;-<span class="st"> </span>tmp %&gt;%<span class="st"> </span><span class="kw">gather</span>(seq, base, -pos)
+  <span class="co"># calculate the proportion of nucleotides at each position</span>
+  pwm &lt;-<span class="st"> </span>tmp %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(<span class="kw">as.numeric</span>(pos)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">A =</span> <span class="kw">sum</span>(base ==<span class="st"> &quot;A&quot;</span>)/<span class="kw">n</span>(), 
+            <span class="dt">C =</span> <span class="kw">sum</span>(base ==<span class="st"> &quot;C&quot;</span>)/<span class="kw">n</span>(), 
+            <span class="dt">G =</span> <span class="kw">sum</span>(base ==<span class="st"> &quot;G&quot;</span>)/<span class="kw">n</span>(), 
+            <span class="dt">T =</span> <span class="kw">sum</span>(base ==<span class="st"> &quot;T&quot;</span>)/<span class="kw">n</span>()) %&gt;%
+<span class="st">  </span><span class="kw">ungroup</span>()
+  <span class="kw">colnames</span>(pwm)[<span class="dv">1</span>] &lt;-<span class="st"> &quot;pos&quot;</span>
+  <span class="kw">return</span>(pwm)
+}
+<span class="co"># Plot the nucleotide frequencies at each position</span>
+plot_frequencies &lt;-<span class="st"> </span>function(ipwm) {
+  ipwm %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">gather</span>(base, freq, -pos) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> pos, <span class="dt">y =</span> freq, <span class="dt">color =</span> base)) +
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">1</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="fl">1.5</span>) +
+<span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">1.0</span>)) +
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;top&quot;</span>, 
+    <span class="dt">legend.direction=</span><span class="st">&quot;horizontal&quot;</span>,
+    <span class="dt">legend.title =</span> <span class="kw">element_blank</span>()) +
+<span class="st">    </span>base_colors
+}
+<span class="co"># Plot the sequence logo</span>
+plot_logo &lt;-<span class="st"> </span>function(ipwm) {
+  logo &lt;-<span class="st"> </span>ipwm[,<span class="dv">2</span>:<span class="dv">5</span>]
+  seqLogo::<span class="kw">seqLogo</span>(seqLogo::<span class="kw">makePWM</span>((<span class="kw">t</span>(logo[<span class="dv">480</span>:<span class="dv">520</span>,]))), <span class="dt">ic.scale =</span> T)
+}
+<span class="co"># Plot the information content at each position</span>
+plot_info &lt;-<span class="st"> </span>function(ipwm) {
+  ipwm %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">i =</span> (A *<span class="st"> </span><span class="kw">log2</span>(A/<span class="fl">0.42</span>)) +<span class="st"> </span>(T *<span class="st"> </span><span class="kw">log2</span>(T/<span class="fl">0.45</span>)) +<span class="st"> </span>(G *<span class="st"> </span><span class="kw">log2</span>(G/<span class="fl">0.07</span>)) +<span class="st"> </span>(C *<span class="st"> </span><span class="kw">log2</span>(C/<span class="fl">0.06</span>))) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">gather</span>(base, freq, -pos, -i) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> pos, <span class="dt">y =</span> i)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_line</span>()
+}</code></pre></div>
+<div id="most-commonly-used-5-tss" class="section level3">
+<h3>Most commonly used 5’ TSS</h3>
+<p>Now let’s look at these plots for each of our data sets. First we will look at the most commonly used TSSs for each strain:</p>
+<div id="d7" class="section level4">
+<h4>3D7</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x3d7pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(x3d7_tss)
+<span class="kw">plot_frequencies</span>(x3d7pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(x3d7pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(x3d7pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hb3" class="section level4">
+<h4>HB3</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xhb3pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(xhb3_tss)
+<span class="kw">plot_frequencies</span>(xhb3pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(xhb3pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(xhb3pwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="it" class="section level4">
+<h4>IT</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xitpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(xit_tss)
+<span class="kw">plot_frequencies</span>(xitpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(xitpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(xitpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="tag-clusters" class="section level3">
+<h3>Tag clusters</h3>
+<div id="intergenic" class="section level4">
+<h4>Intergenic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ftcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_intergenic,<span class="dv">5</span>)
+tcipwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(ftcs)
+<span class="kw">plot_frequencies</span>(tcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(tcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(tcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="exonic" class="section level4">
+<h4>Exonic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ftcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_exonic,<span class="dv">5</span>)
+tcepwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(ftcs)
+<span class="kw">plot_frequencies</span>(tcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(tcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(tcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="intronic" class="section level4">
+<h4>Intronic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ftcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_intronic,<span class="dv">5</span>)
+tcinpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(ftcs)
+<span class="kw">plot_frequencies</span>(tcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(tcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(tcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="promoter-clusters" class="section level3">
+<h3>Promoter clusters</h3>
+<div id="intergenic-1" class="section level4">
+<h4>Intergenic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fpcs &lt;-<span class="st"> </span><span class="kw">filter_promoter_clusters</span>(pc_intergenic,<span class="dv">5</span>)
+pcipwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fpcs)
+<span class="kw">plot_frequencies</span>(pcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(pcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(pcipwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="exonic-1" class="section level4">
+<h4>Exonic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fpcs &lt;-<span class="st"> </span><span class="kw">filter_promoter_clusters</span>(pc_exonic,<span class="dv">5</span>)
+pcepwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fpcs)
+<span class="kw">plot_frequencies</span>(pcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(pcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-11-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(pcepwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-11-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="intronic-1" class="section level4">
+<h4>Intronic</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fpcs &lt;-<span class="st"> </span><span class="kw">filter_promoter_clusters</span>(pc_intronic,<span class="dv">5</span>)
+pcinpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fpcs)
+<span class="kw">plot_frequencies</span>(pcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_info</span>(pcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_logo</span>(pcinpwm)</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="sequence-features-of-sharp-and-broad-promoters" class="section level2">
+<h2>Sequence features of sharp and broad promoters</h2>
+<p>In order to determine whether sharp and broad promoters are of significantly different nucleotide compositions, we first need to divide them up into sharp and broad promoters, then generate random sequences of similar length distributions, and compare the nucleotide content of the actual promoters to those of the randomly generated ones.</p>
+<p>First let’s create random intergenic sequences:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># filter by total TPM</span>
+filter_clusters &lt;-<span class="st"> </span>function(pcs,threshold) {
+  <span class="co"># remove duplicates, add up total TPM, filter by threshold</span>
+  fpcs &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(pcs) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">group_by</span>(seqnames,start,strand,full_end,name) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm)),<span class="dt">dominant_ctss=</span><span class="kw">max</span>(dominant_ctss)) %&gt;%<span class="st"> </span>
+<span class="st">    </span>dplyr::<span class="kw">filter</span>(tpm &gt;=<span class="st"> </span>threshold) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">ungroup</span>() %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">rename</span>(<span class="dt">end=</span>full_end) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span><span class="kw">as.numeric</span>(end))
+  <span class="kw">return</span>(fpcs)
+}
+
+<span class="co"># split by an arbitrary width and extract broad and sharp sequences</span>
+extract_cluster_seqs &lt;-<span class="st"> </span>function(pcs, width) {
+  <span class="co"># split them by promoter width</span>
+  broad_pcs &lt;-<span class="st"> </span>GenomicRanges::<span class="kw">GRanges</span>(<span class="kw">filter</span>(pcs, end-start &gt;=<span class="st"> </span>width))
+  sharp_pcs &lt;-<span class="st"> </span>GenomicRanges::<span class="kw">GRanges</span>(<span class="kw">filter</span>(pcs, end-start &lt;<span class="st"> </span>width))
+  <span class="co"># retrieve the sequences</span>
+  broad_seqs &lt;-<span class="st"> </span>BSgenome::<span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,broad_pcs)
+  sharp_seqs &lt;-<span class="st"> </span>BSgenome::<span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,sharp_pcs)
+  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">broad=</span>broad_seqs,<span class="dt">sharp=</span>sharp_seqs))
+}
+
+<span class="co"># create random seqs to compare to</span>
+extract_random_seqs &lt;-<span class="st"> </span>function(seqs,widths) {
+  <span class="co"># start with the first sequence,</span>
+  <span class="co"># filter by width to avoid errors,</span>
+  <span class="co"># sample randomly from filtered sequences,</span>
+  <span class="co"># grab random interval that matches the length of the</span>
+  <span class="co"># promoter sequence</span>
+  fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) &gt;<span class="st"> </span>widths[<span class="dv">1</span>]]
+  rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)
+  rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]
+  rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span>:(<span class="kw">length</span>(rseq)-widths[<span class="dv">1</span>]),<span class="dt">size=</span><span class="dv">1</span>)
+  random_seqs &lt;-<span class="st"> </span>rseq[rstart:(rstart+widths[<span class="dv">1</span>]-<span class="dv">1</span>)]
+  <span class="co"># do this for all sequences</span>
+  for (i in <span class="dv">2</span>:<span class="kw">length</span>(widths)) {
+    fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) &gt;<span class="st"> </span>widths[i]]
+    rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)
+    rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]
+    rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span>:(<span class="kw">length</span>(rseq)-widths[i]-<span class="dv">1</span>),<span class="dt">size=</span><span class="dv">1</span>)
+    random_seqs &lt;-<span class="st"> </span><span class="kw">unlist</span>(Biostrings::<span class="kw">DNAStringSetList</span>(
+      Biostrings::<span class="kw">DNAStringSet</span>(random_seqs),
+      Biostrings::<span class="kw">DNAStringSet</span>(rseq[rstart:(rstart+widths[i]-<span class="dv">1</span>)])))
+  }
+  <span class="kw">return</span>(random_seqs)
+}
+
+<span class="co"># calculate promoter cluster nucleotide frequencies </span>
+<span class="co"># and normalize by random cluster frequences</span>
+normalize_frequencies &lt;-<span class="st"> </span>function(cluster_seqs,random_seqs) {
+  <span class="co"># calculate nucleotide frequencies for broad promoters</span>
+  clengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(cluster_seqs$broad)
+  cfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs$broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  rlengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(random_seqs$broad)
+  rfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs$broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  broad_tibble &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">length=</span>clengths,
+                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]+cfreqs[,<span class="dv">4</span>])/<span class="kw">ifelse</span>((rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>])&gt;<span class="dv">0</span>,(rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>]),<span class="fl">0.01</span>),
+                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]+cfreqs[,<span class="dv">3</span>])/<span class="kw">ifelse</span>((rfreqs[,<span class="dv">2</span>]+rfreqs[,<span class="dv">3</span>])&gt;<span class="dv">0</span>,(rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>]),<span class="fl">0.01</span>),
+                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(AT,GC,shape)
+  <span class="co"># for sharp promoters</span>
+  clengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(cluster_seqs$sharp)
+  cfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs$sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  rlengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(random_seqs$sharp)
+  rfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs$sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  sharp_tibble &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">length=</span>clengths,
+                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]+cfreqs[,<span class="dv">4</span>])/<span class="kw">ifelse</span>((rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>])&gt;<span class="dv">0</span>,(rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>]),<span class="fl">0.01</span>),
+                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]+cfreqs[,<span class="dv">3</span>])/<span class="kw">ifelse</span>((rfreqs[,<span class="dv">2</span>]+rfreqs[,<span class="dv">3</span>])&gt;<span class="dv">0</span>,(rfreqs[,<span class="dv">1</span>]+rfreqs[,<span class="dv">4</span>]),<span class="fl">0.01</span>),
+                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(AT,GC,shape)
+  <span class="co"># combine into one tibble</span>
+  shape_tibble &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(broad_tibble,sharp_tibble)
+  <span class="kw">return</span>(shape_tibble)
+}
+
+<span class="co"># calculate promoter cluster nucleotide frequencies </span>
+calculate_frequencies &lt;-<span class="st"> </span>function(cluster_seqs,random_seqs) {
+  <span class="co"># calculate nucleotide frequencies for broad promoters</span>
+  clengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(cluster_seqs$broad)
+  cfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs$broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  broad_tibble &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">length=</span>clengths,
+                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]+cfreqs[,<span class="dv">4</span>]),
+                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]+cfreqs[,<span class="dv">3</span>]),
+                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(AT,GC,shape)
+  <span class="co"># for sharp promoters</span>
+  clengths &lt;-<span class="st"> </span>BSgenome::<span class="kw">width</span>(cluster_seqs$sharp)
+  cfreqs   &lt;-<span class="st"> </span>BSgenome::<span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs$sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)
+  sharp_tibble &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">length=</span>clengths,
+                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]+cfreqs[,<span class="dv">4</span>]),
+                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]+cfreqs[,<span class="dv">3</span>]),
+                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(AT,GC,shape)
+  <span class="co"># combine into one tibble</span>
+  shape_tibble &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(broad_tibble,sharp_tibble)
+  <span class="kw">return</span>(shape_tibble)
+}
+
+<span class="co"># generate shape nucleotide frequency</span>
+generate_shape_frequencies &lt;-<span class="st"> </span>function(pcs,seqs,filter_threshold,split_width,freq_fun) {
+  <span class="co"># filter by TPM threshold</span>
+  fpcs &lt;-<span class="st"> </span><span class="kw">filter_clusters</span>(pcs,filter_threshold)
+  <span class="co"># split by arbitrary width</span>
+  cluster_seqs &lt;-<span class="st"> </span><span class="kw">extract_cluster_seqs</span>(fpcs,split_width)
+  <span class="co"># generate random promoter clusters of similar widths</span>
+  random_seqs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">broad=</span><span class="kw">extract_random_seqs</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs$broad)),
+                      <span class="dt">sharp=</span><span class="kw">extract_random_seqs</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs$sharp))
+                  )
+  <span class="co"># normalize by nucleotide frequencies of random sequences</span>
+  shape_tibble &lt;-<span class="st"> </span><span class="kw">do.call</span>(freq_fun,<span class="kw">list</span>(<span class="dt">cluster_seqs=</span>cluster_seqs,<span class="dt">random_seqs=</span><span class="kw">list</span>(<span class="dt">broad=</span>random_seqs$broad,<span class="dt">sharp=</span>random_seqs$sharp)))
+  <span class="kw">return</span>(shape_tibble)
+}</code></pre></div>
+<p>First we can look at the nucleotide composition for intergenic promoters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># first we can do this for intergenic sequences</span>
+genes      &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/genes_nuclear_3D7_v24.gff&quot;</span>)
+telomeres  &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/Pf3D7_v3_subtelomeres.gff&quot;</span>)
+intergenic &lt;-<span class="st"> </span>GenomicRanges::<span class="kw">gaps</span>(genes)
+intergenic &lt;-<span class="st"> </span>intergenic[<span class="kw">is.na</span>(GenomicRanges::<span class="kw">findOverlaps</span>(intergenic,telomeres,<span class="dt">select=</span><span class="st">&quot;arbitrary&quot;</span>))]
+intergenic_seqs &lt;-<span class="st"> </span>BSgenome::<span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)</code></pre></div>
+<p>Now we’ll generate the frequencies without normalization:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">shape_tibble &lt;-<span class="st"> </span><span class="kw">generate_shape_frequencies</span>(<span class="dt">pcs=</span>pc_intergenic,
+                                           <span class="dt">seqs=</span>intergenic_seqs,
+                                           <span class="dt">filter_threshold=</span><span class="dv">5</span>,
+                                           <span class="dt">split_width=</span><span class="dv">15</span>,
+                                           <span class="dt">freq_fun=</span>calculate_frequencies)
+<span class="kw">write_tsv</span>(<span class="dt">x=</span>shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/shape_frequencies.tsv&quot;</span>)</code></pre></div>
+<p>But we’ll also generate them within normalization and repeat the random sampling 100 times:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized_shape_tibble &lt;-<span class="st"> </span><span class="kw">generate_shape_frequencies</span>(<span class="dt">pcs=</span>pc_intergenic,
+                                           <span class="dt">seqs=</span>intergenic_seqs,
+                                           <span class="dt">filter_threshold=</span><span class="dv">5</span>,
+                                           <span class="dt">split_width=</span><span class="dv">15</span>,
+                                           <span class="dt">freq_fun=</span>normalize_frequencies)
+
+shapes &lt;-<span class="st"> </span>normalized_shape_tibble$shape
+normalized_shape_tibble$shape &lt;-<span class="st"> </span><span class="ot">NULL</span>
+<span class="kw">colnames</span>(normalized_shape_tibble) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AT1&quot;</span>,<span class="st">&quot;GC1&quot;</span>)
+
+for (i in <span class="dv">2</span>:<span class="dv">100</span>) {
+  tmp &lt;-<span class="st"> </span><span class="kw">generate_shape_frequencies</span>(<span class="dt">pcs=</span>pc_intergenic,
+                                           <span class="dt">seqs=</span>intergenic_seqs,
+                                           <span class="dt">filter_threshold=</span><span class="dv">5</span>,
+                                           <span class="dt">split_width=</span><span class="dv">15</span>,
+                                           <span class="dt">freq_fun=</span>normalize_frequencies)
+  tmp$shape &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  <span class="kw">colnames</span>(tmp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">paste0</span>(<span class="st">&quot;AT&quot;</span>,i),<span class="kw">paste0</span>(<span class="st">&quot;GC&quot;</span>,i))
+  normalized_shape_tibble &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_cols</span>(normalized_shape_tibble,tmp)
+}
+
+AT &lt;-<span class="st"> </span><span class="kw">select</span>(normalized_shape_tibble,<span class="kw">contains</span>(<span class="st">&quot;AT&quot;</span>))
+mAT &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(AT)
+
+GC &lt;-<span class="st"> </span><span class="kw">select</span>(normalized_shape_tibble,<span class="kw">contains</span>(<span class="st">&quot;GC&quot;</span>))
+mGC &lt;-<span class="st"> </span><span class="kw">rowMeans</span>(GC)
+
+normalized_shape_tibble &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">shape=</span>shapes,<span class="dt">AT=</span>mAT,<span class="dt">GC=</span>mGC)
+<span class="kw">write_tsv</span>(<span class="dt">x=</span>normalized_shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/normalized_shape_frequencies.tsv&quot;</span>)</code></pre></div>
+<p>Now we can look at some plots of the frequencies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot nucleotide frequencies</span>
+shape_tibble %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) +<span class="st"> </span><span class="kw">geom_boxplot</span>()</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized_shape_tibble %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) +<span class="st"> </span><span class="kw">geom_boxplot</span>()</code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-17-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
+<pre><code>R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [2] BSgenome_1.42.0                      
+ [3] rtracklayer_1.34.2                   
+ [4] Biostrings_2.42.1                    
+ [5] XVector_0.14.0                       
+ [6] GenomicRanges_1.26.3                 
+ [7] GenomeInfoDb_1.10.3                  
+ [8] IRanges_2.8.1                        
+ [9] S4Vectors_0.12.1                     
+[10] BiocGenerics_0.20.0                  
+[11] scales_0.4.1                         
+[12] cowplot_0.7.0                        
+[13] magrittr_1.5                         
+[14] stringr_1.2.0                        
+[15] dplyr_0.5.0                          
+[16] purrr_0.2.2                          
+[17] readr_1.0.0                          
+[18] tidyr_0.6.1                          
+[19] tibble_1.2                           
+[20] ggplot2_2.2.1                        
+[21] tidyverse_1.1.1                      
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9                lubridate_1.6.0           
+ [3] lattice_0.20-34            Rsamtools_1.26.1          
+ [5] assertthat_0.1             rprojroot_1.2             
+ [7] digest_0.6.12              psych_1.6.12              
+ [9] R6_2.2.0                   plyr_1.8.4                
+[11] backports_1.0.5            evaluate_0.10             
+[13] httr_1.2.1                 zlibbioc_1.20.0           
+[15] lazyeval_0.2.0             readxl_0.1.1              
+[17] Matrix_1.2-8               rmarkdown_1.3             
+[19] labeling_0.3               BiocParallel_1.8.1        
+[21] foreign_0.8-67             RCurl_1.95-4.8            
+[23] munsell_0.4.3              broom_0.4.2               
+[25] modelr_0.1.0               seqLogo_1.34.0            
+[27] mnormt_1.5-5               htmltools_0.3.5           
+[29] SummarizedExperiment_1.4.0 workflowr_0.3.0           
+[31] XML_3.98-1.5               GenomicAlignments_1.10.0  
+[33] bitops_1.0-6               grid_3.3.2                
+[35] nlme_3.1-131               jsonlite_1.3              
+[37] gtable_0.2.0               DBI_0.5-1                 
+[39] git2r_0.18.0               stringi_1.1.2             
+[41] reshape2_1.4.2             xml2_1.1.1                
+[43] tools_3.3.2                forcats_0.2.0             
+[45] Biobase_2.34.0             hms_0.3                   
+[47] yaml_2.1.14                colorspace_1.3-2          
+[49] rvest_0.3.2                knitr_1.15.1              
+[51] haven_1.0.0               </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+---
+title: "Differential transcript detection"
+author: "Philipp Ross"
+date: 2017-04-17
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## What transcripts can we detect in one strain, but not the others?
+
+First we need to detect transcript differences. To do this we run the `detect_transcripts.R` script found within `code/differential_detection` directory.
+
+## Are these genes enriched for any GO terms?
+
+Next we run the topGO script:
+
+```{r,engine='bash'}
+bash code/differential_detection/run_topgo.sh data/gene_ontology/Pf3D7_go_sept2014.txt data/gene_ontology/Pf3D7_desc_sept2014.txt
+```
+
+## Are undetected genes sometimes due to known polymorphic regions?
+
+
+
+## Results
+
+Some genes may barely get over the threshold of 5 RPKMs, which was chosen arbitrarily. We are not interested in those results. We want to see what transcripts are clearly abundant in one strain, while clearly absent or at the very least severely down-regulated in another strain. The question then becomes whether this is due to poor coverage across the gene (highly polymorphic) or actual low transcript copy number. MSP1 is an example of a highly polymorphic gene in HB3 versus 3D7. It is not covered very well across the gene and thus has been marked as "undetected." MSP2 is an example of a gene that is detected, however, also highly polymorphic.
+
+Looking through this CGH data will help as well: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2901668/
+
+####Up in 3D7
+
+PF3D7_0202000 2145.335 versus 2.995
+knob-associated histidine-rich protein (KAHRP)
+
+PF3D7_1372200 836.830 versus 0.599
+histidine-rich protein III (HRPIII)
+
+PF3D7_0201700 110.712 versus 0.052
+DnaJ protein, putative
+
+PF3D7_1429200 24.382 versus 0.99
+transcription factor with AP2 domain(s)
+
+PF3D7_0518700 30.287 versus 1.4
+mRNA-binding protein PUF1 (PUF1)
+
+PF3D7_1126800 37.441 versus 2.2023
+RNA-binding protein, putative
+
+PF3D7_1350900 43.551 versus 1.301
+transcription factor with AP2 domain(s) (ApiAP2)
+
+PF3D7_1222600 50.469 versus 0.951
+transcription factor with AP2 domain(s) (AP2-G)
+
+PF3D7_1241400 19.426 versus 1.633
+RNA-binding protein, putative
+
+PF3D7_0209000 34.424 versus 0.084
+6-cysteine protein (P230)
+
+PF3D7_1346700 46.211 versus 2.543
+6-cysteine protein (P48/45)
+
+PF3D7_1346800 13.754 versus 1.110
+6-cysteine protein (P47)
+
+PF3D7_1038400 14.784 versus 0.030
+gametocyte-specific protein (Pf11-1)
+
+PF3D7_0625600 31.212 versus 2.054
+poly(A) polymerase PAP, putative
+
+PF3D7_1031000 27.841 versus 0.468
+25 kDa ookinete surface antigen precursor (Pfs25)
+
+####Up in HB3
+
+10 out of top 30 are pseudogenes
+
+Not many differences beyond highly variant genes (variant due to clonal variation or polymorphic regions? Both?)
+
+stevor, exported protein family 4, pfmc-2tm mauler’s cleft two transmembrane protein, mspr4, g-beta repeat protein
+
+###3D7 and IT
+
+####Up in 3D7
+
+See a lot of the same genes here as I did in 3D7 versus HB3.
+
+PF3D7_1222600
+transcription factor with AP2 domain(s) (AP2-G)
+
+PF3D7_1346700
+6-cysteine protein (P48/45)
+
+PF3D7_0209000
+6-cysteine protein (P230)
+
+PF3D7_1477800
+acyl-CoA binding protein (ACBP)
+
+PF3D7_0414500
+RNA-binding protein, putative
+
+PF3D7_1031000
+25 kDa ookinete surface antigen precursor (Pfs25)
+
+PF3D7_1429200
+transcription factor with AP2 domain(s)
+
+PF3D7_0311700
+plasmepsin VI
+
+PF3D7_0109300
+fatty acid elongation protein, GNS1/SUR4 family, putative
+
+PF3D7_1038400
+gametocyte-specific protein (Pf11-1)
+
+####Up in IT
+
+PF3D7_0114300
+exported protein family 4, pseudogene (EPF4)
+
+PF3D7_0936700
+lysophospholipase, putative
+
+###HB3 and IT
+
+Not much difference here.
+
+####Up in HB3
+
+PF3D7_1477800
+acyl-CoA binding protein (ACBP)
+
+####Up in IT
+
+PF3D7_0202000
+knob-associated histidine-rich protein (KAHRP)
+
+PF3D7_1372200
+histidine-rich protein III (HRPIII)
+
+PF3D7_0201800
+knob associated heat shock protein 40 (KAHsp40)
+
+PF3D7_0201700
+DnaJ protein, putative
+
+PF3D7_0625600
+poly(A) polymerase PAP, putative
+
+
+## Session Information
+
+```{r session-info}
+```

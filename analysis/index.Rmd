@@ -5,11 +5,80 @@ output:
     toc: false
 ---
 
-The goal of this new template is to simplify the setup and maintenance of a research website.
-Specifically,
+## Data processing
 
-*  Easier to build and extend the website using the new tools in the [rmarkdown][] package and [latest RStudio release][rstudio]
-*  Easier to deploy the website with Git and GitHub by only using one branch
+**Data generation**
 
-[rmarkdown]: http://rmarkdown.rstudio.com/rmarkdown_websites.htm
-[rstudio]: https://www.rstudio.com/products/rstudio/download/preview/
+Steps taken to process the data.
+
+Creating the most confident set of TSS and TES predictions. TSSs can be interpreted from this set as the most commonly used:
+
+* [Make final UTRs](final_utrs.html)
+
+Quantifying sense and anti-sense transcription:
+
+* [Calculate transcript abundance](calculate_transcript_abundance.html)
+
+Calculating finding all neighboring genes in the genome, the distance between them, and their expression correlations:
+
+* [Calculate neighboring gene distance and co-expression](process_neighboring_genes.html)
+
+Defining genome-wide TSSs by clustering CAGE transcription start sites (CTSSs) using CAGEr:
+
+* [CTSS Clustering](ctss_clustering.html)
+
+**Quality control**
+
+Does the data meet our assumptions before we begin our analysis?
+
+How well do our abundance estimates match with previously generated microarray data?
+
+* [Comparing RNA-seq and microarray readouts]()
+
+Can we comment on the technical aspects of the sequencing protocol in regards to potential GC-bias?
+
+* [Checking for GC content bias]()
+
+How do TSS predictions methods compare?
+
+* [Comparing TSS prediction methods]()
+
+## Data analysis
+
+**RNA-seq overview**
+
+Overview plots and statistics about the RNA-seq data.
+
+* [Extensive transcription](extensive_transcription.html)
+
+**Neighboring genes**
+
+What does the genome-wide view of neighboring genes look like before and after predicting full-length UTRs? How do the distances between genes correlate with their co-expression?
+
+* [Neighboring genes](analyze_neighboring_genes.html)
+
+**Promoter architecture**
+
+What can the CAGE data tell us about the *falciparum* genome-wide promoters? Do we see sharp and broad promoters? How many of each?
+
+* [Promoter architecture](promoter_architecture.html)
+
+Do we see alternative transcription start sites being used often? 
+
+* [Alternative TSS usage]()
+
+**Transcription factor binding sites**
+
+Based on our newly predicted TSSs, can we make refined genome-wide TFBS predictions? Do these predictions give us any additional insight?
+
+* [Transcription factor binding site predictions]()
+
+**Strain comparison**
+
+What genes are differentially expressed between the three strains? What genes are differentially detected between the three strains?
+
+Comparing 3D7, HB3 and IT:
+
+* [Differential expression](strain_differential_expression.html)
+* [Phase comparison](strain_differential_phase.html)
+* [Detection of transcription](strain_differential_detection.html)

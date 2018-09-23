@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+<meta name="date" content="2017-03-27" />
+
+<title>CTSS clustering</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">CTSS clustering</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>2017-03-27</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2017-04-10</p>
+<p><strong>Code version:</strong> 0e2e80a</p>
+<div id="generate-ctss-files" class="section level2">
+<h2>Generate CTSS files</h2>
+<p>First thing we need to do is convert the BAM files to CTSS files for CAGEr. Running the following command on each BAM files and combining the stranded files into one individual file will get you the CTSS files:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bedtools</span> genomecov -dz -strand <span class="st">&quot;+&quot;</span> \
+  -ibam data/bam/modified_tso/sorted.modified_1nt.sorted.modified.fateseq_3d7_tp1.both.mod.all.out.bam <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">awk</span> <span class="st">&#39;{print $1,$2,&quot;+&quot;,$3}&#39;</span> <span class="kw">&gt;</span> out_plus.ctss
+
+<span class="kw">bedtools</span> genomecov -dz -strand <span class="st">&quot;-&quot;</span> \
+  -ibam data/bam/modified_tso/sorted.modified_1nt.sorted.modified.fateseq_3d7_tp1.both.mod.all.out.bam <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">awk</span> <span class="st">&#39;{print $1,$2,&quot;-&quot;,$3}&#39;</span> <span class="kw">&gt;</span> out_minus.ctss
+  
+<span class="kw">cat</span> out_plus.ctss out_minus.ctss <span class="kw">|</span> <span class="kw">sort</span> -k1,1 -2,2n <span class="kw">&gt;</span> out.ctss</code></pre></div>
+</div>
+<div id="run-cager" class="section level2">
+<h2>Run CAGEr</h2>
+<p>Now we can run CAGEr on the CTSS files to cluster the tag counts into tag clusters (TCs) and promoter clusters (PCs). The TCs can be thought of as TSSs while the PCs can be thought of as promoter regions with varying architectures.</p>
+<pre><code>Rscript code/ctss_clustering run_cager.R data/bam/modified_tso output/ctss_clustering/modified</code></pre>
+</div>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory analysis</h2>
+<div id="how-many-tag-clusters-do-we-see-and-where-do-we-see-them" class="section level3">
+<h3>How many tag clusters do we see and where do we see them?</h3>
+<p>First we’ll import the tag clusters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (tp in <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>)) {
+  <span class="co"># generate the file name</span>
+  f &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;../output/ctss_clustering/modified/tc&quot;</span>,tp,<span class="st">&quot;.gff&quot;</span>)
+  <span class="co"># assign the in read file to a variable</span>
+  <span class="kw">assign</span>(<span class="dt">x =</span> <span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp),
+         <span class="dt">value =</span> rtracklayer::<span class="kw">import.gff</span>(f)
+         )
+  <span class="co"># group by chromosome and count the number of TCs</span>
+  dplyr::<span class="kw">group_by</span>(tibble::<span class="kw">as_tibble</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp)))),seqnames) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>())
+}
+<span class="kw">rm</span>(f)</code></pre></div>
+<p>Next we’ll import data on exons, introns, and genes and calculate the proportion of TCs that overlap:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exons.bed    &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.bed</span>(<span class="st">&quot;../data/annotations/exons_nuclear_3D7_v24.bed&quot;</span>) %&gt;%
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">anno_name=</span>name,<span class="dt">anno_start=</span>start,<span class="dt">anno_end=</span>end) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()
+genes.bed    &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.bed</span>(<span class="st">&quot;../data/annotations/genes_nuclear_3D7_v24.bed&quot;</span>)%&gt;%
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">anno_name=</span>name,<span class="dt">anno_start=</span>start,<span class="dt">anno_end=</span>end) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()
+introns.bed  &lt;-<span class="st"> </span>rtracklayer::<span class="kw">import.bed</span>(<span class="st">&quot;../data/annotations/introns_nuclear_3D7_v24.bed&quot;</span>)%&gt;%
+<span class="st">  </span>tibble::<span class="kw">as_tibble</span>() %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">anno_name=</span>name,<span class="dt">anno_start=</span>start,<span class="dt">anno_end=</span>end) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()
+
+for (tp in <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>)) {
+  <span class="kw">sum</span>(GenomicRanges::<span class="kw">countOverlaps</span>(
+    <span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))), genes.bed) &gt;<span class="st"> </span><span class="dv">0</span>) /<span class="st"> </span><span class="kw">length</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))))
+  <span class="kw">sum</span>(GenomicRanges::<span class="kw">countOverlaps</span>(
+    <span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))), exons.bed) &gt;<span class="st"> </span><span class="dv">0</span>) /<span class="st"> </span><span class="kw">length</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))))
+  <span class="kw">sum</span>(GenomicRanges::<span class="kw">countOverlaps</span>(
+    <span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))), introns.bed) &gt;<span class="st"> </span><span class="dv">0</span>) /<span class="st"> </span><span class="kw">length</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp))))
+}</code></pre></div>
+</div>
+<div id="what-is-the-size-distribution-of-the-tag-clusters" class="section level3">
+<h3>What is the size distribution of the tag clusters?</h3>
+<p>CAGEr creates it’s own plots for this, but we can plot them here as well and do a little more analysis. Let’s import the interquartile widths:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (tp in <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>)) {
+  s &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp)))) %&gt;%<span class="st"> </span>
+<span class="st">    </span><span class="kw">filter</span>(tpm&gt;=<span class="dv">2</span>) %$%<span class="st"> </span>
+<span class="st">    </span><span class="kw">summary</span>(width)
+  <span class="kw">print</span>(s)
+  g &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span><span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,tp)))) %&gt;%
+<span class="st">    </span><span class="kw">filter</span>(tpm&gt;=<span class="dv">2</span>) %&gt;%
+<span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>width)) +
+<span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) +
+<span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;TC&quot;</span>,tp))
+  <span class="kw">print</span>(g)
+}</code></pre></div>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    5.00   12.00   15.87   19.00  310.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    4.00   10.00   14.33   18.00  257.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    6.00   13.00   16.55   20.00  256.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    5.00   12.00   16.85   21.00  240.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    6.00   13.00   17.85   22.00  230.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    6.00   12.00   15.84   20.00  238.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00    5.00   12.00   15.51   19.00  267.00 </code></pre>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-4-7.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(g,s)</code></pre></div>
+</div>
+<div id="what-is-the-coverage-of-promoter-clusters" class="section level3">
+<h3>What is the coverage of promoter clusters?</h3>
+<p>We can overlap promoter clusters with tag clusters to calculate the TPM of each and identify the dominant TPM found in each. We can also identify whether there are multiple possible TSSs in each based on how far apart dominant CTSS sites are.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">for</span> <span class="kw">i</span> in 1 2 3 4 5 6 7<span class="kw">;</span> <span class="kw">do</span> 
+  <span class="kw">bedtools</span> intersect -s -wo \
+  -a output/ctss_clustering/modified/promoter_clusters.gff \
+  -b output/ctss_clustering/modified/tc<span class="ot">${i}</span>.gff <span class="kw">|</span> <span class="kw">\</span>
+  <span class="kw">awk</span> <span class="st">&#39;{print $1,$2,$3,$4,$5,$6,$7,$8,$18}&#39;</span> <span class="kw">&gt;</span> \
+  output/ctss_clustering/modified/tc<span class="ot">${i}</span>_inter_promoter_clusters.gff
+<span class="kw">done</span></code></pre></div>
+<p>Now let’s import those and calculate the total TPM for each:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">for (tp in <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">7</span>)) {
+  f &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;../output/ctss_clustering/modified/tc&quot;</span>,tp,<span class="st">&quot;_inter_promoter_clusters.gff&quot;</span>)
+  <span class="kw">assign</span>(<span class="dt">x=</span><span class="kw">paste0</span>(<span class="st">&quot;pc&quot;</span>,tp),<span class="dt">value=</span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff</span>(f))%&gt;%<span class="kw">mutate</span>(<span class="dt">tp=</span>tp))
+}</code></pre></div>
+<p>Lastly we want to create a set of ranges that identify “orphan” TSSs. If a TSS falls between two converging genes, then don’t annotate it by skipping genes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create intergenic regions that appear between convergent genes</span>
+genes &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/genes_nuclear_3D7_v24.gff&quot;</span>))
+convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/3d7_convergent.tsv&quot;</span>)
+
+convergent_ranges &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">seqnames=</span><span class="kw">character</span>(),<span class="dt">start=</span><span class="kw">integer</span>(),<span class="dt">end=</span><span class="kw">integer</span>(),<span class="dt">strand=</span><span class="kw">character</span>(),<span class="dt">left_id=</span><span class="kw">character</span>(),<span class="dt">right_id=</span><span class="kw">character</span>())
+
+for (i in <span class="dv">1</span>:<span class="kw">nrow</span>(convergent)) {
+  left &lt;-<span class="st"> </span>genes %&gt;%<span class="st"> </span>dplyr::<span class="kw">filter</span>(ID %in%<span class="st"> </span>convergent$left_gene[i])
+  right &lt;-<span class="st"> </span>genes %&gt;%<span class="st"> </span>dplyr::<span class="kw">filter</span>(ID %in%<span class="st"> </span>convergent$right_gene[i])
+  convergent_ranges &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(convergent_ranges,
+                                        tibble::<span class="kw">tibble</span>(<span class="dt">seqnames=</span>left$seqnames,
+                                        <span class="dt">start=</span>left$end,
+                                        <span class="dt">end=</span>right$start,
+                                        <span class="dt">strand=</span><span class="st">&quot;*&quot;</span>,
+                                        <span class="dt">left_id=</span>left$ID,
+                                        <span class="dt">right_id=</span>right$ID))
+}
+
+convergent_ranges &lt;-<span class="st"> </span>convergent_ranges %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(end-start&gt;=<span class="dv">0</span>) %&gt;%
+<span class="st">  </span>GenomicRanges::<span class="kw">GRanges</span>()</code></pre></div>
+</div>
+</div>
+<div id="annotating-clustered-tags" class="section level2">
+<h2>Annotating clustered tags</h2>
+<p>Now that we’ve predicted and explored some characteristics of TCs and PCs, we need to annotate each of them. First we need to annotate those that intersect exons and introns. Then remove those from the tag clusters that don’t. Then annotate the intergenic tag clusters and calculate the distances to their annotated features.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tcl &lt;-<span class="st"> </span><span class="kw">list</span>(tc1,tc2,tc3,tc4,tc5,tc6,tc7)
+
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(tcl)) {
+  <span class="co"># one tag cluster sample at a time</span>
+  <span class="co"># change to single nucleotide length</span>
+  <span class="co"># to ensure proper annotation</span>
+  tc &lt;-<span class="st"> </span>tcl[[i]] %&gt;%
+<span class="st">    </span>tibble::<span class="kw">as_tibble</span>() %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">rename</span>(<span class="dt">full_end=</span>end) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span>start) %&gt;%
+<span class="st">    </span>GenomicRanges::<span class="kw">GRanges</span>()
+
+  <span class="co"># overlap with known exons</span>
+  <span class="co"># bind the columns together</span>
+  one &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(tc[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,exons.bed))$queryHits])
+  two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(exons.bed[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,exons.bed))$subjectHits]) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+  <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,i,<span class="st">&quot;_exons&quot;</span>),<span class="dt">value=</span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">tp=</span>i))
+  
+  <span class="co"># overlap with known introns</span>
+  <span class="co"># bind columns together</span>
+  one &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(tc[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,introns.bed))$queryHits])
+  two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(introns.bed[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,introns.bed))$subjectHits]) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+  <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,i,<span class="st">&quot;_introns&quot;</span>),<span class="dt">value=</span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">tp=</span>i))
+  
+  <span class="co"># remove tag clusters that overlap with known genes and fall between convergent genes</span>
+  <span class="co"># find which feature in &#39;subject&#39; the tag cluster precedes</span>
+  <span class="co"># bind columns together</span>
+  tc &lt;-<span class="st"> </span>tc[!<span class="dv">1</span>:<span class="kw">length</span>(tc) %in%<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,genes.bed))$queryHits]
+  tc &lt;-<span class="st"> </span>tc[!<span class="dv">1</span>:<span class="kw">length</span>(tc) %in%<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(tc,convergent_ranges))$queryHits]
+  one &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(tc[!<span class="kw">is.na</span>(GenomicRanges::<span class="kw">precede</span>(tc,genes.bed))])
+  two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(genes.bed[<span class="kw">na.omit</span>(GenomicRanges::<span class="kw">precede</span>(tc,genes.bed))]) %&gt;%
+<span class="st">    </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+  <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;tc&quot;</span>,i,<span class="st">&quot;_intergenic&quot;</span>),<span class="dt">value=</span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">tp=</span>i))
+}
+<span class="co"># combine into a single table</span>
+tc_intergenic &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(tc1_intergenic,tc2_intergenic,
+                                  tc3_intergenic,tc4_intergenic,
+                                  tc5_intergenic,tc6_intergenic,
+                                  tc7_intergenic) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+
+<span class="co"># combine into a single table</span>
+tc_exons &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(tc1_exons,tc2_exons,
+                                  tc3_exons,tc4_exons,
+                                  tc5_exons,tc6_exons,
+                                  tc7_exons) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+
+<span class="co"># combine into a single table</span>
+tc_introns &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(tc1_introns,tc2_introns,
+                                  tc3_introns,tc4_introns,
+                                  tc5_introns,tc6_introns,
+                                  tc7_introns) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+
+<span class="kw">rm</span>(one,two,tc,tcl)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(tc_intergenic),<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_intergenic.gff&quot;</span>)
+rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(tc_exons),<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_exons.gff&quot;</span>)
+rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(tc_introns),<span class="st">&quot;../output/ctss_clustering/modified/tag_clusters_annotated_introns.gff&quot;</span>)</code></pre></div>
+<p>Now let’s do the same for PCs that have been intersect with TCs as seen above:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pc &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(pc1,pc2,pc3,pc4,pc5,pc6,pc7) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">rename</span>(<span class="dt">full_end=</span>end) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">end=</span>start)
+
+<span class="co"># overlap known exons</span>
+<span class="co"># bind columns together</span>
+one &lt;-<span class="st"> </span>pc[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),exons.bed))$queryHits,]
+two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(exons.bed[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),exons.bed))$subjectHits]) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+pc_exons &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+  
+<span class="co"># overlap with known introns</span>
+<span class="co"># bind columns together</span>
+one &lt;-<span class="st"> </span>pc[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),introns.bed))$queryHits,]
+two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(introns.bed[tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),introns.bed))$subjectHits]) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+pc_introns &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+  
+<span class="co"># remove tag clusters that overlap with known genes and fall between convergent genes</span>
+<span class="co"># find which feature in &#39;subject&#39; the tag cluster precedes</span>
+<span class="co"># bind columns together</span>
+tmp &lt;-<span class="st"> </span>pc[!<span class="dv">1</span>:<span class="kw">length</span>(pc) %in%<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),genes.bed))$queryHits,]
+tmp &lt;-<span class="st"> </span>pc[!<span class="dv">1</span>:<span class="kw">length</span>(pc) %in%<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(GenomicRanges::<span class="kw">findOverlaps</span>(GenomicRanges::<span class="kw">GRanges</span>(pc),convergent_ranges))$queryHits,]
+one &lt;-<span class="st"> </span>tmp[!<span class="kw">is.na</span>(GenomicRanges::<span class="kw">precede</span>(GenomicRanges::<span class="kw">GRanges</span>(tmp),genes.bed)),]
+two &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(genes.bed[<span class="kw">na.omit</span>(GenomicRanges::<span class="kw">precede</span>(GenomicRanges::<span class="kw">GRanges</span>(tmp),genes.bed))]) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(name,anno_start,anno_end)
+pc_intergenic &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_cols</span>(one,two) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">select</span>(-width,-source,-type,-score,-phase)
+
+<span class="kw">rm</span>(one,two,tmp)</code></pre></div>
+<p>Before we continue, we should write these to a file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(pc_intergenic),<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_intergenic.gff&quot;</span>)
+rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(pc_exons),<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_exons.gff&quot;</span>)
+rtracklayer::<span class="kw">export.gff3</span>(GenomicRanges::<span class="kw">GRanges</span>(pc_introns),<span class="st">&quot;../output/ctss_clustering/modified/promoter_clusters_annotated_introns.gff&quot;</span>)</code></pre></div>
+<p>Finally, we can look at the distribution of annotations. Which genes have many TCs? Many PCs? And how many do we see on average? To do this we need to first remove duplicates from our list and then filter by expression levels.</p>
+<p>Here we will divide the tag clusters into individual time points:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tc_intergenic %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(seqnames,start,end,name,tp) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) &gt;=<span class="st"> </span><span class="dv">5</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(name,tp) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(tp) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(n),<span class="dt">median=</span><span class="kw">median</span>(n),<span class="dt">min=</span><span class="kw">min</span>(n),<span class="dt">max=</span><span class="kw">max</span>(n))</code></pre></div>
+<pre><code># A tibble: 7 × 5
+     tp     mean median   min   max
+  &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+1     1 1.589219      1     1     9
+2     2 1.651477      1     1     9
+3     3 1.455992      1     1     9
+4     4 1.423968      1     1     8
+5     5 1.450718      1     1     8
+6     6 1.483022      1     1     7
+7     7 1.521053      1     1    10</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tc_intergenic %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(seqnames,start,end,name,tp) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) &gt;=<span class="st"> </span><span class="dv">5</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(name,tp) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>n)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) +
+<span class="st">  </span><span class="kw">facet_grid</span>(~tp)</code></pre></div>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>And here we’ll look at promoter clusters all together:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pc_intergenic %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(seqnames,start,end,name) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm))) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(tpm &gt;=<span class="st"> </span><span class="dv">5</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(name) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summary</span>()</code></pre></div>
+<pre><code>     name                 n         
+ Length:3324        Min.   : 1.000  
+ Class :character   1st Qu.: 1.000  
+ Mode  :character   Median : 1.000  
+                    Mean   : 1.521  
+                    3rd Qu.: 2.000  
+                    Max.   :11.000  </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pc_intergenic %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(seqnames,start,end,name) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm))) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(tpm &gt;=<span class="st"> </span><span class="dv">5</span>) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">group_by</span>(name) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>n)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</code></pre></div>
+<p><img src="figure/ctss_clustering.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="annotating-shifting-promoters" class="section level2">
+<h2>Annotating ‘shifting promoters’</h2>
+<p>CAGEr can also detect ‘shifting promoters’. These are promoters where we see significant changes in the dominant CTSS within a single promoter.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">files &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path=</span><span class="st">&quot;../output/ctss_clustering/modified&quot;</span>,<span class="dt">pattern=</span><span class="st">&quot;shifting_promoters&quot;</span>,<span class="dt">full.names=</span><span class="ot">TRUE</span>)
+
+shifting &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(
+  <span class="dt">consensus.cluster=</span><span class="kw">integer</span>(),
+  <span class="dt">chr=</span><span class="kw">character</span>(),
+  <span class="dt">start=</span><span class="kw">integer</span>(),
+  <span class="dt">end=</span><span class="kw">integer</span>(),
+  <span class="dt">strand=</span><span class="kw">character</span>(),
+  <span class="dt">shifting.score=</span><span class="kw">double</span>(),
+  <span class="dt">groupX.pos=</span><span class="kw">integer</span>(),
+  <span class="dt">groupY.pos=</span><span class="kw">integer</span>(),
+  <span class="dt">groupX.tpm=</span><span class="kw">double</span>(),
+  <span class="dt">groupY.tpm=</span><span class="kw">double</span>(),
+  <span class="dt">pvalue.KS=</span><span class="kw">double</span>(),
+  <span class="dt">fdr.KS=</span><span class="kw">double</span>())
+
+for (file in files) {
+  shifting &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(shifting,<span class="kw">read_tsv</span>(file,<span class="dt">col_names=</span><span class="ot">TRUE</span>))
+}</code></pre></div>
+<p>Not every detected shift is spatial so we can calculate the degree of spatial shifting and filter only those that shift significantly:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">annotated_shifting &lt;-<span class="st"> </span>shifting %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">shift=</span><span class="kw">abs</span>(groupX.pos-groupY.pos)) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">filter</span>(shift&gt;=<span class="dv">100</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">distinct</span>(chr,start,end,strand,groupX.pos,groupY.pos) %&gt;%<span class="st"> </span>
+<span class="st">  </span>dplyr::<span class="kw">arrange</span>(chr,start) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">inner_join</span>(pc_intergenic, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;chr&quot;</span>=<span class="st">&quot;seqnames&quot;</span>,<span class="st">&quot;start&quot;</span>,<span class="st">&quot;strand&quot;</span>)) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">distinct</span>(chr,start,end.x,name,groupX.pos,groupY.pos) %&gt;%
+<span class="st">  </span>dplyr::<span class="kw">rename</span>(<span class="dt">end=</span>end.x)</code></pre></div>
+<p>Now we can write that to output:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write_tsv</span>(<span class="dt">x=</span>annotated_shifting,<span class="dt">path=</span><span class="st">&quot;../output/ctss_clustering/modified/annotated_shifting.tsv&quot;</span>)</code></pre></div>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
+<pre><code>R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] scales_0.4.1    cowplot_0.7.0   magrittr_1.5    stringr_1.2.0  
+ [5] dplyr_0.5.0     purrr_0.2.2     readr_1.0.0     tidyr_0.6.1    
+ [9] tibble_1.2      ggplot2_2.2.1   tidyverse_1.1.1
+
+loaded via a namespace (and not attached):
+ [1] SummarizedExperiment_1.4.0 reshape2_1.4.2            
+ [3] haven_1.0.0                lattice_0.20-34           
+ [5] colorspace_1.3-2           htmltools_0.3.5           
+ [7] stats4_3.3.2               rtracklayer_1.34.2        
+ [9] yaml_2.1.14                XML_3.98-1.5              
+[11] foreign_0.8-67             DBI_0.5-1                 
+[13] BiocParallel_1.8.1         BiocGenerics_0.20.0       
+[15] modelr_0.1.0               readxl_0.1.1              
+[17] plyr_1.8.4                 zlibbioc_1.20.0           
+[19] Biostrings_2.42.1          munsell_0.4.3             
+[21] gtable_0.2.0               workflowr_0.3.0           
+[23] rvest_0.3.2                psych_1.6.12              
+[25] evaluate_0.10              labeling_0.3              
+[27] Biobase_2.34.0             knitr_1.15.1              
+[29] forcats_0.2.0              IRanges_2.8.1             
+[31] GenomeInfoDb_1.10.3        parallel_3.3.2            
+[33] broom_0.4.2                Rcpp_0.12.9               
+[35] backports_1.0.5            S4Vectors_0.12.1          
+[37] jsonlite_1.3               XVector_0.14.0            
+[39] Rsamtools_1.26.1           mnormt_1.5-5              
+[41] hms_0.3                    digest_0.6.12             
+[43] stringi_1.1.2              GenomicRanges_1.26.3      
+[45] grid_3.3.2                 rprojroot_1.2             
+[47] tools_3.3.2                bitops_1.0-6              
+[49] lazyeval_0.2.0             RCurl_1.95-4.8            
+[51] Matrix_1.2-8               xml2_1.1.1                
+[53] lubridate_1.6.0            assertthat_0.1            
+[55] rmarkdown_1.3              httr_1.2.1                
+[57] R6_2.2.0                   GenomicAlignments_1.10.0  
+[59] nlme_3.1-131               git2r_0.18.0              </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

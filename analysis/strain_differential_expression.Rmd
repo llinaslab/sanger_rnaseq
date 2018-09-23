@@ -1,0 +1,376 @@
+---
+title: "Differential transcript expression"
+author: "Philipp Ross"
+date: 2017-04-17
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Process data
+
+First we need to actually calculate the differentially expressed genes. We'll need to import some data first:
+
+```{r}
+library(qvalue)
+library(broom)
+
+core_genes <- readr::read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+
+x3d7exp <- readRDS("output/neighboring_genes/gene_reduced_3d7_abund.rds")
+xhb3exp <- readRDS("output/neighboring_genes/gene_reduced_hb3_abund.rds")
+xitexp  <- readRDS("output/neighboring_genes/gene_reduced_it_abund.rds")
+
+abund <- dplyr::bind_rows(x3d7exp,xhb3exp,xitexp)
+
+rm(x3d7exp,xhb3exp,xitexp)
+
+# import core genes for comparison
+core_genes <- readr::read_tsv("data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+
+# unique gene IDs
+ug <- unique(abund$gene_id)
+
+# Create data frame of genes that are "on" in each strain
+detected <- abund %>%
+  dplyr::group_by(gene_id, strain) %>%
+  dplyr::summarise(n = sum(TPM >= 5)) %>%
+  dplyr::mutate(on = ifelse(n > 0, 1, 0)) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-n)
+
+# What genes are "on" in all strains
+onall <- detected %>%
+  dplyr::filter(on == 1) %>%
+  dplyr::group_by(gene_id) %>%
+  dplyr::summarise(count = length(unique(strain))) %>%
+  dplyr::filter(count == 3) %$%
+  gene_id
+
+# What genes are "off" in all strains
+offall <- detected %>%
+  dplyr::filter(on == 0) %>%
+  dplyr::group_by(gene_id) %>%
+  dplyr::summarise(count = length(unique(strain))) %>%
+  dplyr::filter(count == 3) %$%
+  gene_id
+
+on3d7 <- detected %>% filter(strain == "3d7" & on == 1 & gene_id %in% core_genes) %$% gene_id
+onhb3 <- detected %>% filter(strain == "hb3" & on == 1& gene_id %in% core_genes) %$% gene_id
+onit  <- detected %>% filter(strain == "it" & on == 1 & gene_id %in% core_genes) %$% gene_id
+
+on3d7hb3 <- intersect(on3d7,onhb3)
+on3d7it  <- intersect(on3d7,onit)
+onhb3it  <- intersect(onhb3,onit)
+
+comparable <- intersect(core_genes, onall)
+```
+
+Now we can look to calculate the differentially expressed genes. This takes a while to run, so it's best to run it interactively.
+
+```{r,eval=F}
+# First calculate differential expression
+diff_exp_3d7hb3 <- abund %>%
+  filter(strain %in% c("3d7", "hb3") & gene_id %in% intersect(core_genes, onall)) %>%
+  group_by(gene_id) %>%
+  do(tidy(t.test(log2(TPM+1)~strain,data=.))) %>%
+  ungroup %>%
+  dplyr::select(gene_id, p.value)
+
+diff_exp_3d7hb3$strain_pair <- "3d7-hb3"
+
+diff_exp_3d7it <- abund %>%
+  filter(strain %in% c("3d7", "it") & gene_id %in% intersect(core_genes, onall)) %>%
+  group_by(gene_id) %>%
+  do(tidy(t.test(log2(TPM+1)~strain,data=.))) %>%
+  ungroup %>%
+  dplyr::select(gene_id, p.value)
+
+diff_exp_3d7it$strain_pair <- "3d7-it"
+
+diff_exp_hb3it <- abund %>%
+  filter(strain %in% c("hb3", "it") & gene_id %in% intersect(core_genes, onall)) %>%
+  group_by(gene_id) %>%
+  do(tidy(t.test(log2(TPM+1)~strain,data=.))) %>%
+  ungroup %>%
+  dplyr::select(gene_id, p.value)
+
+diff_exp_hb3it$strain_pair <- "hb3-it"
+
+diff_exp <- rbind(diff_exp_3d7hb3, diff_exp_3d7it, diff_exp_hb3it)
+
+diff3d7hb3 <- diff_exp %>% filter(strain_pair == "3d7-hb3") %>% separate(strain_pair, into = c("strain1","strain2"), sep = "-")
+diff3d7it  <- diff_exp %>% filter(strain_pair == "3d7-it") %>% separate(strain_pair, into = c("strain1","strain2"), sep = "-")
+diffhb3it  <- diff_exp %>% filter(strain_pair == "hb3-it") %>% separate(strain_pair, into = c("strain1","strain2"), sep = "-")
+
+diff3d7hb3$qvalue <- qvalue(diff3d7hb3$p.value)$qvalues
+diff3d7it$qvalue  <- qvalue(diff3d7it$p.value)$qvalues
+diffhb3it$qvalue  <- qvalue(diffhb3it$p.value)$qvalues
+```
+
+And finally, we can plot the results and write everything to a file:
+
+```{r}
+
+# Create a scatter plot comparing 3D7 to HB3
+plot_3d7_hb3_scatter <- function() {
+
+  overunder <- abund %>%
+    filter(gene_id %in% on3d7hb3) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    spread(strain, m) %>%
+    mutate(`3d7_over_hb3` = log2(`3d7` / hb3)) %>%
+    dplyr::select(-`3d7`, -hb3, -it) %>%
+    inner_join(diff3d7hb3, by = "gene_id") %>%
+    gather(strain1, strain2,-`3d7_over_hb3`,-gene_id,-p.value,-qvalue) %>%
+    dplyr::select(-strain1) %>%
+    dplyr::rename(strain=strain2)
+
+  df <- abund %>%
+    filter(gene_id %in% on3d7hb3) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    ungroup() %>%
+    filter(strain %in% c("3d7","hb3"))
+
+  df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+  df %>%
+    spread(strain, m) %>%
+    ggplot(aes(x=hb3,y=`3d7`,label=gene_id)) +
+    geom_point(color="grey80") +
+    geom_point(data = subset(df, (`3d7_over_hb3` <= -2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#E41A1C") +
+    geom_point(data = subset(df, (`3d7_over_hb3` >= 2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#377EB8") +
+    ylab("Log10(TPM) 3D7") +
+    xlab("Log10(TPM) HB3") +
+    scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    theme(axis.line.x=element_line(size=0),
+          axis.line.y=element_line(size=0),
+          axis.text=element_text(size=20),
+          axis.title=element_text(size=20),
+          axis.ticks.x=element_line(colour="black",size=1),
+          axis.ticks.y=element_line(colour="black",size=1)) +
+    panel_border(colour="black",size=1) 
+
+}
+
+# Create a scatter plot comparing 3D7 to IT
+plot_3d7_it_scatter <- function() {
+
+  overunder <- abund %>%
+    filter(gene_id %in% on3d7it) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    spread(strain, m) %>%
+    mutate(`3d7_over_it` = log2(`3d7` / it)) %>%
+    dplyr::select(-`3d7`, -hb3, -it) %>%
+    inner_join(diff3d7it, by = "gene_id") %>%
+    gather(strain1, strain2,-`3d7_over_it`,-gene_id,-p.value,-qvalue) %>%
+    dplyr::select(-strain1) %>%
+    dplyr::rename(strain=strain2)
+
+  df <- abund %>%
+    filter(gene_id %in% on3d7it) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    ungroup() %>%
+    filter(strain %in% c("3d7","it"))
+
+  df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+  df %>%
+    spread(strain, m) %>%
+    ggplot(aes(x=it,y=`3d7`,label=gene_id)) +
+    geom_point(color="grey80") +
+    #geom_point(data = subset(df, (`3d7_over_it` <= -2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#4DAF4A") +
+    geom_point(data = subset(df, (`3d7_over_it` >= 2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#377EB8") +
+    ylab("Log10(TPM) 3D7") +
+    xlab("Log10(TPM) IT") +
+    scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    theme(axis.line.x=element_line(size=0),
+          axis.line.y=element_line(size=0),
+          axis.text=element_text(size=20),
+          axis.title=element_text(size=20),
+          axis.ticks.x=element_line(colour="black",size=1),
+          axis.ticks.y=element_line(colour="black",size=1)) +
+    panel_border(colour="black",size=1)
+}
+
+# Create a scatter plot comparing HB3 to IT
+plot_hb3_it_scatter <- function() {
+
+  overunder <- abund %>%
+    filter(gene_id %in% onhb3it) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    spread(strain, m) %>%
+    mutate(hb3_over_it = log2(hb3 / it)) %>%
+    dplyr::select(-`3d7`, -hb3, -it) %>%
+    inner_join(diffhb3it, by = "gene_id") %>%
+    gather(strain1, strain2,-hb3_over_it,-gene_id,-p.value,-qvalue) %>%
+    dplyr::select(-strain1) %>%
+    dplyr::rename(strain=strain2)
+
+  df <- abund %>%
+    filter(gene_id %in% onhb3it) %>%
+    group_by(gene_id, strain) %>%
+    summarise(m = mean(TPM)) %>%
+    ungroup() %>%
+    filter(strain %in% c("hb3","it"))
+
+  df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+  df %>%
+    spread(strain, m) %>%
+    ggplot(aes(x=hb3,y=it,label=gene_id)) +
+    geom_point(color="grey80") +
+    geom_point(data = subset(df, (hb3_over_it <= -2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#E41A1C") +
+    geom_point(data = subset(df, (hb3_over_it >= 2) & qvalue < 0.05) %>% ungroup() %>% spread(strain, m), color = "#4DAF4A") +
+    ylab("Log10(TPM) HB3") +
+    xlab("Log10(TPM) IT") +
+    scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+    theme(axis.line.x=element_line(size=0),
+          axis.line.y=element_line(size=0),
+          axis.text=element_text(size=20),
+          axis.title=element_text(size=20),
+          axis.ticks.x=element_line(colour="black",size=1),
+          axis.ticks.y=element_line(colour="black",size=1)) +
+    panel_border(colour="black")
+}
+```
+
+## Manuscript numbers
+
+### How many differentially expressed genes do we find?
+
+```{r}
+overunder <- abund %>%
+  filter(gene_id %in% on3d7hb3) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  spread(strain, m) %>%
+  mutate(`3d7_over_hb3` = log2(`3d7` / hb3)) %>%
+  dplyr::select(-`3d7`, -hb3, -it) %>%
+  inner_join(diff3d7hb3, by = "gene_id") %>%
+  gather(strain1, strain2,-`3d7_over_hb3`,-gene_id,-p.value,-qvalue) %>%
+  dplyr::select(-strain1) %>%
+  dplyr::rename(strain=strain2)
+
+df <- abund %>%
+  filter(gene_id %in% on3d7hb3) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  ungroup() %>%
+  filter(strain %in% c("3d7","hb3"))
+
+df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+print("Number of genes overexpressed in HB3:")
+print(length(unique(subset(df, (`3d7_over_hb3` <= -2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`3d7_over_hb3` <= -2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/hb3_over_3d7_genes.txt")
+print("Number of genes overexpressed in 3D7:")
+print(length(unique(subset(df, (`3d7_over_hb3` >= 2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`3d7_over_hb3` >= 2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/3d7_over_hb3_genes.txt")
+
+###########################################################
+
+overunder <- abund %>%
+  filter(gene_id %in% on3d7it) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  spread(strain, m) %>%
+  mutate(`3d7_over_it` = log2(`3d7` / it)) %>%
+  dplyr::select(-`3d7`, -hb3, -it) %>%
+  inner_join(diff3d7it, by = "gene_id") %>%
+  gather(strain1, strain2,-`3d7_over_it`,-gene_id,-p.value,-qvalue) %>%
+  dplyr::select(-strain1) %>%
+  dplyr::rename(strain=strain2)
+
+df <- abund %>%
+  filter(gene_id %in% on3d7it) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  ungroup() %>%
+  filter(strain %in% c("3d7","it"))
+
+df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+print("Number of genes overexpressed in IT:")
+print(length(unique(subset(df, (`3d7_over_it` <= -2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`3d7_over_it` <= -2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/it_over_3d7_genes.txt")
+print("Number of genes overexpressed in 3D7:")
+print(length(unique(subset(df, (`3d7_over_it` >= 2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`3d7_over_it` >= 2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/i3d7_over_it_genes.txt")
+
+###########################################################
+
+overunder <- abund %>%
+  filter(gene_id %in% onhb3it) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  spread(strain, m) %>%
+  mutate(`hb3_over_it` = log2(`hb3` / it)) %>%
+  dplyr::select(-`3d7`, -hb3, -it) %>%
+  inner_join(diffhb3it, by = "gene_id") %>%
+  gather(strain1, strain2,-`hb3_over_it`,-gene_id,-p.value,-qvalue) %>%
+  dplyr::select(-strain1) %>%
+  dplyr::rename(strain=strain2)
+
+df <- abund %>%
+  filter(gene_id %in% onhb3it) %>%
+  group_by(gene_id, strain) %>%
+  summarise(m = mean(TPM)) %>%
+  ungroup() %>%
+  filter(strain %in% c("hb3","it"))
+
+df <- inner_join(df, overunder, by = c("gene_id", "strain"))
+
+print("Number of genes overexpressed in HB3:")
+print(length(unique(subset(df, (`hb3_over_it` <= -2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`hb3_over_it` <= -2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/it_over_hb3_genes.txt")
+print("Number of genes overexpressed in IT:")
+print(length(unique(subset(df, (`hb3_over_it` >= 2) & qvalue < 0.05)$gene_id)))
+readr::write_lines(x=unique(subset(df, (`hb3_over_it` >= 2) & qvalue < 0.05)$gene_id),path="../output/differential_expression/hb3_over_it_genes.txt")
+```
+
+Now run this from the command line:
+
+```{r,engine='bash',eval=F}
+for file in $(ls output/differential_expression); do Rscript code/topgo.R --gene_list output/differential_expression/$file --go_terms data/gene_ontology/Pf3D7_go_sept2014.txt --anno data/gene_ontology/Pf3D7_desc_sept2014.txt --out_prefix output/differential_expression/${file%%.*}; done
+```
+
+Plot the abundances for the following ApiAP2 transcripts...
+
+```{r}
+what <- c("PF3D7_0604100","PF3D7_1222400","PF3D7_1408200",
+          "PF3D7_1143100","PF3D7_0516800","PF3D7_1466400",
+          "PF3D7_0420300","PF3D7_0613800","PF3D7_0802100",
+          "PF3D7_1107800","PF3D7_1139300","PF3D7_1239200",
+          "PF3D7_1317200","PF3D7_1342900","PF3D7_1449500")
+
+for (w in what) {
+  g <- plot_strain_abundances(abund,w)
+  ggsave(plot=g,filename=paste0("../output/differential_expression/",w,".svg"),height=4,width=4)
+}
+```
+
+## Session Information
+
+```{r session-info}
+```

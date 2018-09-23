@@ -19,6 +19,6 @@ output:
     toc: true
     toc_float: true
     theme: cosmo
-    highlight: textmate
+    highlight: pygments
     include:
       after_body: include/footer.html

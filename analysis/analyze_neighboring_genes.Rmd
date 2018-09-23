@@ -1,0 +1,541 @@
+---
+title: "Neighboring Genes Analysis"
+author: "Philipp Ross"
+date: 2017-04-08
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Overview
+
+What is the relationship between the distances between neighboring genes and their co-expression? Can we identify putative bidirectional promoters this way? Are convergent neighboring genes that overlap more likely to be expressed at different time points? 
+
+## Analysis
+
+First let's read in the data we generated during processing the data:
+
+```{r}
+# abundance estimates
+x3d7_abund <- readRDS("../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+xhb3_abund <- readRDS("../output/neighboring_genes/gene_reduced_hb3_abund.rds")
+xit_abund  <- readRDS("../output/neighboring_genes/gene_reduced_it_abund.rds")
+# Without UTR predictions
+convergent <- readr::read_tsv("../output/neighboring_genes/non_utr_convergent.tsv",col_names=TRUE)
+divergent  <- readr::read_tsv("../output/neighboring_genes/non_utr_divergent.tsv",col_names=TRUE)
+tandem     <- readr::read_tsv("../output/neighboring_genes/non_utr_tandem.tsv",col_names=TRUE)
+all_neighboring <- dplyr::bind_rows(convergent,divergent,tandem)
+# 3D7 UTR predictions
+x3d7_convergent <- readr::read_tsv("../output/neighboring_genes/3d7_convergent.tsv",col_names=TRUE)
+x3d7_divergent  <- readr::read_tsv("../output/neighboring_genes/3d7_divergent.tsv",col_names=TRUE)
+# HB3 UTR predictions
+xhb3_convergent <- readr::read_tsv("../output/neighboring_genes/hb3_convergent.tsv",col_names=TRUE)
+xhb3_divergent  <- readr::read_tsv("../output/neighboring_genes/hb3_divergent.tsv",col_names=TRUE)
+# IT UTR predictions
+xit_convergent <- readr::read_tsv("../output/neighboring_genes/it_convergent.tsv",col_names=TRUE)
+xit_divergent  <- readr::read_tsv("../output/neighboring_genes/it_divergent.tsv",col_names=TRUE)
+```
+
+### Before and after UTR predictions
+
+Let's make some plots of the before and after picture of distance between genes and their correlation to one another. Before we do this we need to actually generate the data we care about. We need to calculate the neighboring genes and the distances beween those genes. Then we can import that data, calculate the correlations between those neighboring genes, and create a gene-by-gene table of neighboring genes, the distances between them, their orientations, and the correlations between their expression patterns.
+
+Should we remove genes for which we don't have UTR predictions?
+
+### Correlation by distance plots
+
+We also want to filter out genes for which we have no 5' or 3' UTR predictions
+
+```{r}
+utrs_3d7 <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_3d7.gff"))
+utrs_3d7$Parent <- unlist(utrs_3d7$Parent)
+
+utrs_hb3 <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_hb3.gff"))
+utrs_hb3$Parent <- unlist(utrs_hb3$Parent)
+
+utrs_it <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_it.gff"))
+utrs_it$Parent <- unlist(utrs_it$Parent)
+```
+
+And genes for which we actually detect a confident level of transcription:
+
+```{r}
+# filter out genes with a TPM below the threshold
+# and that are not protein coding genes
+pcg <- tibble::as_tibble(rtracklayer::import.gff3("../data/annotations/PF3D7_codinggenes_for_bedtools.gff"))$ID
+get_filtered_ids <- function(abund,tpm_threshold) {
+  fabund <- abund %>% 
+    dplyr::group_by(gene_id) %>% 
+    dplyr::summarise(f=sum(TPM>=tpm_threshold)) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::filter(f>0 & gene_id %in% pcg)
+  return(fabund$gene_id)
+}
+fx3d7 <- get_filtered_ids(x3d7_abund,5)
+fxhb3 <- get_filtered_ids(xhb3_abund,5)
+fxit  <- get_filtered_ids(xit_abund,5)
+```
+
+First we should look at some randomly sampled neighboring genes to get an idea of what the average level of correlatino between genes is:
+
+```{r}
+set.seed(33)
+random_cor <- sapply(seq(1,1000), function(x) {all_neighboring %>% 
+  dplyr::filter(left_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent & 
+                left_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent & 
+                right_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent &
+                right_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent &
+                left_gene %in% fx3d7 & right_gene %in% fx3d7) %>%
+  dplyr::sample_n(1000,replace=F) %$%
+  mean(cor)})
+
+random_neighboring <- tibble::tibble(left_gene=NA,right_gene=NA,dist=NA,cor=random_cor,orientation="random")
+
+filtered_divergent <- divergent %>% 
+  dplyr::filter(left_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent & 
+                right_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent &
+                left_gene %in% fx3d7 & right_gene %in% fx3d7) %>%
+  dplyr::mutate(orientation="divergent")
+
+filtered_convergent <- convergent %>% 
+  dplyr::filter(left_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent & 
+                right_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent &
+                left_gene %in% fx3d7 & right_gene %in% fx3d7) %>%
+  dplyr::mutate(orientation="convergent")
+
+filtered_neighboring <- dplyr::bind_rows(filtered_convergent,filtered_divergent,random_neighboring) %>%
+  dplyr::mutate(orientation=factor(orientation,levels=c("divergent","convergent","random")))
+```
+
+We can visualize this either as a density plot or boxplot:
+
+```{r}
+g <- filtered_neighboring %>% ggplot(aes(x=cor,group=orientation,color=orientation)) + 
+  geom_line(stat="density",size=1.5) + 
+  scale_color_brewer(palette="Accent") +
+  ylab("Density") +
+  xlab(expression(rho)) +
+  theme(legend.position="bottom")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/neighboring_cor_density.svg",heigh=3,width=4)
+
+g <- filtered_neighboring %>% ggplot(aes(x=orientation,y=cor,fill=orientation)) + 
+  geom_boxplot(size=1) + 
+  scale_fill_brewer(palette="Accent") +
+  ylab(expression("Correlation ("~rho~")")) +
+  xlab("") +
+  theme(axis.text.x = element_text(angle=60, hjust=1))
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/neighboring_cor_boxplot.svg",heigh=3,width=4)
+```
+
+Are the convergent and divergent correlations significantly different than random pairs?
+
+```{r}
+wilcox.test(filtered_divergent$cor,random_neighboring$cor)
+wilcox.test(filtered_convergent$cor,random_neighboring$cor)
+```
+
+Now let's filter the rest of the neighboring genes for the full-transcript distances:
+
+```{r}
+fx3d7_divergent <- x3d7_divergent %>% 
+  dplyr::filter(left_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent & 
+                right_gene %in% utrs_3d7[utrs_3d7$type == "5UTR",]$Parent &
+                left_gene %in% fx3d7 & right_gene %in% fx3d7) %>%
+  dplyr::mutate(orientation="divergent")
+
+fx3d7_convergent <- x3d7_convergent %>% 
+  dplyr::filter(left_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent & 
+                right_gene %in% utrs_3d7[utrs_3d7$type == "3UTR",]$Parent &
+                left_gene %in% fx3d7 & right_gene %in% fx3d7) %>%
+  dplyr::mutate(orientation="convergent")
+```
+
+```{r}
+fxhb3_divergent<- xhb3_divergent %>% 
+  dplyr::filter(left_gene %in% utrs_hb3[utrs_hb3$type == "5UTR",]$Parent & 
+                right_gene %in% utrs_hb3[utrs_hb3$type == "5UTR",]$Parent &
+                left_gene %in% fxhb3 & right_gene %in% fxhb3) %>%
+  dplyr::mutate(orientation="divergent")
+
+fxhb3_convergent <- xhb3_convergent %>% 
+  dplyr::filter(left_gene %in% utrs_hb3[utrs_hb3$type == "3UTR",]$Parent & 
+                right_gene %in% utrs_hb3[utrs_hb3$type == "3UTR",]$Parent &
+                left_gene %in% fxhb3 & right_gene %in% fxhb3) %>%
+  dplyr::mutate(orientation="convergent")
+```
+
+```{r}
+fxit_divergent<- xit_divergent %>% 
+  dplyr::filter(left_gene %in% utrs_it[utrs_it$type == "5UTR",]$Parent & 
+                right_gene %in% utrs_it[utrs_it$type == "5UTR",]$Parent &
+                left_gene %in% fxit & right_gene %in% fxit) %>%
+  dplyr::mutate(orientation="divergent")
+
+fxit_convergent <- xit_convergent %>% 
+  dplyr::filter(left_gene %in% utrs_it[utrs_it$type == "3UTR",]$Parent & 
+                right_gene %in% utrs_it[utrs_it$type == "3UTR",]$Parent &
+                left_gene %in% fxit & right_gene %in% fxit) %>%
+  dplyr::mutate(orientation="convergent")
+```
+
+First we can make 3D7 plots. We can look at the before and after shots:
+
+```{r,headhead}
+# write summary to a file
+sink("../output/neighboring_genes/non_utr_divergent_summary.txt")
+summary(filtered_divergent)
+sink(NULL)
+# plot results
+g <- filtered_divergent %>%
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 5' Ends (kbps)") +
+  scale_x_reverse(limits=c(9000,-2000),
+                  breaks=c(9000,8000,7000,6000,5000,4000,3000,2000,1000,0,-1000,-2000),
+                  labels=c("9","8","7","6","5","4","3","2","1","0","-1","-2")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(divergent,left_gene=="PF3D7_1011900"&right_gene=="PF3D7_1012000"),fill="#377EB8",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/non_utr_divergent.svg",height=3,width=4)
+```
+
+```{r,3d7headhead}
+# write summary to a file
+sink("../output/neighboring_genes/3d7_divergent_summary.txt")
+summary(fx3d7_divergent)
+sink(NULL)
+# plot results
+g <- fx3d7_divergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 5' Ends (kbps)") +
+  scale_x_reverse(limits=c(9000,-2000),
+                  breaks=c(9000,8000,7000,6000,5000,4000,3000,2000,1000,0,-1000,-2000),
+                  labels=c("9","8","7","6","5","4","3","2","1","0","-1","-2")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_divergent,left_gene=="PF3D7_1011900"&right_gene=="PF3D7_1012000"),fill="#377EB8",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/3d7_headhead.svg",height=3,width=4)
+```
+
+```{r,tailtail}
+# write summary to file
+sink("../output/neighboring_genes/non_utr_convergent_summary.txt")
+summary(filtered_convergent)
+sink(NULL)
+# plot results
+g <- filtered_convergent %>%
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 3' Ends (kbps)") +
+  scale_x_reverse(limits=c(4000,-4000),
+                  breaks=c(4000,3000,2000,1000,0,-1000,-2000,-3000,-4000),
+                  labels=c("4","3","2","1","0","-1","-2","-3","-4")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(convergent,left_gene=="PF3D7_1102700"&right_gene=="PF3D7_1102800"),fill="#377EB8",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/non_utr_tailtail.svg",height=3,width=4)
+```
+
+```{r,3d7tailtail}
+# write summary
+sink("../output/neighboring_genes/3d7_convergent_summary.txt")
+summary(fx3d7_convergent)
+sink(NULL)
+# plot results
+g <- fx3d7_convergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")")) + 
+  xlab("Distance between 3' Ends (kbps)") +
+  scale_x_reverse(limits=c(4000,-4000),
+                  breaks=c(4000,3000,2000,1000,0,-1000,-2000,-3000,-4000),
+                  labels=c("4","3","2","1","0","-1","-2","-3","-4")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_convergent,left_gene=="PF3D7_1102700"&right_gene=="PF3D7_1102800"),fill="#377EB8",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/3d7_tailtail.svg",height=3,width=4)
+```
+
+Then we can make the HB3 plots:
+
+```{r,hb3headhead}
+# write summary to a file
+sink("../output/neighboring_genes/hb3_divergent_summary.txt")
+summary(fxhb3_divergent)
+sink(NULL)
+# plot results
+g <- fxhb3_divergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 5' ends (kbps)") +
+  scale_x_reverse(limits=c(8000,-3000),
+                  breaks=c(8000,7000,6000,5000,4000,3000,2000,1000,0,-1000,-2000,-3000),
+                  labels=c("8","7","6","5","4","3","2","1","0","-1","-2","-3")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_divergent,left_gene=="PF3D7_1011900"&right_gene=="PF3D7_1012000"),fill="#E41A1C",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/hb3_headhead.svg",height=3,width=4)
+```
+
+```{r,hb3tailtail}
+# write summary to a file
+sink("../output/neighboring_genes/hb3_convergent_summart.txt")
+summary(fxhb3_convergent)
+sink(NULL)
+# plot results
+g <- fxhb3_convergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 3' ends (kbps)") +
+  scale_x_reverse(limits=c(8000,-3000),
+                  breaks=c(8000,7000,6000,5000,4000,3000,2000,1000,0,-1000,-2000,-3000),
+                  labels=c("8","7","6","5","4","3","2","1","0","-1","-2","-3")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_convergent,left_gene=="PF3D7_1102700"&right_gene=="PF3D7_1102800"),fill="#E41A1C",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/hb3_tailtail.svg",height=3,width=4)
+```
+
+And finally for IT:
+
+```{r,itheadhead}
+# write summary to a file
+sink("../output/neighboring_genes/it_divergent_summary.txt")
+summary(fxit_divergent)
+sink(NULL)
+# plot results
+g <- fxit_divergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) + 
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 5' ends (kbps)") +
+  scale_x_reverse(limits=c(8000,-5000),
+                  breaks=c(8000,7000,6000,5000,4000,3000,2000,1000,0,-1000,-2000,-3000,-4000,-5000),
+                  labels=c("8","7","6","5","4","3","2","1","0","-1","-2","-3","-4","-5")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_divergent,left_gene=="PF3D7_1011900"&right_gene=="PF3D7_1012000"),fill="#4DAF4A",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/it_headhead.svg",height=3,width=4)
+```
+
+```{r,ittailtail}
+# write summary to a file
+sink("../output/neighboring_genes/it_convergent_summary.txt")
+summary(fxit_convergent)
+sink(NULL)
+# plot results
+g <- fxit_convergent %>% 
+  ggplot(aes(x=dist,y=cor)) + 
+  geom_point(fill="grey70",color="black",pch=21,size=2,alpha=0.5) +  
+  panel_border(colour="black",size=1) + 
+  ylab(expression("Correlation ("~rho~")"))  + 
+  xlab("Distance between 3' ends (bps)") +
+  scale_x_reverse(limits=c(5000,-3000),
+                  breaks=c(5000,4000,3000,2000,1000,0,-1000,-2000,-3000),
+                  labels=c("5","4","3","2","1","0","-1","-2","-3")) +
+  geom_vline(xintercept=0,linetype=2,col="red",size=1) +
+  geom_point(data=subset(x3d7_convergent,left_gene=="PF3D7_1102700"&right_gene=="PF3D7_1102800"),fill="#4DAF4A",color="black",pch=21,size=5)
+
+g <- ggExtra::ggMarginal(g, type = "histogram")
+
+print(g)
+ggsave(plot=g,filename="../output/neighboring_genes/it_tailtail.svg",height=3,width=4)
+```
+
+### Individual profile plots
+
+We need to scale the data for appropriate plotting:
+
+```{r}
+fx3d7_abund <- x3d7_abund %>% 
+  dplyr::filter(gene_id %in% fx3d7) %>% 
+  dplyr::select(gene_id,tp,TPM) %>% 
+  dplyr::group_by(gene_id) %>% 
+  dplyr::summarise(m=mean(TPM)) %>% 
+  dplyr::inner_join(x3d7_abund) %>% 
+  dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
+  dplyr::select(gene_id,tp,norm_tpm) %>% 
+  ungroup() %>%
+  tidyr::spread(tp,norm_tpm)
+
+sx3d7_abund <- fx3d7_abund %>% 
+  dplyr::rename(`8`=`2`,
+                `16`=`3`,
+                `24`=`4`,
+                `32`=`5`,
+                `40`=`6`,
+                `48`=`7`) %>%
+  tidyr::gather(tp,norm_tpm,-gene_id) %>%
+  dplyr::mutate(tp=as.numeric(tp))
+```
+
+```{r}
+require(org.Pf.plasmo.db)
+gene_names <- as.data.frame(org.Pf.plasmoGENENAME)
+```
+
+```{r}
+plot_paired_profiles <- function(df, gid1, gid2) {
+  df %>%
+    dplyr::filter(gene_id == gid1 | gene_id == gid2) %>%
+    ggplot(aes(x = tp, y = norm_tpm, color = gene_id,group=gene_id)) +
+    ggtitle(paste(gid1,"\n ",gene_names[gene_names$gene_id==gid1,]$gene_name,"\n",
+            gid2,"\n ",gene_names[gene_names$gene_id==gid2,]$gene_name)) +
+    stat_smooth(se = F, size = 1.5) +
+    geom_point(aes(fill=gene_id),color="black",pch=21,size=2) +
+    scale_x_continuous(breaks = c(1,8,16,24,32,40,48), labels = c("T1", "T2", "T3" ,"T4", "T5", "T6", "T7")) +
+    panel_border(colour="black",remove=F) +
+    scale_color_brewer(palette="Paired") + 
+    scale_fill_brewer(palette="Paired") +
+    ylab("Normalized TPM") +
+    xlab("") +
+    theme(legend.position="bottom") +
+    geom_hline(yintercept=0,linetype=2,color="black",size=1)
+}
+```
+
+#### Convergent example
+
+```{r,eval=F,include=F}
+# Use to find good condidate gene pairs
+df1 <- inner_join(convergent,fx3d7_convergent,by=c("left_gene","right_gene"))
+df1 <- inner_join(df1,gene_names,by=c("left_gene"="gene_id"))
+df1 <- inner_join(df1,gene_names,by=c("right_gene"="gene_id"))
+df1 %>% filter(dist.x > 100 & dist.y <=0 & cor.x > 0.5)
+```
+
+```{r}
+#plot_paired_profiles(sx3d7_abund,"PF3D7_1431300","PF3D7_1431400")
+#plot_paired_profiles(sx3d7_abund,"PF3D7_0214900","PF3D7_0215000")
+g <- plot_paired_profiles(sx3d7_abund,"PF3D7_1115900","PF3D7_1116000")
+ggsave(plot=g,filename="../output/neighboring_genes/convergent_pair.svg",width=4,height=4)
+
+print(g)
+```
+
+#### Divergent example
+
+```{r,eval=F,include=F}
+# Use to find good candidate gene pairs
+df2 <- inner_join(divergent,fx3d7_divergent,by=c("left_gene","right_gene"))
+df2 <- inner_join(df2,gene_names,by=c("left_gene"="gene_id"))
+df2 <- inner_join(df2,gene_names,by=c("right_gene"="gene_id"))
+```
+
+```{r}
+g <- plot_paired_profiles(sx3d7_abund,"PF3D7_1011900","PF3D7_1012000")
+ggsave(plot=g,filename="../output/neighboring_genes/divergent_pair.svg",width=4,height=4)
+
+print(g)
+```
+
+### Bidirectional promoters
+
+What if we split up the divergent neighboring genes by the distance separating them and plot their correlations individually. Do we see anything interesting?
+
+```{r}
+tmp <- fx3d7_divergent
+tmp$group <- dplyr::case_when(
+  tmp$dist <= 0 ~ "< 0",
+  tmp$dist <= 500 & tmp$dist > 0 ~ "0-500",
+  tmp$dist <= 1000 & tmp$dist > 500 ~ "500-1000",
+  tmp$dist <= 1500 & tmp$dist > 1000 ~ "1000-1500",
+  tmp$dist <= 2000 & tmp$dist > 1500 ~ "1500-2000",
+  tmp$dist > 2000 ~ "> 2000"
+)
+tmp$group <- factor(tmp$group, levels=c("< 0","0-500","500-1000","1000-1500","1500-2000","> 2000"))
+tmp %>% group_by(group) %>% summarise(m=mean(cor))
+summary(tmp)
+g <- tmp %>% ggplot(aes(x=group,y=cor,group=group)) + 
+  geom_boxplot(fill="#7FC97F",size=1) + 
+  geom_hline(yintercept=mean(random_cor),linetype=2,col="red",size=1) +  
+  theme(axis.text.x = element_text(angle=60, hjust=1)) +
+  xlab("") +
+  ylab(expression("Correlation ("~rho~")")) 
+
+ggsave(plot=g,filename="../output/neighboring_genes/divergent_groups.svg",height=3,width=4)
+
+print(g)
+```
+
+### Transcriptional interference
+
+```{r}
+tmp <- fx3d7_convergent
+tmp$group <- dplyr::case_when(
+  tmp$dist < -1000 ~ "< -1000",
+  tmp$dist >= -1000 & tmp$dist < -500 ~ "-1000--500",
+  tmp$dist >= -500 & tmp$dist < 0 ~ "-500-0",
+  tmp$dist >= 0 & tmp$dist < 500 ~ "0-500",
+  tmp$dist >= 500 & tmp$dist > 1000 ~ "500-1000",
+  tmp$dist > 1000 ~ "> 1000"
+)
+tmp$group <- factor(tmp$group, levels=c("< -1000","-1000--500","-500-0","0-500","500-1000","> 1000"))
+tmp %>% group_by(group) %>% summarise(m=mean(cor))
+summary(tmp)
+g <- tmp %>% ggplot(aes(x=group,y=cor,group=group)) + 
+  geom_boxplot(fill="#BEAED4",size=1) + 
+  #geom_hline(yintercept=mean(random_cor),linetype=2,col="red",size=1) +
+  theme(axis.text.x = element_text(angle=60, hjust=1)) +
+  xlab("") +
+  ylab(expression("Correlation ("~rho~")")) 
+
+ggsave(plot=g,filename="../output/neighboring_genes/convergent_groups.svg",height=3,width=4)
+
+print(g)
+```
+
+## Session Information
+
+```{r session-info}
+```

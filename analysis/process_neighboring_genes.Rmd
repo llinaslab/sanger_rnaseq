@@ -1,0 +1,249 @@
+---
+title: "Neighboring genes"
+author: "Philipp Ross"
+date: 2017-03-02
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+## Overview
+
+We want to know what all neighboring genes in the *P. falciparum* genome are, their orientations relative to one another, the distance between them, and their degree of co-expression.
+
+## Workflow
+
+1. Create GFF file of full-sized transcripts for which we have UTR predictions
+2. Calculate all neighboring gene pairs within the P. falciparum genome
+3. Calculate the distance between gene pairs for which we have appropriate UTR predictions i.e. for head-to-head we have 5' UTR predictions for both, for tail-to-tail we have 3' UTR predictions for both, and for head-to-tail we have 5' and 3' UTR predictions for both
+4. Calculate the correlation between gene pair expression profiles
+5. Bin gene pairs based on distance apart
+6. Perform gene ontology enrichment of gene pairs under the control of putative bidirectional promoters and involved in potential transcriptional interference
+
+## Processing
+
+### Generate transcript models
+
+To stay consistent, we'll first generate the non-UTR transcripts:
+
+```{r,engine='bash',eval=F}
+cat data/annotations/exons_nuclear_3D7_v24.gff | \
+  gffread -F -E -o- | \
+  awk '$3 == "transcript" {split($9,x,";"); gsub("rna_","",x[1]); gsub("-1","",x[1]); print $1,$2,$3,$4,$5,$6,$7,$8,x[1]}' > \         
+  output/neighboring_genes/transcripts_without_utrs.gff
+```
+
+Before we generate the full transcripts we need to manually go into `output/neighboring_genes/transcripts_without_utrs.gff` and remove transcript isoforms. We only want to keep the largest transcript isoform for each gene.
+
+Then we'll run the same command, but include the UTR predictions and generate "full" transcripts:
+
+```{r,engine='bash',eval=F}
+for strain in 3d7 hb3 it; do
+  cat output/neighboring_genes/transcripts_without_utrs.gff output/final_utrs/final_utrs_${strain}.gff | \
+  gffread -E -F -o- -O | \
+  awk '$3 == "transcript"{print $0}' > output/neighboring_genes/full_transcripts_${strain}.gff
+done
+```
+
+### Calculate distances between neighboring transcripts
+
+First we'll calculate the distances between the non-UTR containing transcripts:
+
+```
+python code/neighboring_genes/find_neighboring_genes.py \
+  -g output/neighboring_genes/transcripts_without_utrs.gff \
+  -p output/neighboring_genes/non_utr \
+  -i output/neighboring_genes/genes_to_ignore.txt 
+```
+
+And calculate the distances when we consider the full transcript lengths with UTRs:
+
+```{r,eval=F}
+x3d7gff <- tibble::as_tibble(import.gff("../output/neighboring_genes/full_transcripts_3d7.gff"))
+xhb3gff <- tibble::as_tibble(import.gff("../output/neighboring_genes/full_transcripts_hb3.gff"))
+xitgff  <- tibble::as_tibble(import.gff("../output/neighboring_genes/full_transcripts_it.gff"))
+
+convergent <- readr::read_tsv("../output/neighboring_genes/non_utr_convergent.tsv")
+divergent  <- readr::read_tsv("../output/neighboring_genes/non_utr_divergent.tsv")
+tandem     <- readr::read_tsv("../output/neighboring_genes/non_utr_tandem.tsv")
+```
+
+```{r,eval=F}
+calc_distances <- function(neighboring,gff) {
+  # generate empty tibble
+  ti <- tibble(left_gene=character(),right_gene=character(),dist=integer())
+  # go through each gene pair
+  # calculate the distance
+  # start position of right gene minus end position of left gene
+  for (i in 1:nrow(neighboring)) {
+    ti <-  dplyr::bind_rows(ti,
+                            tibble(
+                              left_gene = neighboring[i,]$left_gene,
+                              right_gene = neighboring[i,]$right_gene,
+                              dist = gff[gff$ID == neighboring[i,]$right_gene,]$start - gff[gff$ID == neighboring[i,]$left_gene,]$end
+                            ))
+  }
+  return(ti)
+}
+```
+
+```{r,eval=F}
+# for 3D7
+x3d7_convergent <- calc_distances(convergent,x3d7gff)
+x3d7_divergent  <- calc_distances(divergent,x3d7gff)
+x3d7_tandem     <- calc_distances(tandem,x3d7gff)
+# for HB3
+xhb3_convergent <- calc_distances(convergent,xhb3gff)
+xhb3_divergent  <- calc_distances(divergent,xhb3gff)
+xhb3_tandem     <- calc_distances(tandem,xhb3gff)
+# for IT
+xit_convergent <- calc_distances(convergent,xitgff)
+xit_divergent  <- calc_distances(divergent,xitgff)
+xit_tandem     <- calc_distances(tandem,xitgff)
+```
+
+#### Calculate correlations between neighboring genes
+
+Now we'll import the gene expression abundances and calculate correlations between them all. However, there are a few caveats: we have UTR predictions for genes, not transcripts, meaning we'll need to reduce the transcript caluclations to gene abundances. We'll keep it simple and just use the isoform with the highest TPM for each gene with multiple isoforms.
+
+We'll first do this for 3D7:
+
+```{r,eval=F}
+# Function to keep only the most highly expressed isoforms for calculating correlations
+reduce_to_genes <- function(abund) {
+  
+  max_isoforms <- abund %>%
+    dplyr::filter(stringr::str_count(transcript_id,"[.]")>0) %>% 
+    dplyr::group_by(transcript_id) %>% 
+    dplyr::summarise(total=sum(TPM)) %>% 
+    dplyr::ungroup() %>%
+    dplyr::mutate(id=stringr::str_replace(transcript_id,"[.][0-9]","")) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(max_isoform=which.max(total))
+
+  isoforms_to_keep <- abund %>% 
+    dplyr::filter(stringr::str_count(transcript_id,"[.]")>0) %>% 
+    dplyr::rowwise() %>% 
+    dplyr::mutate(isoform=as.integer(stringr::str_split(transcript_id,"[.]")[[1]][2])) %>%
+    dplyr::mutate(id=stringr::str_replace(transcript_id,"[.][0-9]","")) %>%
+    dplyr::inner_join(max_isoforms) %>%
+    dplyr::filter(max_isoform==isoform) %$%
+    unique(transcript_id)
+
+  genes_to_keep <- abund %>% 
+    dplyr::filter(stringr::str_count(transcript_id,"[.]")==0) %$%
+    unique(transcript_id)
+
+  fabund <- abund %>%
+    dplyr::filter(transcript_id %in% c(isoforms_to_keep,genes_to_keep)) %>%
+    dplyr::mutate(gene_id=stringr::str_replace(transcript_id,"[.][0-9]","")) %>%
+    dplyr::select(gene_id,TPM,strain,tp)
+  
+  return(fabund)
+}
+```
+
+```{r,eval=F}
+x3d7_abund <- readRDS("../output/transcript_abundance/stringtie_3d7_abund.rds")
+xhb3_abund <- readRDS("../output/transcript_abundance/stringtie_hb3_abund.rds")
+xit_abund  <- readRDS("../output/transcript_abundance/stringtie_it_abund.rds")
+
+x3d7_abund <- reduce_to_genes(x3d7_abund)
+xhb3_abund <- reduce_to_genes(xhb3_abund)
+xit_abund  <- reduce_to_genes(xit_abund)
+```
+
+It'll be useful to save these to a file for future use:
+
+```{r,eval=F}
+saveRDS(object=x3d7_abund,file="../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+saveRDS(object=xhb3_abund,file="../output/neighboring_genes/gene_reduced_hb3_abund.rds")
+saveRDS(object=xit_abund,file="../output/neighboring_genes/gene_reduced_it_abund.rds")
+```
+
+Now we can actually calculate the correlations between every gene and every other gene:
+
+```{r,eval=F}
+calc_correlations <- function(abund,neighboring) {
+  df <- abund %>% 
+    dplyr::select(gene_id,TPM,tp) %>% 
+    tidyr::spread(tp,TPM)
+  c <- cor(t(df[,2:8]))
+  rownames(c) <- df$gene_id
+  colnames(c) <- df$gene_id
+  
+  new <- tibble(left_gene=character(),
+                right_gene=character(),
+                dist=integer(),
+                cor=double())
+  for (i in 1:nrow(neighboring)) {
+    new <- dplyr::bind_rows(new,
+                            tibble(
+                              left_gene=neighboring[i,]$left_gene,
+                              right_gene=neighboring[i,]$right_gene,
+                              dist=neighboring[i,]$dist,
+                              cor=c[neighboring[i,]$left_gene,neighboring[i,]$right_gene]
+                            ))
+  }
+  return(new)
+}
+```
+
+```{r,eval=F}
+# for non UTR genes
+convergent <- calc_correlations(x3d7_abund,convergent)
+divergent  <- calc_correlations(x3d7_abund,divergent)
+tandem     <- calc_correlations(x3d7_abund,tandem)
+# for 3D7
+x3d7_convergent <- calc_correlations(x3d7_abund,x3d7_convergent)
+x3d7_divergent  <- calc_correlations(x3d7_abund,x3d7_divergent)
+x3d7_tandem     <- calc_correlations(x3d7_abund,x3d7_tandem)
+# for HB3
+xhb3_convergent <- calc_correlations(xhb3_abund,xhb3_convergent)
+xhb3_divergent  <- calc_correlations(xhb3_abund,xhb3_divergent)
+xhb3_tandem     <- calc_correlations(xhb3_abund,xhb3_tandem)
+# for IT
+xit_convergent <- calc_correlations(xit_abund,xit_convergent)
+xit_divergent  <- calc_correlations(xit_abund,xit_divergent)
+xit_tandem     <- calc_correlations(xit_abund,xit_tandem)
+```
+
+And finally, let's write that to a file:
+
+```{r,eval=F}
+# for non UTR genes 
+readr::write_tsv(x=convergent,path="../output/neighboring_genes/non_utr_convergent.tsv")
+readr::write_tsv(x=divergent,path="../output/neighboring_genes/non_utr_divergent.tsv")
+readr::write_tsv(x=tandem,path="../output/neighboring_genes/non_utr_tandem.tsv")
+# for 3D7
+readr::write_tsv(x=x3d7_convergent,path="../output/neighboring_genes/3d7_convergent.tsv")
+readr::write_tsv(x=x3d7_divergent,path="../output/neighboring_genes/3d7_divergent.tsv")
+readr::write_tsv(x=x3d7_tandem,path="../output/neighboring_genes/3d7_tandem.tsv")
+# for HB3
+readr::write_tsv(x=xhb3_convergent,path="../output/neighboring_genes/hb3_convergent.tsv")
+readr::write_tsv(x=xhb3_divergent,path="../output/neighboring_genes/hb3_divergent.tsv")
+readr::write_tsv(x=xhb3_tandem,path="../output/neighboring_genes/hb3_tandem.tsv")
+# for IT
+readr::write_tsv(x=xit_convergent,path="../output/neighboring_genes/it_convergent.tsv")
+readr::write_tsv(x=xit_divergent,path="../output/neighboring_genes/it_divergent.tsv")
+readr::write_tsv(x=xit_tandem,path="../output/neighboring_genes/it_tandem.tsv")
+```
+
+All done!
+
+## Session Information
+
+```{r session-info}
+```
