@@ -3,6 +3,8 @@ title: "Neighboring Genes Analysis"
 author: "Philipp Ross"
 date: 2017-04-08
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r read-chunk, include=FALSE, cache=FALSE}
@@ -517,7 +519,7 @@ tmp$group <- dplyr::case_when(
   tmp$dist >= -1000 & tmp$dist < -500 ~ "-1000--500",
   tmp$dist >= -500 & tmp$dist < 0 ~ "-500-0",
   tmp$dist >= 0 & tmp$dist < 500 ~ "0-500",
-  tmp$dist >= 500 & tmp$dist > 1000 ~ "500-1000",
+  tmp$dist >= 500 & tmp$dist < 1000 ~ "500-1000",
   tmp$dist > 1000 ~ "> 1000"
 )
 tmp$group <- factor(tmp$group, levels=c("< -1000","-1000--500","-500-0","0-500","500-1000","> 1000"))
@@ -525,7 +527,7 @@ tmp %>% group_by(group) %>% summarise(m=mean(cor))
 summary(tmp)
 g <- tmp %>% ggplot(aes(x=group,y=cor,group=group)) + 
   geom_boxplot(fill="#BEAED4",size=1) + 
-  #geom_hline(yintercept=mean(random_cor),linetype=2,col="red",size=1) +
+  geom_hline(yintercept=mean(random_cor),linetype=2,col="red",size=1) +
   theme(axis.text.x = element_text(angle=60, hjust=1)) +
   xlab("") +
   ylab(expression("Correlation ("~rho~")")) 

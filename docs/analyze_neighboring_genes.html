@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -25,46 +25,76 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 <style type="text/css">
   pre:not([class]) {
@@ -121,6 +151,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -337,36 +370,33 @@ div.tocify {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-04-21</p>
-<p><strong>Code version:</strong> 0e2e80a</p>
+<p><strong>Last updated:</strong> 2018-09-23</p>
+<p><strong>Code version:</strong> 236fe9c</p>
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>What is the relationship between the distances between neighboring genes and their co-expression? Can we identify putative bidirectional promoters this way? Are convergent neighboring genes that overlap more likely to be expressed at different time points?</p>
 </div>
-<div id="workflow" class="section level2">
-<h2>Workflow</h2>
-</div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
 <p>First let’s read in the data we generated during processing the data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># abundance estimates</span>
-x3d7_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)
-xhb3_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)
-xit_abund  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)
-<span class="co"># Without UTR predictions</span>
-convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-tandem     &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_tandem.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-all_neighboring &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(convergent,divergent,tandem)
-<span class="co"># 3D7 UTR predictions</span>
-x3d7_convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/3d7_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-x3d7_divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/3d7_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-<span class="co"># HB3 UTR predictions</span>
-xhb3_convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/hb3_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-xhb3_divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/hb3_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-<span class="co"># IT UTR predictions</span>
-xit_convergent &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/it_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)
-xit_divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/it_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># abundance estimates</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">x3d7_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">xhb3_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">xit_abund  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Without UTR predictions</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">convergent &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">divergent  &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">tandem     &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_tandem.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">all_neighboring &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(convergent,divergent,tandem)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># 3D7 UTR predictions</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">x3d7_convergent &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/3d7_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">x3d7_divergent  &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/3d7_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co"># HB3 UTR predictions</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">xhb3_convergent &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/hb3_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">xhb3_divergent  &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/hb3_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co"># IT UTR predictions</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">xit_convergent &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/it_convergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">xit_divergent  &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/neighboring_genes/it_divergent.tsv&quot;</span>,<span class="dt">col_names=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <div id="before-and-after-utr-predictions" class="section level3">
 <h3>Before and after UTR predictions</h3>
 <p>Let’s make some plots of the before and after picture of distance between genes and their correlation to one another. Before we do this we need to actually generate the data we care about. We need to calculate the neighboring genes and the distances beween those genes. Then we can import that data, calculate the correlations between those neighboring genes, and create a gene-by-gene table of neighboring genes, the distances between them, their orientations, and the correlations between their expression patterns.</p>
@@ -375,82 +405,87 @@ xit_divergent  &lt;-<span class="st"> </span>readr::<span class="kw">read_tsv</s
 <div id="correlation-by-distance-plots" class="section level3">
 <h3>Correlation by distance plots</h3>
 <p>We also want to filter out genes for which we have no 5’ or 3’ UTR predictions</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs_3d7 &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_3d7.gff&quot;</span>))
-utrs_3d7$Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_3d7$Parent)
-
-utrs_hb3 &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_hb3.gff&quot;</span>))
-utrs_hb3$Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_hb3$Parent)
-
-utrs_it &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_it.gff&quot;</span>))
-utrs_it$Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_it$Parent)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">utrs_3d7 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_3d7.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">utrs_3d7<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_3d7<span class="op">$</span>Parent)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">utrs_hb3 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_hb3.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">utrs_hb3<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_hb3<span class="op">$</span>Parent)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">utrs_it &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_it.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">utrs_it<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs_it<span class="op">$</span>Parent)</a></code></pre></div>
 <p>And genes for which we actually detect a confident level of transcription:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># filter out genes with a TPM below the threshold</span>
-<span class="co"># and that are not protein coding genes</span>
-pcg &lt;-<span class="st"> </span>tibble::<span class="kw">as_tibble</span>(rtracklayer::<span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/PF3D7_codinggenes_for_bedtools.gff&quot;</span>))$ID
-get_filtered_ids &lt;-<span class="st"> </span>function(abund,tpm_threshold) {
-  fabund &lt;-<span class="st"> </span>abund %&gt;%<span class="st"> </span>
-<span class="st">    </span>dplyr::<span class="kw">group_by</span>(gene_id) %&gt;%<span class="st"> </span>
-<span class="st">    </span>dplyr::<span class="kw">summarise</span>(<span class="dt">f=</span><span class="kw">sum</span>(TPM&gt;=tpm_threshold)) %&gt;%<span class="st"> </span>
-<span class="st">    </span>dplyr::<span class="kw">ungroup</span>() %&gt;%<span class="st"> </span>
-<span class="st">    </span>dplyr::<span class="kw">filter</span>(f&gt;<span class="dv">0</span> &amp;<span class="st"> </span>gene_id %in%<span class="st"> </span>pcg)
-  <span class="kw">return</span>(fabund$gene_id)
-}</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fx3d7 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(x3d7_abund,<span class="dv">5</span>)
-fxhb3 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xhb3_abund,<span class="dv">5</span>)
-fxit  &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xit_abund,<span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># filter out genes with a TPM below the threshold</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># and that are not protein coding genes</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">pcg &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/PF3D7_codinggenes_for_bedtools.gff&quot;</span>))<span class="op">$</span>ID</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">get_filtered_ids &lt;-<span class="st"> </span><span class="cf">function</span>(abund,tpm_threshold) {</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  fabund &lt;-<span class="st"> </span>abund <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">f=</span><span class="kw">sum</span>(TPM<span class="op">&gt;=</span>tpm_threshold)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(f<span class="op">&gt;</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>pcg)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">  <span class="kw">return</span>(fabund<span class="op">$</span>gene_id)</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">fx3d7 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(x3d7_abund,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">fxhb3 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xhb3_abund,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">fxit  &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xit_abund,<span class="dv">5</span>)</a></code></pre></div>
 <p>First we should look at some randomly sampled neighboring genes to get an idea of what the average level of correlatino between genes is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">33</span>)
-random_cor &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">1000</span>), function(x) {all_neighboring %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fx3d7 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fx3d7) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">sample_n</span>(<span class="dv">1000</span>,<span class="dt">replace=</span>F) %$%
-<span class="st">  </span><span class="kw">mean</span>(cor)})
-
-random_neighboring &lt;-<span class="st"> </span>tibble::<span class="kw">tibble</span>(<span class="dt">left_gene=</span><span class="ot">NA</span>,<span class="dt">right_gene=</span><span class="ot">NA</span>,<span class="dt">dist=</span><span class="ot">NA</span>,<span class="dt">cor=</span>random_cor,<span class="dt">orientation=</span><span class="st">&quot;random&quot;</span>)
-
-filtered_divergent &lt;-<span class="st"> </span>divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fx3d7 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fx3d7) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)
-
-filtered_convergent &lt;-<span class="st"> </span>convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fx3d7 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fx3d7) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)
-
-filtered_neighboring &lt;-<span class="st"> </span>dplyr::<span class="kw">bind_rows</span>(filtered_convergent,filtered_divergent,random_neighboring) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="kw">factor</span>(orientation,<span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;divergent&quot;</span>,<span class="st">&quot;convergent&quot;</span>,<span class="st">&quot;random&quot;</span>)))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span>filtered_neighboring %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>cor,<span class="dt">group=</span>orientation,<span class="dt">color=</span>orientation)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Accent&quot;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Density&quot;</span>) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="kw">expression</span>(rho)) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>)
-
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/neighboring_cor_density.svg&quot;</span>,<span class="dt">heigh=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)
-
-g &lt;-<span class="st"> </span>filtered_neighboring %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>orientation,<span class="dt">y=</span>cor,<span class="dt">fill=</span>orientation)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Accent&quot;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>)) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>))
-
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/neighboring_cor_boxplot.svg&quot;</span>,<span class="dt">heigh=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">33</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">random_cor &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">1000</span>), <span class="cf">function</span>(x) {all_neighboring <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fx3d7 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">sample_n</span>(<span class="dv">1000</span>,<span class="dt">replace=</span>F) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">mean</span>(cor)})</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">random_neighboring &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">left_gene=</span><span class="ot">NA</span>,<span class="dt">right_gene=</span><span class="ot">NA</span>,<span class="dt">dist=</span><span class="ot">NA</span>,<span class="dt">cor=</span>random_cor,<span class="dt">orientation=</span><span class="st">&quot;random&quot;</span>)</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">filtered_divergent &lt;-<span class="st"> </span>divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fx3d7 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">filtered_convergent &lt;-<span class="st"> </span>convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fx3d7 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25">filtered_neighboring &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(filtered_convergent,filtered_divergent,random_neighboring) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="kw">factor</span>(orientation,<span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;divergent&quot;</span>,<span class="st">&quot;convergent&quot;</span>,<span class="st">&quot;random&quot;</span>)))</a></code></pre></div>
+<p>We can visualize this either as a density plot or boxplot:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">g &lt;-<span class="st"> </span>filtered_neighboring <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>cor,<span class="dt">group=</span>orientation,<span class="dt">color=</span>orientation)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Accent&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">xlab</span>(<span class="kw">expression</span>(rho)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/neighboring_cor_density.svg&quot;</span>,<span class="dt">heigh=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">g &lt;-<span class="st"> </span>filtered_neighboring <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>orientation,<span class="dt">y=</span>cor,<span class="dt">fill=</span>orientation)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Accent&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/neighboring_cor_boxplot.svg&quot;</span>,<span class="dt">heigh=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
 <p>Are the convergent and divergent correlations significantly different than random pairs?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">wilcox.test</span>(filtered_divergent$cor,random_neighboring$cor)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">wilcox.test</span>(filtered_divergent<span class="op">$</span>cor,random_neighboring<span class="op">$</span>cor)</a></code></pre></div>
 <pre><code>
     Wilcoxon rank sum test with continuity correction
 
 data:  filtered_divergent$cor and random_neighboring$cor
 W = 759400, p-value &lt; 2.2e-16
 alternative hypothesis: true location shift is not equal to 0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">wilcox.test</span>(filtered_convergent$cor,random_neighboring$cor)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">wilcox.test</span>(filtered_convergent<span class="op">$</span>cor,random_neighboring<span class="op">$</span>cor)</a></code></pre></div>
 <pre><code>
     Wilcoxon rank sum test with continuity correction
 
@@ -458,43 +493,43 @@ data:  filtered_convergent$cor and random_neighboring$cor
 W = 490430, p-value = 0.00376
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 <p>Now let’s filter the rest of the neighboring genes for the full-transcript distances:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fx3d7_divergent&lt;-<span class="st"> </span>x3d7_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fx3d7 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fx3d7) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)
-
-fx3d7_convergent &lt;-<span class="st"> </span>x3d7_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_3d7[utrs_3d7$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fx3d7 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fx3d7) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fxhb3_divergent&lt;-<span class="st"> </span>xhb3_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_hb3[utrs_hb3$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_hb3[utrs_hb3$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fxhb3 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fxhb3) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)
-
-fxhb3_convergent &lt;-<span class="st"> </span>xhb3_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_hb3[utrs_hb3$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_hb3[utrs_hb3$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fxhb3 &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fxhb3) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fxit_divergent&lt;-<span class="st"> </span>xit_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_it[utrs_it$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_it[utrs_it$type ==<span class="st"> &quot;5UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fxit &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fxit) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)
-
-fxit_convergent &lt;-<span class="st"> </span>xit_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(left_gene %in%<span class="st"> </span>utrs_it[utrs_it$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;<span class="st"> </span>
-<span class="st">                </span>right_gene %in%<span class="st"> </span>utrs_it[utrs_it$type ==<span class="st"> &quot;3UTR&quot;</span>,]$Parent &amp;
-<span class="st">                </span>left_gene %in%<span class="st"> </span>fxit &amp;<span class="st"> </span>right_gene %in%<span class="st"> </span>fxit) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fx3d7_divergent &lt;-<span class="st"> </span>x3d7_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fx3d7 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">fx3d7_convergent &lt;-<span class="st"> </span>x3d7_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_3d7[utrs_3d7<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fx3d7 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">fxhb3_divergent&lt;-<span class="st"> </span>xhb3_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_hb3[utrs_hb3<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_hb3[utrs_hb3<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fxhb3 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fxhb3) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">fxhb3_convergent &lt;-<span class="st"> </span>xhb3_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_hb3[utrs_hb3<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_hb3[utrs_hb3<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fxhb3 <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fxhb3) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fxit_divergent&lt;-<span class="st"> </span>xit_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_it[utrs_it<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_it[utrs_it<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fxit <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fxit) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;divergent&quot;</span>)</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">fxit_convergent &lt;-<span class="st"> </span>xit_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(left_gene <span class="op">%in%</span><span class="st"> </span>utrs_it[utrs_it<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="st">                </span>right_gene <span class="op">%in%</span><span class="st"> </span>utrs_it[utrs_it<span class="op">$</span>type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>,]<span class="op">$</span>Parent <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="st">                </span>left_gene <span class="op">%in%</span><span class="st"> </span>fxit <span class="op">&amp;</span><span class="st"> </span>right_gene <span class="op">%in%</span><span class="st"> </span>fxit) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">orientation=</span><span class="st">&quot;convergent&quot;</span>)</a></code></pre></div>
 <p>First we can make 3D7 plots. We can look at the before and after shots:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_divergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(filtered_divergent)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_divergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">summary</span>(filtered_divergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist            cor           
  Length:1119        Length:1119        Min.   :   19   Min.   :-0.947766  
  Class :character   Class :character   1st Qu.: 1192   1st Qu.:-0.005024  
@@ -509,28 +544,28 @@ fxit_convergent &lt;-<span class="st"> </span>xit_convergent %&gt;%<span class="
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>filtered_divergent %&gt;%
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; Ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">9000</span>,-<span class="dv">2000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;9&quot;</span>,<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(divergent,left_gene==<span class="st">&quot;PF3D7_1011900&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">g &lt;-<span class="st"> </span>filtered_divergent <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; Ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="op">-</span><span class="dv">2000</span>),</a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>),</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;9&quot;</span>,<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(divergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1011900&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/headhead-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/non_utr_divergent.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/3d7_divergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(fx3d7_divergent)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/non_utr_divergent.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/3d7_divergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">summary</span>(fx3d7_divergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist            cor           
  Length:1119        Length:1119        Min.   :-2869   Min.   :-0.947766  
  Class :character   Class :character   1st Qu.:  229   1st Qu.:-0.005024  
@@ -545,28 +580,28 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fx3d7_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; Ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">9000</span>,-<span class="dv">2000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;9&quot;</span>,<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene==<span class="st">&quot;PF3D7_1011900&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">g &lt;-<span class="st"> </span>fx3d7_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; Ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="op">-</span><span class="dv">2000</span>),</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">9000</span>,<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>),</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;9&quot;</span>,<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1011900&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb21-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb21-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb21-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/3d7headhead-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/3d7_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_convergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(filtered_convergent)</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/3d7_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># write summary to file</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/non_utr_convergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">summary</span>(filtered_convergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist             cor          
  Length:1059        Length:1059        Min.   : -99.0   Min.   :-0.94701  
  Class :character   Class :character   1st Qu.: 446.0   1st Qu.:-0.35060  
@@ -581,28 +616,28 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>filtered_convergent %&gt;%
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; Ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">4000</span>,-<span class="dv">4000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>,-<span class="dv">4000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(convergent,left_gene==<span class="st">&quot;PF3D7_1102700&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">g &lt;-<span class="st"> </span>filtered_convergent <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; Ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="op">-</span><span class="dv">4000</span>),</a>
+<a class="sourceLine" id="cb25-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>,<span class="op">-</span><span class="dv">4000</span>),</a>
+<a class="sourceLine" id="cb25-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(convergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102700&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb25-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb25-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb25-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb25-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/tailtail-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/non_utr_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/3d7_convergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(fx3d7_convergent)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/non_utr_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># write summary</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/3d7_convergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">summary</span>(fx3d7_convergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist        
  Length:1059        Length:1059        Min.   :-3135.0  
  Class :character   Class :character   1st Qu.: -376.0  
@@ -617,29 +652,29 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
  Mean   : 0.09809                     
  3rd Qu.: 0.58076                     
  Max.   : 0.99123                     </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fx3d7_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; Ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">4000</span>,-<span class="dv">4000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>,-<span class="dv">4000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene==<span class="st">&quot;PF3D7_1102700&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">g &lt;-<span class="st"> </span>fx3d7_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; Ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="op">-</span><span class="dv">4000</span>),</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>,<span class="op">-</span><span class="dv">4000</span>),</a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102700&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#377EB8&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb29-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb29-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb29-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb29-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/3d7tailtail-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/3d7_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/3d7_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
 <p>Then we can make the HB3 plots:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/hb3_divergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(fxhb3_divergent)</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/hb3_divergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">summary</span>(fxhb3_divergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist            cor         
  Length:1005        Length:1005        Min.   :-2344   Min.   :-0.9510  
  Class :character   Class :character   1st Qu.:  330   1st Qu.: 0.0330  
@@ -654,28 +689,28 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fxhb3_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene==<span class="st">&quot;PF3D7_1011900&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#E41A1C&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">g &lt;-<span class="st"> </span>fxhb3_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb33-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1011900&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#E41A1C&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb33-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb33-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb33-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb33-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/hb3headhead-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/hb3_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/hb3_convergent_summart.txt&quot;</span>)
-<span class="kw">summary</span>(fxhb3_convergent)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/hb3_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/hb3_convergent_summart.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">summary</span>(fxhb3_convergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist         
  Length:814         Length:814         Min.   :-2491.00  
  Class :character   Class :character   1st Qu.: -279.75  
@@ -690,29 +725,29 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
  Mean   : 0.1552                     
  3rd Qu.: 0.6882                     
  Max.   : 0.9963                     </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fxhb3_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene==<span class="st">&quot;PF3D7_1102700&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#E41A1C&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">g &lt;-<span class="st"> </span>fxhb3_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb37-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb37-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb37-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102700&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#E41A1C&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb37-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb37-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb37-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb37-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/hb3tailtail-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/hb3_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/hb3_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
 <p>And finally for IT:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/it_divergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(fxit_divergent)</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/it_divergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">summary</span>(fxit_divergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist              cor         
  Length:942         Length:942         Min.   :-4477.0   Min.   :-0.9243  
  Class :character   Class :character   1st Qu.:  355.2   1st Qu.: 0.1205  
@@ -727,28 +762,28 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fxit_divergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; ends (kbps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,-<span class="dv">5000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>,-<span class="dv">4000</span>,-<span class="dv">5000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>,<span class="st">&quot;-5&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene==<span class="st">&quot;PF3D7_1011900&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#4DAF4A&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">g &lt;-<span class="st"> </span>fxit_divergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 5&#39; ends (kbps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb41-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="op">-</span><span class="dv">5000</span>),</a>
+<a class="sourceLine" id="cb41-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">8000</span>,<span class="dv">7000</span>,<span class="dv">6000</span>,<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>,<span class="op">-</span><span class="dv">4000</span>,<span class="op">-</span><span class="dv">5000</span>),</a>
+<a class="sourceLine" id="cb41-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;8&quot;</span>,<span class="st">&quot;7&quot;</span>,<span class="st">&quot;6&quot;</span>,<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>,<span class="st">&quot;-4&quot;</span>,<span class="st">&quot;-5&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb41-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb41-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_divergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1011900&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1012000&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#4DAF4A&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb41-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb41-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb41-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb41-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/itheadhead-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/it_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># write summary to a file</span>
-<span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/it_convergent_summary.txt&quot;</span>)
-<span class="kw">summary</span>(fxit_convergent)</code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/it_headhead.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># write summary to a file</span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">sink</span>(<span class="st">&quot;../output/neighboring_genes/it_convergent_summary.txt&quot;</span>)</a>
+<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">summary</span>(fxit_convergent)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist              cor         
  Length:779         Length:779         Min.   :-2118.0   Min.   :-0.9810  
  Class :character   Class :character   1st Qu.: -128.0   1st Qu.:-0.3282  
@@ -763,111 +798,111 @@ g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <
                    
                    
                    </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sink</span>(<span class="ot">NULL</span>)
-<span class="co"># plot results</span>
-g &lt;-<span class="st"> </span>fxit_convergent %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) +<span class="st">  </span>
-<span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>))  +<span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; ends (bps)&quot;</span>) +
-<span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">5000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,-<span class="dv">1000</span>,-<span class="dv">2000</span>,-<span class="dv">3000</span>),
-                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) +
-<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene==<span class="st">&quot;PF3D7_1102700&quot;</span>&amp;right_gene==<span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#4DAF4A&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)
-
-g &lt;-<span class="st"> </span>ggExtra::<span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw">sink</span>(<span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="co"># plot results</span></a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">g &lt;-<span class="st"> </span>fxit_convergent <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>dist,<span class="dt">y=</span>cor)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>,<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb45-6" data-line-number="6"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>))  <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Distance between 3&#39; ends (bps)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_x_reverse</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">5000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb45-10" data-line-number="10">                  <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">5000</span>,<span class="dv">4000</span>,<span class="dv">3000</span>,<span class="dv">2000</span>,<span class="dv">1000</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">1000</span>,<span class="op">-</span><span class="dv">2000</span>,<span class="op">-</span><span class="dv">3000</span>),</a>
+<a class="sourceLine" id="cb45-11" data-line-number="11">                  <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;5&quot;</span>,<span class="st">&quot;4&quot;</span>,<span class="st">&quot;3&quot;</span>,<span class="st">&quot;2&quot;</span>,<span class="st">&quot;1&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;-1&quot;</span>,<span class="st">&quot;-2&quot;</span>,<span class="st">&quot;-3&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span><span class="kw">subset</span>(x3d7_convergent,left_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102700&quot;</span><span class="op">&amp;</span>right_gene<span class="op">==</span><span class="st">&quot;PF3D7_1102800&quot;</span>),<span class="dt">fill=</span><span class="st">&quot;#4DAF4A&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb45-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb45-15" data-line-number="15">g &lt;-<span class="st"> </span>ggExtra<span class="op">::</span><span class="kw">ggMarginal</span>(g, <span class="dt">type =</span> <span class="st">&quot;histogram&quot;</span>)</a>
+<a class="sourceLine" id="cb45-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb45-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/analyze_neighboring_genes.Rmd/ittailtail-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/it_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/it_tailtail.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a></code></pre></div>
 </div>
 <div id="individual-profile-plots" class="section level3">
 <h3>Individual profile plots</h3>
 <p>We need to scale the data for appropriate plotting:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fx3d7_abund &lt;-<span class="st"> </span>x3d7_abund %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(gene_id %in%<span class="st"> </span>fx3d7) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">select</span>(gene_id,tp,TPM) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">group_by</span>(gene_id) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(TPM)) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">inner_join</span>(x3d7_abund) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">norm_tpm=</span>(((TPM/m)-<span class="kw">mean</span>(TPM/m))/<span class="kw">sd</span>(TPM/m))) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">select</span>(gene_id,tp,norm_tpm) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
-<span class="st">  </span>tidyr::<span class="kw">spread</span>(tp,norm_tpm)
-
-sx3d7_abund &lt;-<span class="st"> </span>fx3d7_abund %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">rename</span>(<span class="st">`</span><span class="dt">8</span><span class="st">`</span>=<span class="st">`</span><span class="dt">2</span><span class="st">`</span>,
-                <span class="st">`</span><span class="dt">16</span><span class="st">`</span>=<span class="st">`</span><span class="dt">3</span><span class="st">`</span>,
-                <span class="st">`</span><span class="dt">24</span><span class="st">`</span>=<span class="st">`</span><span class="dt">4</span><span class="st">`</span>,
-                <span class="st">`</span><span class="dt">32</span><span class="st">`</span>=<span class="st">`</span><span class="dt">5</span><span class="st">`</span>,
-                <span class="st">`</span><span class="dt">40</span><span class="st">`</span>=<span class="st">`</span><span class="dt">6</span><span class="st">`</span>,
-                <span class="st">`</span><span class="dt">48</span><span class="st">`</span>=<span class="st">`</span><span class="dt">7</span><span class="st">`</span>) %&gt;%
-<span class="st">  </span>tidyr::<span class="kw">gather</span>(tp,norm_tpm,-gene_id) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">mutate</span>(<span class="dt">tp=</span><span class="kw">as.numeric</span>(tp))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(org.Pf.plasmo.db)
-gene_names &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(org.Pf.plasmoGENENAME)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plot_paired_profiles &lt;-<span class="st"> </span>function(df, gid1, gid2) {
-  df %&gt;%
-<span class="st">    </span>dplyr::<span class="kw">filter</span>(gene_id ==<span class="st"> </span>gid1 |<span class="st"> </span>gene_id ==<span class="st"> </span>gid2) %&gt;%
-<span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tp, <span class="dt">y =</span> norm_tpm, <span class="dt">color =</span> gene_id,<span class="dt">group=</span>gene_id)) +
-<span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(gid1,<span class="st">&quot;</span><span class="ch">\n</span><span class="st"> &quot;</span>,gene_names[gene_names$gene_id==gid1,]$gene_name,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,
-            gid2,<span class="st">&quot;</span><span class="ch">\n</span><span class="st"> &quot;</span>,gene_names[gene_names$gene_id==gid2,]$gene_name)) +
-<span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">se =</span> F, <span class="dt">size =</span> <span class="fl">1.5</span>) +
-<span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">fill=</span>gene_id),<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>) +
-<span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">32</span>,<span class="dv">40</span>,<span class="dv">48</span>), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;T1&quot;</span>, <span class="st">&quot;T2&quot;</span>, <span class="st">&quot;T3&quot;</span> ,<span class="st">&quot;T4&quot;</span>, <span class="st">&quot;T5&quot;</span>, <span class="st">&quot;T6&quot;</span>, <span class="st">&quot;T7&quot;</span>)) +
-<span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">remove=</span>F) +
-<span class="st">    </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Paired&quot;</span>) +<span class="st"> </span>
-<span class="st">    </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Paired&quot;</span>) +
-<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized TPM&quot;</span>) +
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) +
-<span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>) +
-<span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)
-}</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">fx3d7_abund &lt;-<span class="st"> </span>x3d7_abund <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>fx3d7) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,tp,TPM) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(TPM)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(x3d7_abund) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">norm_tpm=</span>(((TPM<span class="op">/</span>m)<span class="op">-</span><span class="kw">mean</span>(TPM<span class="op">/</span>m))<span class="op">/</span><span class="kw">sd</span>(TPM<span class="op">/</span>m))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,tp,norm_tpm) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-9" data-line-number="9"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-10" data-line-number="10"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">spread</span>(tp,norm_tpm)</a>
+<a class="sourceLine" id="cb47-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb47-12" data-line-number="12">sx3d7_abund &lt;-<span class="st"> </span>fx3d7_abund <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-13" data-line-number="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="st">`</span><span class="dt">8</span><span class="st">`</span>=<span class="st">`</span><span class="dt">2</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-14" data-line-number="14">                <span class="st">`</span><span class="dt">16</span><span class="st">`</span>=<span class="st">`</span><span class="dt">3</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-15" data-line-number="15">                <span class="st">`</span><span class="dt">24</span><span class="st">`</span>=<span class="st">`</span><span class="dt">4</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-16" data-line-number="16">                <span class="st">`</span><span class="dt">32</span><span class="st">`</span>=<span class="st">`</span><span class="dt">5</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-17" data-line-number="17">                <span class="st">`</span><span class="dt">40</span><span class="st">`</span>=<span class="st">`</span><span class="dt">6</span><span class="st">`</span>,</a>
+<a class="sourceLine" id="cb47-18" data-line-number="18">                <span class="st">`</span><span class="dt">48</span><span class="st">`</span>=<span class="st">`</span><span class="dt">7</span><span class="st">`</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-19" data-line-number="19"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(tp,norm_tpm,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-20" data-line-number="20"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">tp=</span><span class="kw">as.numeric</span>(tp))</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">require</span>(org.Pf.plasmo.db)</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">gene_names &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(org.Pf.plasmoGENENAME)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">plot_paired_profiles &lt;-<span class="st"> </span><span class="cf">function</span>(df, gid1, gid2) {</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">  df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">==</span><span class="st"> </span>gid1 <span class="op">|</span><span class="st"> </span>gene_id <span class="op">==</span><span class="st"> </span>gid2) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> tp, <span class="dt">y =</span> norm_tpm, <span class="dt">color =</span> gene_id,<span class="dt">group=</span>gene_id)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(gid1,<span class="st">&quot;</span><span class="ch">\n</span><span class="st"> &quot;</span>,gene_names[gene_names<span class="op">$</span>gene_id<span class="op">==</span>gid1,]<span class="op">$</span>gene_name,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>,</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">            gid2,<span class="st">&quot;</span><span class="ch">\n</span><span class="st"> &quot;</span>,gene_names[gene_names<span class="op">$</span>gene_id<span class="op">==</span>gid2,]<span class="op">$</span>gene_name)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">se =</span> F, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">fill=</span>gene_id),<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">pch=</span><span class="dv">21</span>,<span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-9" data-line-number="9"><span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">32</span>,<span class="dv">40</span>,<span class="dv">48</span>), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;T1&quot;</span>, <span class="st">&quot;T2&quot;</span>, <span class="st">&quot;T3&quot;</span> ,<span class="st">&quot;T4&quot;</span>, <span class="st">&quot;T5&quot;</span>, <span class="st">&quot;T6&quot;</span>, <span class="st">&quot;T7&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-10" data-line-number="10"><span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">remove=</span>F) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-11" data-line-number="11"><span class="st">    </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Paired&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-12" data-line-number="12"><span class="st">    </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Paired&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-13" data-line-number="13"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized TPM&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-14" data-line-number="14"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-15" data-line-number="15"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb49-16" data-line-number="16"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="dv">0</span>,<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb49-17" data-line-number="17">}</a></code></pre></div>
 <div id="convergent-example" class="section level4">
 <h4>Convergent example</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plot_paired_profiles(sx3d7_abund,&quot;PF3D7_1431300&quot;,&quot;PF3D7_1431400&quot;)</span>
-<span class="co">#plot_paired_profiles(sx3d7_abund,&quot;PF3D7_0214900&quot;,&quot;PF3D7_0215000&quot;)</span>
-g &lt;-<span class="st"> </span><span class="kw">plot_paired_profiles</span>(sx3d7_abund,<span class="st">&quot;PF3D7_1115900&quot;</span>,<span class="st">&quot;PF3D7_1116000&quot;</span>)
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/convergent_pair.svg&quot;</span>,<span class="dt">width=</span><span class="dv">4</span>,<span class="dt">height=</span><span class="dv">4</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
-<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co">#plot_paired_profiles(sx3d7_abund,&quot;PF3D7_1431300&quot;,&quot;PF3D7_1431400&quot;)</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="co">#plot_paired_profiles(sx3d7_abund,&quot;PF3D7_0214900&quot;,&quot;PF3D7_0215000&quot;)</span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">g &lt;-<span class="st"> </span><span class="kw">plot_paired_profiles</span>(sx3d7_abund,<span class="st">&quot;PF3D7_1115900&quot;</span>,<span class="st">&quot;PF3D7_1116000&quot;</span>)</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/convergent_pair.svg&quot;</span>,<span class="dt">width=</span><span class="dv">4</span>,<span class="dt">height=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb50-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb50-6" data-line-number="6"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="divergent-example" class="section level4">
 <h4>Divergent example</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">plot_paired_profiles</span>(sx3d7_abund,<span class="st">&quot;PF3D7_1011900&quot;</span>,<span class="st">&quot;PF3D7_1012000&quot;</span>)
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/divergent_pair.svg&quot;</span>,<span class="dt">width=</span><span class="dv">4</span>,<span class="dt">height=</span><span class="dv">4</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
-<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">plot_paired_profiles</span>(sx3d7_abund,<span class="st">&quot;PF3D7_1011900&quot;</span>,<span class="st">&quot;PF3D7_1012000&quot;</span>)</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/divergent_pair.svg&quot;</span>,<span class="dt">width=</span><span class="dv">4</span>,<span class="dt">height=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="bidirectional-promoters" class="section level3">
 <h3>Bidirectional promoters</h3>
 <p>What if we split up the divergent neighboring genes by the distance separating them and plot their correlations individually. Do we see anything interesting?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmp &lt;-<span class="st"> </span>fx3d7_divergent
-tmp$group &lt;-<span class="st"> </span>dplyr::<span class="kw">case_when</span>(
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">0</span> ~<span class="st"> &quot;&lt; 0&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">500</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">0</span> ~<span class="st"> &quot;0-500&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">1000</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">500</span> ~<span class="st"> &quot;500-1000&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">1500</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">1000</span> ~<span class="st"> &quot;1000-1500&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">2000</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">1500</span> ~<span class="st"> &quot;1500-2000&quot;</span>,
-  tmp$dist &gt;<span class="st"> </span><span class="dv">2000</span> ~<span class="st"> &quot;&gt; 2000&quot;</span>
-)
-tmp$group &lt;-<span class="st"> </span><span class="kw">factor</span>(tmp$group, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;&lt; 0&quot;</span>,<span class="st">&quot;0-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;1000-1500&quot;</span>,<span class="st">&quot;1500-2000&quot;</span>,<span class="st">&quot;&gt; 2000&quot;</span>))
-tmp %&gt;%<span class="st"> </span><span class="kw">group_by</span>(group) %&gt;%<span class="st"> </span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(cor))</code></pre></div>
-<pre><code># A tibble: 6 × 2
-      group          m
-     &lt;fctr&gt;      &lt;dbl&gt;
-1       &lt; 0 0.56830271
-2     0-500 0.49422256
-3  500-1000 0.33692033
-4 1000-1500 0.09371186
-5 1500-2000 0.17578773
-6    &gt; 2000 0.12273421</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tmp)</code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">tmp &lt;-<span class="st"> </span>fx3d7_divergent</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">tmp<span class="op">$</span>group &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">case_when</span>(</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">  tmp<span class="op">$</span>dist <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;&lt; 0&quot;</span>,</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4">  tmp<span class="op">$</span>dist <span class="op">&lt;=</span><span class="st"> </span><span class="dv">500</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;0-500&quot;</span>,</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5">  tmp<span class="op">$</span>dist <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1000</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">500</span> <span class="op">~</span><span class="st"> &quot;500-1000&quot;</span>,</a>
+<a class="sourceLine" id="cb52-6" data-line-number="6">  tmp<span class="op">$</span>dist <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1500</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span> <span class="op">~</span><span class="st"> &quot;1000-1500&quot;</span>,</a>
+<a class="sourceLine" id="cb52-7" data-line-number="7">  tmp<span class="op">$</span>dist <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2000</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">1500</span> <span class="op">~</span><span class="st"> &quot;1500-2000&quot;</span>,</a>
+<a class="sourceLine" id="cb52-8" data-line-number="8">  tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">2000</span> <span class="op">~</span><span class="st"> &quot;&gt; 2000&quot;</span></a>
+<a class="sourceLine" id="cb52-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb52-10" data-line-number="10">tmp<span class="op">$</span>group &lt;-<span class="st"> </span><span class="kw">factor</span>(tmp<span class="op">$</span>group, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;&lt; 0&quot;</span>,<span class="st">&quot;0-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;1000-1500&quot;</span>,<span class="st">&quot;1500-2000&quot;</span>,<span class="st">&quot;&gt; 2000&quot;</span>))</a>
+<a class="sourceLine" id="cb52-11" data-line-number="11">tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(group) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(cor))</a></code></pre></div>
+<pre><code># A tibble: 6 x 2
+  group          m
+  &lt;fct&gt;      &lt;dbl&gt;
+1 &lt; 0       0.568 
+2 0-500     0.494 
+3 500-1000  0.337 
+4 1000-1500 0.0937
+5 1500-2000 0.176 
+6 &gt; 2000    0.123 </code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">summary</span>(tmp)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist            cor           
  Length:1119        Length:1119        Min.   :-2869   Min.   :-0.947766  
  Class :character   Class :character   1st Qu.:  229   1st Qu.:-0.005024  
@@ -882,41 +917,41 @@ tmp %&gt;%<span class="st"> </span><span class="kw">group_by</span>(group) %&gt;
                     1000-1500:137  
                     1500-2000: 97  
                     &gt; 2000   :128  </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span>tmp %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>group,<span class="dt">y=</span>cor,<span class="dt">group=</span>group)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;#7FC97F&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">mean</span>(random_cor),<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st">  </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>)) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>)) 
-
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/divergent_groups.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
-<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>group,<span class="dt">y=</span>cor,<span class="dt">group=</span>group)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;#7FC97F&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">mean</span>(random_cor),<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb56-4" data-line-number="4"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb56-5" data-line-number="5"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb56-6" data-line-number="6"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>)) </a>
+<a class="sourceLine" id="cb56-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb56-8" data-line-number="8"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/divergent_groups.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb56-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb56-10" data-line-number="10"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="transcriptional-interference" class="section level3">
 <h3>Transcriptional interference</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmp &lt;-<span class="st"> </span>fx3d7_convergent
-tmp$group &lt;-<span class="st"> </span>dplyr::<span class="kw">case_when</span>(
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">0</span> ~<span class="st"> &quot;&lt; 0&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">500</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">0</span> ~<span class="st"> &quot;0-500&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">1000</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">500</span> ~<span class="st"> &quot;500-1000&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">1500</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">1000</span> ~<span class="st"> &quot;1000-1500&quot;</span>,
-  tmp$dist &lt;=<span class="st"> </span><span class="dv">2000</span> &amp;<span class="st"> </span>tmp$dist &gt;<span class="st"> </span><span class="dv">1500</span> ~<span class="st"> &quot;1500-2000&quot;</span>,
-  tmp$dist &gt;<span class="st"> </span><span class="dv">2000</span> ~<span class="st"> &quot;&gt; 2000&quot;</span>
-)
-tmp$group &lt;-<span class="st"> </span><span class="kw">factor</span>(tmp$group, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;&lt; 0&quot;</span>,<span class="st">&quot;0-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;1000-1500&quot;</span>,<span class="st">&quot;1500-2000&quot;</span>,<span class="st">&quot;&gt; 2000&quot;</span>))
-tmp %&gt;%<span class="st"> </span><span class="kw">group_by</span>(group) %&gt;%<span class="st"> </span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(cor))</code></pre></div>
-<pre><code># A tibble: 6 × 2
-      group           m
-     &lt;fctr&gt;       &lt;dbl&gt;
-1       &lt; 0  0.11462443
-2     0-500  0.06865041
-3  500-1000  0.16813822
-4 1000-1500  0.06278410
-5 1500-2000 -0.94119123
-6    &gt; 2000  0.07232966</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(tmp)</code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">tmp &lt;-<span class="st"> </span>fx3d7_convergent</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">tmp<span class="op">$</span>group &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">case_when</span>(</a>
+<a class="sourceLine" id="cb57-3" data-line-number="3">  tmp<span class="op">$</span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">-1000</span> <span class="op">~</span><span class="st"> &quot;&lt; -1000&quot;</span>,</a>
+<a class="sourceLine" id="cb57-4" data-line-number="4">  tmp<span class="op">$</span>dist <span class="op">&gt;=</span><span class="st"> </span><span class="dv">-1000</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">-500</span> <span class="op">~</span><span class="st"> &quot;-1000--500&quot;</span>,</a>
+<a class="sourceLine" id="cb57-5" data-line-number="5">  tmp<span class="op">$</span>dist <span class="op">&gt;=</span><span class="st"> </span><span class="dv">-500</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">~</span><span class="st"> &quot;-500-0&quot;</span>,</a>
+<a class="sourceLine" id="cb57-6" data-line-number="6">  tmp<span class="op">$</span>dist <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">500</span> <span class="op">~</span><span class="st"> &quot;0-500&quot;</span>,</a>
+<a class="sourceLine" id="cb57-7" data-line-number="7">  tmp<span class="op">$</span>dist <span class="op">&gt;=</span><span class="st"> </span><span class="dv">500</span> <span class="op">&amp;</span><span class="st"> </span>tmp<span class="op">$</span>dist <span class="op">&lt;</span><span class="st"> </span><span class="dv">1000</span> <span class="op">~</span><span class="st"> &quot;500-1000&quot;</span>,</a>
+<a class="sourceLine" id="cb57-8" data-line-number="8">  tmp<span class="op">$</span>dist <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span> <span class="op">~</span><span class="st"> &quot;&gt; 1000&quot;</span></a>
+<a class="sourceLine" id="cb57-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb57-10" data-line-number="10">tmp<span class="op">$</span>group &lt;-<span class="st"> </span><span class="kw">factor</span>(tmp<span class="op">$</span>group, <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;&lt; -1000&quot;</span>,<span class="st">&quot;-1000--500&quot;</span>,<span class="st">&quot;-500-0&quot;</span>,<span class="st">&quot;0-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;&gt; 1000&quot;</span>))</a>
+<a class="sourceLine" id="cb57-11" data-line-number="11">tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(group) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(cor))</a></code></pre></div>
+<pre><code># A tibble: 6 x 2
+  group           m
+  &lt;fct&gt;       &lt;dbl&gt;
+1 &lt; -1000    0.0394
+2 -1000--500 0.0991
+3 -500-0     0.126 
+4 0-500      0.0694
+5 500-1000   0.160 
+6 &gt; 1000     0.0189</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">summary</span>(tmp)</a></code></pre></div>
 <pre><code>  left_gene          right_gene             dist        
  Length:1059        Length:1059        Min.   :-3135.0  
  Class :character   Class :character   1st Qu.: -376.0  
@@ -924,81 +959,119 @@ tmp %&gt;%<span class="st"> </span><span class="kw">group_by</span>(group) %&gt;
                                        Mean   : -125.1  
                                        3rd Qu.:   69.5  
                                        Max.   : 7139.0  
-      cor           orientation              group    
- Min.   :-0.94701   Length:1059        &lt; 0      :598  
- 1st Qu.:-0.35060   Class :character   0-500    :391  
- Median : 0.11516   Mode  :character   500-1000 : 48  
- Mean   : 0.09809                      1000-1500: 17  
- 3rd Qu.: 0.58076                      1500-2000:  1  
- Max.   : 0.99123                      &gt; 2000   :  4  </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span>tmp %&gt;%<span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>group,<span class="dt">y=</span>cor,<span class="dt">group=</span>group)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;#BEAED4&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">mean</span>(random_cor),<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>)) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span>~rho~<span class="st">&quot;)&quot;</span>)) 
-
-<span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/convergent_groups.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)
-
-<span class="kw">print</span>(g)</code></pre></div>
-<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+      cor           orientation               group    
+ Min.   :-0.94701   Length:1059        &lt; -1000   : 37  
+ 1st Qu.:-0.35060   Class :character   -1000--500:128  
+ Median : 0.11516   Mode  :character   -500-0    :433  
+ Mean   : 0.09809                      0-500     :390  
+ 3rd Qu.: 0.58076                      500-1000  : 49  
+ Max.   : 0.99123                      &gt; 1000    : 22  </code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>group,<span class="dt">y=</span>cor,<span class="dt">group=</span>group)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;#BEAED4&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="kw">mean</span>(random_cor),<span class="dt">linetype=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">60</span>, <span class="dt">hjust=</span><span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb61-5" data-line-number="5"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb61-6" data-line-number="6"><span class="st">  </span><span class="kw">ylab</span>(<span class="kw">expression</span>(<span class="st">&quot;Correlation (&quot;</span><span class="op">~</span>rho<span class="op">~</span><span class="st">&quot;)&quot;</span>)) </a>
+<a class="sourceLine" id="cb61-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb61-8" data-line-number="8"><span class="kw">ggsave</span>(<span class="dt">plot=</span>g,<span class="dt">filename=</span><span class="st">&quot;../output/neighboring_genes/convergent_groups.svg&quot;</span>,<span class="dt">height=</span><span class="dv">3</span>,<span class="dt">width=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb61-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb61-10" data-line-number="10"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/analyze_neighboring_genes.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
-<pre><code>R version 3.3.2 (2016-10-31)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: OS X El Capitan 10.11.6
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<pre><code>R version 3.5.0 (2018-04-23)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Gentoo/Linux
+
+Matrix products: default
+BLAS: /usr/local/lib64/R/lib/libRblas.so
+LAPACK: /usr/local/lib64/R/lib/libRlapack.so
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
 attached base packages:
 [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
 [8] methods   base     
 
 other attached packages:
- [1] org.Pf.plasmo.db_3.4.0 AnnotationDbi_1.36.2   IRanges_2.8.1         
- [4] S4Vectors_0.12.1       Biobase_2.34.0         BiocGenerics_0.20.0   
- [7] scales_0.4.1           cowplot_0.7.0          magrittr_1.5          
-[10] stringr_1.2.0          dplyr_0.5.0            purrr_0.2.2           
-[13] readr_1.0.0            tidyr_0.6.1            tibble_1.2            
-[16] ggplot2_2.2.1          tidyverse_1.1.1       
+ [1] gdtools_0.1.7                        
+ [2] bindrcpp_0.2.2                       
+ [3] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [4] BSgenome_1.48.0                      
+ [5] rtracklayer_1.40.6                   
+ [6] Biostrings_2.48.0                    
+ [7] XVector_0.20.0                       
+ [8] GenomicRanges_1.32.6                 
+ [9] GenomeInfoDb_1.16.0                  
+[10] org.Pf.plasmo.db_3.6.0               
+[11] AnnotationDbi_1.42.1                 
+[12] IRanges_2.14.10                      
+[13] S4Vectors_0.18.3                     
+[14] Biobase_2.40.0                       
+[15] BiocGenerics_0.26.0                  
+[16] scales_1.0.0                         
+[17] cowplot_0.9.3                        
+[18] magrittr_1.5                         
+[19] forcats_0.3.0                        
+[20] stringr_1.3.1                        
+[21] dplyr_0.7.6                          
+[22] purrr_0.2.5                          
+[23] readr_1.1.1                          
+[24] tidyr_0.8.1                          
+[25] tibble_1.4.2                         
+[26] ggplot2_3.0.0                        
+[27] tidyverse_1.2.1                      
 
 loaded via a namespace (and not attached):
- [1] httr_1.2.1                 jsonlite_1.3              
- [3] modelr_0.1.0               shiny_1.0.0               
- [5] assertthat_0.1             Rsamtools_1.26.1          
- [7] yaml_2.1.14                RSQLite_1.1-2             
- [9] backports_1.0.5            lattice_0.20-34           
-[11] digest_0.6.12              GenomicRanges_1.26.3      
-[13] RColorBrewer_1.1-2         XVector_0.14.0            
-[15] rvest_0.3.2                colorspace_1.3-2          
-[17] htmltools_0.3.5            httpuv_1.3.3              
-[19] Matrix_1.2-8               plyr_1.8.4                
-[21] psych_1.6.12               XML_3.98-1.5              
-[23] broom_0.4.2                haven_1.0.0               
-[25] zlibbioc_1.20.0            xtable_1.8-2              
-[27] BiocParallel_1.8.1         git2r_0.18.0              
-[29] SummarizedExperiment_1.4.0 lazyeval_0.2.0            
-[31] mnormt_1.5-5               mime_0.5                  
-[33] readxl_0.1.1               memoise_1.0.0             
-[35] evaluate_0.10              nlme_3.1-131              
-[37] forcats_0.2.0              xml2_1.1.1                
-[39] foreign_0.8-67             tools_3.3.2               
-[41] hms_0.3                    munsell_0.4.3             
-[43] Biostrings_2.42.1          GenomeInfoDb_1.10.3       
-[45] grid_3.3.2                 RCurl_1.95-4.8            
-[47] miniUI_0.1.1               bitops_1.0-6              
-[49] labeling_0.3               rmarkdown_1.3             
-[51] gtable_0.2.0               DBI_0.5-1                 
-[53] reshape2_1.4.2             R6_2.2.0                  
-[55] GenomicAlignments_1.10.0   lubridate_1.6.0           
-[57] knitr_1.15.1               rtracklayer_1.34.2        
-[59] ggExtra_0.6                workflowr_0.3.0           
-[61] rprojroot_1.2              stringi_1.1.2             
-[63] Rcpp_0.12.9               </code></pre>
+ [1] nlme_3.1-137                bitops_1.0-6               
+ [3] matrixStats_0.54.0          lubridate_1.7.4            
+ [5] bit64_0.9-7                 RColorBrewer_1.1-2         
+ [7] httr_1.3.1                  rprojroot_1.3-2            
+ [9] tools_3.5.0                 backports_1.1.2            
+[11] utf8_1.1.4                  R6_2.2.2                   
+[13] DBI_1.0.0                   lazyeval_0.2.1             
+[15] colorspace_1.3-2            withr_2.1.2                
+[17] tidyselect_0.2.4            bit_1.1-14                 
+[19] compiler_3.5.0              git2r_0.23.0               
+[21] cli_1.0.0                   rvest_0.3.2                
+[23] xml2_1.2.0                  DelayedArray_0.6.5         
+[25] labeling_0.3                digest_0.6.15              
+[27] Rsamtools_1.32.3            svglite_1.2.1              
+[29] rmarkdown_1.10              R.utils_2.6.0              
+[31] pkgconfig_2.0.2             htmltools_0.3.6            
+[33] rlang_0.2.2                 readxl_1.1.0               
+[35] rstudioapi_0.7              RSQLite_2.1.1              
+[37] shiny_1.1.0                 bindr_0.1.1                
+[39] jsonlite_1.5                BiocParallel_1.14.2        
+[41] R.oo_1.22.0                 RCurl_1.95-4.11            
+[43] GenomeInfoDbData_1.1.0      Matrix_1.2-14              
+[45] fansi_0.3.0                 Rcpp_0.12.18               
+[47] munsell_0.5.0               R.methodsS3_1.7.1          
+[49] stringi_1.2.4               yaml_2.2.0                 
+[51] SummarizedExperiment_1.10.1 zlibbioc_1.26.0            
+[53] plyr_1.8.4                  grid_3.5.0                 
+[55] blob_1.1.1                  promises_1.0.1             
+[57] crayon_1.3.4                miniUI_0.1.1.1             
+[59] lattice_0.20-35             haven_1.1.2                
+[61] hms_0.4.2                   knitr_1.20                 
+[63] pillar_1.3.0                XML_3.98-1.16              
+[65] glue_1.3.0                  evaluate_0.11              
+[67] modelr_0.1.2                httpuv_1.4.5               
+[69] cellranger_1.1.0            gtable_0.2.0               
+[71] assertthat_0.2.0            ggExtra_0.8                
+[73] mime_0.5                    xtable_1.8-3               
+[75] broom_0.5.0                 later_0.7.5                
+[77] GenomicAlignments_1.16.0    memoise_1.1.0              
+[79] workflowr_1.1.1            </code></pre>
 </div>
 
 <hr>
@@ -1050,7 +1123,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
