@@ -1,0 +1,143 @@
+---
+title: "Comparing predicted UTRs"
+author: "Philipp Ross"
+date: 2018-09-24
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+```{r}
+library(org.Pf.plasmo.db)
+aliases <- tibble::as_tibble(data.frame(org.Pf.plasmoALIAS2ORF))
+
+utrs <- tibble::as_tibble(rtracklayer::import.gff("../output/final_utrs/final_5utrs_3d7.gff"))
+utrs$Parent <- unlist(utrs$Parent)
+
+```
+
+```{r}
+# Comparing our UTR estimates to the Derisi predictions
+
+derisi1 <- tibble::as_tibble(rtracklayer::import.bed("../data/compare_utrs/GSM1410291_UTRs_1.bed"))
+derisi2 <- tibble::as_tibble(rtracklayer::import.bed("../data/compare_utrs/GSM1410292_UTRs_2.bed"))
+derisi3 <- tibble::as_tibble(rtracklayer::import.bed("../data/compare_utrs/GSM1410293_UTRs_3.bed"))
+derisi4 <- tibble::as_tibble(rtracklayer::import.bed("../data/compare_utrs/GSM1410294_UTRs_4.bed"))
+derisi5 <- tibble::as_tibble(rtracklayer::import.bed("../data/compare_utrs/GSM1410295_UTRs_5.bed"))
+
+fix_derisi_utrs <- function(set) {
+  set$name <- stringi::stri_replace_last(set$name,replacement=" ",regex="_")
+  set <- set %>% tidyr::separate(name,into = c("gene_id","type"), sep =" ")
+  set$gene_id <- toupper(set$gene_id)
+  out <- dplyr::inner_join(set, aliases, by=c("gene_id"="alias_symbol"))
+  return(out)
+}
+
+derisi1 <- fix_derisi_utrs(derisi1)
+derisi2 <- fix_derisi_utrs(derisi2)
+derisi3 <- fix_derisi_utrs(derisi3)
+derisi4 <- fix_derisi_utrs(derisi4)
+derisi5 <- fix_derisi_utrs(derisi5)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi1, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi2, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi3, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi3, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi4, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+tmp1 <- dplyr::select(derisi5, gene_id.y, width)
+tmp2 <- dplyr::select(utrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+#cor.test(compare_derisi$width.x,df3$width.y)
+```
+
+```{r}
+# Comparing our UTR estimates to the Adjalley predictions
+adjalley <- tibble::as_tibble(rtracklayer::import.gff("../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff"))
+
+for (i in 1:8) {
+  adjalley_filtered <- adjalley %>%
+    dplyr::mutate(position=(start+end)/2) %>%
+    dplyr::filter(FilterSize>i)
+  tmp1 <- dplyr::select(adjalley_filtered, AssignedFeat, position)
+  tmp2 <- dplyr::select(utrs, Parent, start)
+  compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent"))
+  g <- ggplot(compare_adjalley,aes(position-start)) + geom_histogram(fill="#aec6cf",color="grey50")
+  print(g)
+}
+rm(tmp1,tmp2)
+```
+
+## Session Information
+
+```{r session-info}
+```

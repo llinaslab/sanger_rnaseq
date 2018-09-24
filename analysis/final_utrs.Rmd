@@ -121,7 +121,11 @@ In the current analysis, I'm forgetting to take into account introns when lookin
 1. Do long homopolymer tracts exist within prediced coverage UTRs?
 2. Are UTRs containing long homopolymer tracts on average shorter than those that don't?
 
-To address these questions, I extended 5' and 3' UTRs 100 base pairs beyond their predicted coverage TSS and TES, removed intron sequences, counted the number and length of homopolymer tracts, and compared whether longer homopolymer tracts tend to occur in UTRs that are shorter and vice versa.
+To address these questions, I extended 5' UTRs 100 base pairs beyond their predicted coverage-based TSS, counted the length of the longest homopolymer tract for each nucleotide, and looked whether longer homopolymer tracts tend to occur in UTRs that are shorter.
+
+```{r}
+
+```
 
 ## Session Information
 

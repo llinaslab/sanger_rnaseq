@@ -41,7 +41,7 @@ Can we comment on the technical aspects of the sequencing protocol in regards to
 
 How do TSS predictions methods compare?
 
-* [Comparing TSS prediction methods]()
+* [Comparing TSS prediction methods](comparing_utrs.html)
 
 ## Data analysis
 
