@@ -21,14 +21,23 @@ knitr::read_chunk("chunks.R")
 
 **Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
+## Comparing different UTR and TSS predictions
+
+Since we were able to predict both UTRs and TSSs using our data, we wanted to know how our predictions compared to previously published predictions. Here, we compare the UTRs predicted in [Caro et al.](https://www.ncbi.nlm.nih.gov/pubmed/25493618) and [Adjalley et al.](https://www.ncbi.nlm.nih.gov/pubmed/26947071).
+
+What we see is that although there are some large deviations, for the majority of 5UTR and TSS predictions, the results are not very different with a mean hovering around zero base pairs of difference between the start positions of our predicted 5' UTRs and TSS and those that were previously published.
+
+First, let's import our 5UTR data:
+
 ```{r}
 library(org.Pf.plasmo.db)
 aliases <- tibble::as_tibble(data.frame(org.Pf.plasmoALIAS2ORF))
 
 utrs <- tibble::as_tibble(rtracklayer::import.gff("../output/final_utrs/final_5utrs_3d7.gff"))
 utrs$Parent <- unlist(utrs$Parent)
-
 ```
+
+### Comparing to Caro et al.
 
 ```{r}
 # Comparing our UTR estimates to the Derisi predictions
@@ -119,6 +128,8 @@ ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method=
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
 #cor.test(compare_derisi$width.x,df3$width.y)
 ```
+
+### Comparing to Adjalley et al.
 
 ```{r}
 # Comparing our UTR estimates to the Adjalley predictions

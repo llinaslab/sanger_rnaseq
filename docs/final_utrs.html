@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -25,46 +25,76 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 <style type="text/css">
   pre:not([class]) {
@@ -121,6 +151,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -337,8 +370,8 @@ div.tocify {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-03-30</p>
-<p><strong>Code version:</strong> 0e2e80a</p>
+<p><strong>Last updated:</strong> 2018-09-25</p>
+<p><strong>Code version:</strong> 1e6d9bb</p>
 <div id="making-finallongest-utrs" class="section level2">
 <h2>Making final/longest UTRs</h2>
 <p>There were several methods and data sets used to predict 5’ and 3’ UTRs.</p>
@@ -352,74 +385,103 @@ div.tocify {
 <li>3D7 coverage repaired UTRs</li>
 <li>Original RNA-seq UTR predictions</li>
 </ol>
-<p>First we should read in the resulting data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># function to read in the data</span>
-read_utrs &lt;-<span class="st"> </span>function(file, input_strain) {
-  df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rtracklayer::<span class="kw">import.gff3</span>(file)) %&gt;%
-<span class="st">    </span>dplyr::<span class="kw">select</span>(Parent,type,width)
-  df$strain &lt;-<span class="st"> </span>input_strain
-  df$Parent &lt;-<span class="st"> </span><span class="kw">as.character</span>(df$Parent)
-  <span class="kw">return</span>(df)
-}
-
-utrs3d7 &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_3d7_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;3D7&quot;</span>)
-utrshb3 &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_hb3_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;HB3&quot;</span>)
-utrsit &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_it_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;IT&quot;</span>)
-utrs &lt;-<span class="st"> </span><span class="kw">rbind</span>(utrs3d7,utrshb3,utrsit)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># 3D7</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="ex">../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="ex">../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="ex">TRUE</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="ex">../output/final_utrs/final_utrs_3d7.gff</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">  </a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># HB3</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  <span class="ex">../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">  <span class="ex">../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="ex">TRUE</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">  <span class="ex">../output/final_utrs/final_utrs_hb3.gff</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#IT</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">  <span class="ex">../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">  <span class="ex">../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="ex">TRUE</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">  <span class="ex">../output/final_utrs/final_utrs_it.gff</span></a></code></pre></div>
+<p>Finally, we should read in the resulting data:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># function to read in the data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">read_utrs &lt;-<span class="st"> </span><span class="cf">function</span>(file, input_strain) {</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(file)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(Parent,type,width)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  df<span class="op">$</span>strain &lt;-<span class="st"> </span>input_strain</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  df<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">as.character</span>(df<span class="op">$</span>Parent)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="kw">return</span>(df)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">utrs3d7 &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_3d7_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;3D7&quot;</span>)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">utrshb3 &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_hb3_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;HB3&quot;</span>)</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">utrsit &lt;-<span class="st"> </span><span class="kw">read_utrs</span>(<span class="st">&quot;../output/final_utrs/longest_utrs_it_plasmodb_compatible.gff&quot;</span>, <span class="st">&quot;IT&quot;</span>)</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">utrs &lt;-<span class="st"> </span><span class="kw">rbind</span>(utrs3d7,utrshb3,utrsit)</a></code></pre></div>
 </div>
 <div id="utrs" class="section level2">
 <h2>5’ UTRs</h2>
 <p>What does the distribution of 5’ UTRs look like?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;5UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>width)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey90&quot;</span>,<span class="dt">bins=</span><span class="dv">30</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">facet_grid</span>(.~strain) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>width)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey90&quot;</span>,<span class="dt">bins=</span><span class="dv">30</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>strain) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/5utrs-hist-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;5UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/5utrs-boxplots-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>How do summary statistics vary between strains?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;5UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">group_by</span>(strain) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(width),<span class="dt">median=</span><span class="kw">median</span>(width),<span class="dt">sd=</span><span class="kw">sd</span>(width))</code></pre></div>
-<pre><code># A tibble: 3 × 4
-  strain     mean median       sd
-   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
-1    3D7 662.6894    507 591.3160
-2    HB3 540.8970    438 457.6042
-3     IT 541.4937    428 498.9186</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(width),<span class="dt">median=</span><span class="kw">median</span>(width),<span class="dt">sd=</span><span class="kw">sd</span>(width))</a></code></pre></div>
+<pre><code># A tibble: 3 x 4
+  strain  mean median    sd
+  &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 3D7     663.    507  591.
+2 HB3     541.    438  458.
+3 IT      541.    428  499.</code></pre>
 </div>
 <div id="utrs-1" class="section level2">
 <h2>3’ UTRs</h2>
 <p>What does the distribution of 3’ UTRs look like?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;3UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>width)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey90&quot;</span>,<span class="dt">bins=</span><span class="dv">30</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">facet_grid</span>(.~strain) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>width)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey90&quot;</span>,<span class="dt">bins=</span><span class="dv">30</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>strain) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/3utrs-hist-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;3UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/3utrs-boxplots-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>How do summary statistics vary between strains?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utrs %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(type ==<span class="st"> &quot;3UTR&quot;</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">group_by</span>(strain) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(width),<span class="dt">median=</span><span class="kw">median</span>(width),<span class="dt">sd=</span><span class="kw">sd</span>(width))</code></pre></div>
-<pre><code># A tibble: 3 × 4
-  strain     mean median       sd
-   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
-1    3D7 453.9042  399.5 325.3769
-2    HB3 411.2785  356.0 329.6666
-3     IT 334.9430  288.0 283.9846</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">mean=</span><span class="kw">mean</span>(width),<span class="dt">median=</span><span class="kw">median</span>(width),<span class="dt">sd=</span><span class="kw">sd</span>(width))</a></code></pre></div>
+<pre><code># A tibble: 3 x 4
+  strain  mean median    sd
+  &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 3D7     454.   400.  325.
+2 HB3     411.   356   330.
+3 IT      335.   288   284.</code></pre>
 </div>
 <div id="homopolymer-analysis" class="section level2">
 <h2>Homopolymer analysis</h2>
@@ -429,57 +491,201 @@ utrs &lt;-<span class="st"> </span><span class="kw">rbind</span>(utrs3d7,utrshb3
 <li>Do long homopolymer tracts exist within prediced coverage UTRs?</li>
 <li>Are UTRs containing long homopolymer tracts on average shorter than those that don’t?</li>
 </ol>
-<p>To address these questions, I extended 5’ and 3’ UTRs 100 base pairs beyond their predicted coverage TSS and TES, removed intron sequences, counted the number and length of homopolymer tracts, and compared whether longer homopolymer tracts tend to occur in UTRs that are shorter and vice versa.</p>
+<p>To address these questions, I extended 5’ UTRs 100 base pairs beyond their predicted coverage-based TSS, counted the length of the longest homopolymer tract for each nucleotide, and looked whether longer homopolymer tracts tend to occur in UTRs that are shorter.</p>
+<p>First let’s make 3D7 5UTR sequences for the analysis:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="fu">cat</span> ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff <span class="kw">|</span> </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="fu">awk</span> <span class="st">&#39;BEGIN {{OFS=FS=\&quot;\t\&quot;}} {{split($9,X,\&quot;;\&quot;); split(X[1],Y,\&quot;=\&quot;); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}&#39;</span> <span class="kw">|</span> </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="ex">bedtools</span> getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo output/homopolymer_analysis/3d7_5utrs.fasta -s -name</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="ex">bedtools</span> flank -i ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff -g ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.lengths -s -l 100 -r 0 <span class="kw">|</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">  <span class="fu">awk</span> <span class="st">&#39;BEGIN {{OFS=FS=\&quot;\t\&quot;}} {{split($9,X,\&quot;;\&quot;); split(X[1],Y,\&quot;=\&quot;); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}&#39;</span> <span class="kw">|</span> </a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">  <span class="ex">bedtools</span> getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta -s -name</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="ex">bedtools</span> slop -i ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff -g ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.lengths -s -l 100 -r 0 <span class="kw">|</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="fu">awk</span> <span class="st">&#39;BEGIN {{OFS=FS=\&quot;\t\&quot;}} {{split($9,X,\&quot;;\&quot;); split(X[1],Y,\&quot;=\&quot;); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}&#39;</span> <span class="kw">|</span> </a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="ex">bedtools</span> getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta -s -name</a></code></pre></div>
+<p>Now let’s count the number of homopolymers:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">Rscript</span> ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="ex">Rscript</span> ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="ex">Rscript</span> ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/3d7_5utrs.fasta_counts.tsv</a></code></pre></div>
+<p>Now import that data:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">utrplus &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv&quot;</span>) <span class="co"># UTR plus 100bp upstream</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">plus&lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv&quot;</span>) <span class="co"># only 100 bp upstream of UTR</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">utrs &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/homopolymer_analysis/3d7_5utrs_counts.tsv&quot;</span>) <span class="co"># only UTR</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">originalutrs &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">originalutrs<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">as.character</span>(originalutrs<span class="op">$</span>Parent)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">fixedutrs &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../output/final_utrs/final_utrs_3d7.gff&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(length_added <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10">fixedutrs<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">as.character</span>(fixedutrs<span class="op">$</span>Parent)</a></code></pre></div>
+<p>And now plot the data:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, utrplus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<pre><code># A tibble: 1 x 8
+  estimate statistic   p.value parameter conf.low conf.high method
+     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
+1   -0.346     -24.4 9.37e-124      4385   -0.372    -0.320 Pears…
+# ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, plus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width,.<span class="op">$</span>longest)))</a></code></pre></div>
+<pre><code># A tibble: 1 x 8
+  estimate statistic  p.value parameter conf.low conf.high method
+     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
+1   -0.174     -11.7 2.92e-31      4385   -0.203    -0.145 Pears…
+# ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, utrs, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
+<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<pre><code># A tibble: 1 x 8
+  estimate statistic p.value parameter conf.low conf.high method
+     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
+1   0.0672      4.46 8.54e-6      4382   0.0376    0.0966 Pears…
+# ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(fixedutrs, utrplus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<pre><code># A tibble: 1 x 8
+  estimate statistic  p.value parameter conf.low conf.high method
+     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
+1   -0.320     -16.2 4.10e-56      2299   -0.357    -0.283 Pears…
+# ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
-<pre><code>R version 3.3.2 (2016-10-31)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: OS X El Capitan 10.11.6
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<pre><code>R version 3.5.0 (2018-04-23)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Gentoo/Linux
+
+Matrix products: default
+BLAS: /usr/local/lib64/R/lib/libRblas.so
+LAPACK: /usr/local/lib64/R/lib/libRlapack.so
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
 
 other attached packages:
- [1] scales_0.4.1    cowplot_0.7.0   magrittr_1.5    stringr_1.2.0  
- [5] dplyr_0.5.0     purrr_0.2.2     readr_1.0.0     tidyr_0.6.1    
- [9] tibble_1.2      ggplot2_2.2.1   tidyverse_1.1.1
+ [1] bindrcpp_0.2.2                       
+ [2] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [3] BSgenome_1.48.0                      
+ [4] rtracklayer_1.40.6                   
+ [5] Biostrings_2.48.0                    
+ [6] XVector_0.20.0                       
+ [7] GenomicRanges_1.32.6                 
+ [8] GenomeInfoDb_1.16.0                  
+ [9] org.Pf.plasmo.db_3.6.0               
+[10] AnnotationDbi_1.42.1                 
+[11] IRanges_2.14.10                      
+[12] S4Vectors_0.18.3                     
+[13] Biobase_2.40.0                       
+[14] BiocGenerics_0.26.0                  
+[15] scales_1.0.0                         
+[16] cowplot_0.9.3                        
+[17] magrittr_1.5                         
+[18] forcats_0.3.0                        
+[19] stringr_1.3.1                        
+[20] dplyr_0.7.6                          
+[21] purrr_0.2.5                          
+[22] readr_1.1.1                          
+[23] tidyr_0.8.1                          
+[24] tibble_1.4.2                         
+[25] ggplot2_3.0.0                        
+[26] tidyverse_1.2.1                      
 
 loaded via a namespace (and not attached):
- [1] SummarizedExperiment_1.4.0 reshape2_1.4.2            
- [3] haven_1.0.0                lattice_0.20-34           
- [5] colorspace_1.3-2           htmltools_0.3.5           
- [7] stats4_3.3.2               rtracklayer_1.34.2        
- [9] yaml_2.1.14                XML_3.98-1.5              
-[11] foreign_0.8-67             DBI_0.5-1                 
-[13] BiocParallel_1.8.1         BiocGenerics_0.20.0       
-[15] modelr_0.1.0               readxl_0.1.1              
-[17] plyr_1.8.4                 zlibbioc_1.20.0           
-[19] Biostrings_2.42.1          workflowr_0.3.0           
-[21] munsell_0.4.3              gtable_0.2.0              
-[23] rvest_0.3.2                psych_1.6.12              
-[25] evaluate_0.10              labeling_0.3              
-[27] Biobase_2.34.0             knitr_1.15.1              
-[29] forcats_0.2.0              IRanges_2.8.1             
-[31] GenomeInfoDb_1.10.3        parallel_3.3.2            
-[33] broom_0.4.2                Rcpp_0.12.9               
-[35] backports_1.0.5            S4Vectors_0.12.1          
-[37] jsonlite_1.3               XVector_0.14.0            
-[39] Rsamtools_1.26.1           mnormt_1.5-5              
-[41] hms_0.3                    digest_0.6.12             
-[43] stringi_1.1.2              GenomicRanges_1.26.3      
-[45] grid_3.3.2                 rprojroot_1.2             
-[47] tools_3.3.2                bitops_1.0-6              
-[49] RCurl_1.95-4.8             lazyeval_0.2.0            
-[51] Matrix_1.2-8               xml2_1.1.1                
-[53] lubridate_1.6.0            assertthat_0.1            
-[55] rmarkdown_1.3              httr_1.2.1                
-[57] R6_2.2.0                   git2r_0.18.0              
-[59] GenomicAlignments_1.10.0   nlme_3.1-131              </code></pre>
+ [1] nlme_3.1-137                bitops_1.0-6               
+ [3] matrixStats_0.54.0          lubridate_1.7.4            
+ [5] bit64_0.9-7                 httr_1.3.1                 
+ [7] rprojroot_1.3-2             tools_3.5.0                
+ [9] backports_1.1.2             utf8_1.1.4                 
+[11] R6_2.2.2                    DBI_1.0.0                  
+[13] lazyeval_0.2.1              colorspace_1.3-2           
+[15] withr_2.1.2                 tidyselect_0.2.4           
+[17] bit_1.1-14                  compiler_3.5.0             
+[19] git2r_0.23.0                cli_1.0.0                  
+[21] rvest_0.3.2                 xml2_1.2.0                 
+[23] DelayedArray_0.6.5          labeling_0.3               
+[25] digest_0.6.15               Rsamtools_1.32.3           
+[27] rmarkdown_1.10              R.utils_2.6.0              
+[29] pkgconfig_2.0.2             htmltools_0.3.6            
+[31] rlang_0.2.2                 readxl_1.1.0               
+[33] rstudioapi_0.7              RSQLite_2.1.1              
+[35] bindr_0.1.1                 jsonlite_1.5               
+[37] BiocParallel_1.14.2         R.oo_1.22.0                
+[39] RCurl_1.95-4.11             GenomeInfoDbData_1.1.0     
+[41] Matrix_1.2-14               fansi_0.3.0                
+[43] Rcpp_0.12.18                munsell_0.5.0              
+[45] R.methodsS3_1.7.1           stringi_1.2.4              
+[47] yaml_2.2.0                  SummarizedExperiment_1.10.1
+[49] zlibbioc_1.26.0             plyr_1.8.4                 
+[51] grid_3.5.0                  blob_1.1.1                 
+[53] crayon_1.3.4                lattice_0.20-35            
+[55] haven_1.1.2                 hms_0.4.2                  
+[57] knitr_1.20                  pillar_1.3.0               
+[59] reshape2_1.4.3              XML_3.98-1.16              
+[61] glue_1.3.0                  evaluate_0.11              
+[63] modelr_0.1.2                cellranger_1.1.0           
+[65] gtable_0.2.0                assertthat_0.2.0           
+[67] broom_0.5.0                 GenomicAlignments_1.16.0   
+[69] memoise_1.1.0               workflowr_1.1.1            </code></pre>
 </div>
 
 <hr>
@@ -531,7 +737,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

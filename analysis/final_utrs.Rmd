@@ -36,7 +36,39 @@ These predictions were all combined into lists of "longest possible transcripts"
 3. 3D7 coverage repaired UTRs
 4. Original RNA-seq UTR predictions
 
-First we should read in the resulting data:
+```{r,eval=F,engine='bash'}
+# 3D7
+Rscript scripts/create_final_utrs.R 
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff
+  ../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff
+  ../data/utrs/original_utrs/tso_thr5.gff
+  ../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff
+  TRUE
+  ../output/final_utrs/final_utrs_3d7.gff
+  
+# HB3
+Rscript scripts/create_final_utrs.R 
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff
+  ../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff
+  ../data/utrs/original_utrs/tso_thr5.gff
+  ../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff
+  TRUE
+  ../output/final_utrs/final_utrs_hb3.gff
+
+#IT
+Rscript scripts/create_final_utrs.R 
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff
+  ../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff
+  ../data/utrs/original_utrs/tso_thr5.gff
+  ../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff
+  TRUE
+  ../output/final_utrs/final_utrs_it.gff
+```
+
+Finally, we should read in the resulting data:
 
 ```{r read}
 # function to read in the data
@@ -123,8 +155,115 @@ In the current analysis, I'm forgetting to take into account introns when lookin
 
 To address these questions, I extended 5' UTRs 100 base pairs beyond their predicted coverage-based TSS, counted the length of the longest homopolymer tract for each nucleotide, and looked whether longer homopolymer tracts tend to occur in UTRs that are shorter.
 
-```{r}
+First let's make 3D7 5UTR sequences for the analysis:
 
+```{r,eval=F,engine='bash'}
+cat ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff | 
+  awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | 
+  bedtools getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo output/homopolymer_analysis/3d7_5utrs.fasta -s -name
+  
+bedtools flank -i ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff -g ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.lengths -s -l 100 -r 0 |
+  awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | 
+  bedtools getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta -s -name
+  
+bedtools slop -i ../data/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff -g ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.lengths -s -l 100 -r 0 |
+  awk 'BEGIN {{OFS=FS=\"\t\"}} {{split($9,X,\";\"); split(X[1],Y,\"=\"); print $1,$4-1,$5,Y[2],$5-$4+1,$7}}' | 
+  bedtools getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed - -fo ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta -s -name
+```
+
+Now let's count the number of homopolymers:
+
+```{r,eval=F,engine='bash'}
+Rscript ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv
+
+Rscript ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv
+
+Rscript ../code/scripts/final_utrs/count_homopolymers.R -f ../output/homopolymer_analysis/3d7_5utrs.fasta -l 50 -o ../output/homopolymer_analysis/3d7_5utrs.fasta_counts.tsv
+```
+
+Now import that data:
+
+```{r}
+utrplus <- readr::read_tsv("../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv") # UTR plus 100bp upstream
+plus<- readr::read_tsv("../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv") # only 100 bp upstream of UTR
+utrs <- readr::read_tsv("../output/homopolymer_analysis/3d7_5utrs_counts.tsv") # only UTR
+
+originalutrs <- tibble::as_tibble(rtracklayer::import.gff3("../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff"))
+originalutrs$Parent <- as.character(originalutrs$Parent)
+
+fixedutrs <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_3d7.gff")) %>%
+  dplyr::filter(length_added > 0)
+fixedutrs$Parent <- as.character(fixedutrs$Parent)
+```
+
+And now plot the data:
+
+```{r}
+tmp <- dplyr::inner_join(originalutrs, utrplus, by = c("Parent" = "gene_id"))
+
+g <- tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+print(g)
+
+tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
+```
+
+```{r}
+tmp <- dplyr::inner_join(originalutrs, plus, by = c("Parent" = "gene_id"))
+
+g <- tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  ggplot(aes(y=width,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+print(g)
+
+tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  do(broom::tidy(cor.test(.$width,.$longest)))
+```
+
+```{r}
+tmp <- dplyr::inner_join(originalutrs, utrs, by = c("Parent" = "gene_id"))
+
+g <- tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+print(g)
+
+tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
+```
+
+```{r}
+tmp <- dplyr::inner_join(fixedutrs, utrplus, by = c("Parent" = "gene_id"))
+
+g <- tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+print(g)
+
+tmp %>%
+  dplyr::filter(width < 8000) %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
 ```
 
 ## Session Information
