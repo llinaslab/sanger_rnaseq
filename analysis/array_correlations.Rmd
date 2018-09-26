@@ -21,7 +21,7 @@ knitr::read_chunk("chunks.R")
 
 **Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
-First we need to import normalized RNA-seq and microarray data:
+One of the first things we wanted to check was whether the time points from our RNA-seq data correlated well with published microarray data. First we need to import normalized RNA-seq and microarray data:
 
 ```{r}
 seq3d7 <- readr::read_tsv("../data/array_correlations/selected_globnorm_3d7_rpkms.txt")
@@ -29,6 +29,8 @@ seqhb3 <- readr::read_tsv("../data/array_correlations/selected_globnorm_hb3_rpkm
 seqit <- readr::read_tsv("../data/array_correlations/selected_globnorm_it_rpkms.txt") 
 array3d7 <- readr::read_tsv("../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt")
 ```
+
+Now we can calculate the correlations between all time points for each strain compared to the original 3D7 array data.
 
 ## 3D7
 
