@@ -1,0 +1,60 @@
+---
+title: "Array correlations"
+author: "Philipp Ross"
+date: 2018-09-25
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+First we need to import normalized RNA-seq and microarray data:
+
+```{r}
+seq3d7 <- readr::read_tsv("../data/array_correlations/selected_globnorm_3d7_rpkms.txt")
+seqhb3 <- readr::read_tsv("../data/array_correlations/selected_globnorm_hb3_rpkms.txt") 
+seqit <- readr::read_tsv("../data/array_correlations/selected_globnorm_it_rpkms.txt") 
+array3d7 <- readr::read_tsv("../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt")
+```
+
+## 3D7
+
+```{r}
+tmp <- dplyr::inner_join(array3d7, seq3d7, by = c("GeneID"="gene_id"))
+corr <- round(cor(na.omit(tmp[2:61])), 2)
+ggcorrplot::ggcorrplot(corr, hc.order = FALSE, outline.col = "white")
+```
+
+## HB3
+
+```{r}
+tmp <- dplyr::inner_join(array3d7, seqhb3, by = c("GeneID"="gene_id"))
+corr <- round(cor(na.omit(tmp[2:61])), 2)
+ggcorrplot::ggcorrplot(corr, hc.order = FALSE, outline.col = "white")
+```
+
+## IT
+
+```{r}
+tmp <- dplyr::inner_join(array3d7, seqit, by = c("GeneID"="gene_id"))
+corr <- round(cor(na.omit(tmp[2:61])), 2)
+ggcorrplot::ggcorrplot(corr, hc.order = FALSE, outline.col = "white")
+```
+
+## Session Information
+
+```{r session-info}
+```

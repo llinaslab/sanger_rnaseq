@@ -33,7 +33,7 @@ Does the data meet our assumptions before we begin our analysis?
 
 How well do our abundance estimates match with previously generated microarray data?
 
-* [Comparing RNA-seq and microarray readouts]()
+* [Comparing RNA-seq and microarray readouts](array_correlations.html)
 
 Can we comment on the technical aspects of the sequencing protocol in regards to potential GC-bias?
 
