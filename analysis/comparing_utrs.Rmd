@@ -69,9 +69,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ```{r}
@@ -80,9 +80,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ```{r}
@@ -91,9 +91,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ```{r}
@@ -102,9 +102,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ```{r}
@@ -113,9 +113,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point()+ geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ```{r}
@@ -124,9 +124,9 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_smooth(method="lm")
+ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
 ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-#cor.test(compare_derisi$width.x,df3$width.y)
+cor.test(compare_derisi$width.x,compare_derisi$width.y)
 ```
 
 ### Comparing to Adjalley et al.

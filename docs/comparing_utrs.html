@@ -371,7 +371,7 @@ div.tocify {
 
 
 <p><strong>Last updated:</strong> 2018-09-25</p>
-<p><strong>Code version:</strong> 9220caa</p>
+<p><strong>Code version:</strong> c5562e7</p>
 <div id="comparing-different-utr-and-tss-predictions" class="section level2">
 <h2>Comparing different UTR and TSS predictions</h2>
 <p>Since we were able to predict both UTRs and TSSs using our data, we wanted to know how our predictions compared to previously published predictions. Here, we compare the UTRs predicted in <a href="https://www.ncbi.nlm.nih.gov/pubmed/25493618">Caro et al.</a> and <a href="https://www.ncbi.nlm.nih.gov/pubmed/26947071">Adjalley et al.</a>.</p>
@@ -410,84 +410,150 @@ div.tocify {
 <a class="sourceLine" id="cb3-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi2, gene_id.y, width)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 44.624, df = 7619, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.4372115 0.4728149
+sample estimates:
+      cor 
+0.4551951 </code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi2, gene_id.y, width)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 39.839, df = 7926, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3899543 0.4266379
+sample estimates:
+     cor 
+0.408461 </code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi4, gene_id.y, width)</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 40.612, df = 7201, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.4127160 0.4503005
+sample estimates:
+      cor 
+0.4316956 </code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
 <a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 40.612, df = 7201, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.4127160 0.4503005
+sample estimates:
+      cor 
+0.4316956 </code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi4, gene_id.y, width)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi5, gene_id.y, width)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 39.132, df = 7197, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3996269 0.4377261
+sample estimates:
+      cor 
+0.4188608 </code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi5, gene_id.y, width)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">#cor.test(compare_derisi$width.x,df3$width.y)</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  compare_derisi$width.x and compare_derisi$width.y
+t = 29.152, df = 8625, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.2801573 0.3185779
+sample estimates:
+     cor 
+0.299489 </code></pre>
 </div>
 <div id="comparing-to-adjalley-et-al." class="section level3">
 <h3>Comparing to Adjalley et al.</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Comparing our UTR estimates to the Adjalley predictions</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">adjalley &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff</span>(<span class="st">&quot;../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff&quot;</span>))</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">  adjalley_filtered &lt;-<span class="st"> </span>adjalley <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">position=</span>(start<span class="op">+</span>end)<span class="op">/</span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(FilterSize<span class="op">&gt;</span>i)</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">  tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(adjalley_filtered, AssignedFeat, position)</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">  tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, start)</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">  compare_adjalley &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;AssignedFeat&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb21-11" data-line-number="11">  g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_adjalley,<span class="kw">aes</span>(position<span class="op">-</span>start)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">fill=</span><span class="st">&quot;#aec6cf&quot;</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>)</a>
-<a class="sourceLine" id="cb21-12" data-line-number="12">  <span class="kw">print</span>(g)</a>
-<a class="sourceLine" id="cb21-13" data-line-number="13">}</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># Comparing our UTR estimates to the Adjalley predictions</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">adjalley &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff</span>(<span class="st">&quot;../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">  adjalley_filtered &lt;-<span class="st"> </span>adjalley <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">position=</span>(start<span class="op">+</span>end)<span class="op">/</span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(FilterSize<span class="op">&gt;</span>i)</a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">  tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(adjalley_filtered, AssignedFeat, position)</a>
+<a class="sourceLine" id="cb27-9" data-line-number="9">  tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, start)</a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">  compare_adjalley &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;AssignedFeat&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb27-11" data-line-number="11">  g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_adjalley,<span class="kw">aes</span>(position<span class="op">-</span>start)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">fill=</span><span class="st">&quot;#aec6cf&quot;</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>)</a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">  <span class="kw">print</span>(g)</a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">}</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-8.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">rm</span>(tmp1,tmp2)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">rm</span>(tmp1,tmp2)</a></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
 <pre><code>R version 3.5.0 (2018-04-23)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Gentoo/Linux
