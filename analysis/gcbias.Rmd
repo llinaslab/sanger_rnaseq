@@ -1,0 +1,437 @@
+---
+title: "GC bias sanity check"
+author: "Philipp Ross"
+date: 2018-09-25
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+```{r load-libraries, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+We wanted to see whether the sequencing protocol properly got rid of most GC bias signals. To do this we had to calculate the coverage and GC content across transcript windows and plot them in several different ways.
+
+## Methods
+
+Here I describe the methods for looking at GC content bias in the RNA-seq data with and without UTRs. The workflow is the following:
+
+1. Create GFF3 formatted files for core, protein-coding genes
+2. Create a file that includes 5' and 3' UTRs for core-protein-coding genes, only
+3. Break each exon into 50bp windows using bedtools
+4. Calculate the the nucleotide content using bedtools nuc
+5. Calculate the coverage over each 50bp window using bedtools multicov
+6. Merge the counts and nucleotide content file into one and convert counts into RPKMs
+7. Normalize the RPKMs by the median RPKM across the entire trasnscript; this normalizes the RPKM of the window by the RPKM of the transcript it comes from
+8. Look at GC bias in various ways:
+   1. Bin windows by GC content and consider the average expression of each window over time
+	 2. Plot the GC content by normalized RPKM
+	 3. Plot the GC content and normalized RPKM across individual transcript positions and bin transcripts by their length
+
+In these plots we only include transcripts expressed at 5 RPKMs or more.
+
+The code is included in the `scripts/gcbias` folder on github. Here we can just visualize some of the results.
+
+First we write some functions:
+
+```{r}
+# Plot gcbias scatter plots for individual transcripts
+plot_gcbias_scatter <- function(df, gene) {
+
+  df %>%
+    dplyr::filter(id == gene) %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(gc = unique(gc), exp = mean(exp)) %>%
+    ggplot(aes(x=gc,y=exp)) +
+    geom_point(alpha=0.75) +
+    stat_smooth(color="red",method="lm") +
+    ggtitle(gene) +
+    ylab("Normalized Expression") +
+    xlab("%GC")
+
+}
+
+# Plot gcbias scatter plots for multiple transcripts
+plot_gcbias_scatter2 <- function(df) {
+
+  df %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(gc=unique(gc),exp=mean(exp,na.rm=T)) %>%
+    dplyr::group_by(pos) %>%
+    dplyr::summarise(gc=mean(gc),exp=mean(exp,na.rm=T)) %>%
+    ggplot(aes(x=gc,y=exp)) +
+    geom_point(alpha=0.75) +
+    stat_smooth(color="red",method="lm") +
+    ggtitle(paste("Average of",length(unique(df$id)),"transcripts")) +
+    ylab("Normalized Expression") +
+    xlab("%GC")
+
+}
+
+# Plot gcbias across individual transcripts
+plot_gcbias_transcript <- function(df, gene) {
+
+  g1 <- df %>%
+    dplyr::filter(id == gene) %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(gc = unique(gc), exp = mean(exp)) %>%
+    ggplot(aes(x=pos,y=exp)) +
+    stat_smooth(color="blue",se=F,span=0.15) +
+    ylab("Normalized Expression") +
+    xlab("") +
+    ggtitle(gene) +
+    theme(axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.line.x = element_blank()) +
+    geom_hline(yintercept = 1, linetype=2)
+
+  g2 <- df %>%
+    dplyr::filter(id == gene) %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(gc = unique(gc), exp = mean(exp)) %>%
+    ggplot(aes(x=pos,y=gc)) +
+    stat_smooth(color="red",se=F,span=0.15) +
+    ylab("%GC") +
+    xlab("Position")
+
+  cowplot::plot_grid(g1,g2,nrow=2,align="v", rel_heights = c(2, 1))
+}
+
+# Plot gcbias across multiple transcripts
+plot_gcbias_transcript2 <- function(df) {
+
+  g1 <- df %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(exp=mean(exp,na.rm=T)) %>%
+    dplyr::group_by(pos) %>%
+    dplyr::summarise(exp=mean(exp,na.rm=T)) %>%
+    ggplot(aes(x=pos,y=exp)) +
+    stat_smooth(color="blue",se=F,span=0.25) +
+    geom_point(color="blue") +
+    ylab("Normalized Expression") +
+    xlab("") +
+    scale_x_continuous(limits=c(1,max(unique(df$pos)))) +
+    ggtitle(paste("Average of",length(unique(df$id)),"transcripts")) +
+    geom_hline(yintercept = 1, linetype=2)
+
+  g2 <- df %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(gc=unique(gc)) %>%
+    dplyr::group_by(pos) %>%
+    dplyr::summarise(gc=mean(gc)) %>%
+    ggplot(aes(x=pos,y=gc)) +
+    stat_smooth(color="red",se=F,span=0.25) +
+    geom_point(color="red") +
+    ylab("%GC") +
+    xlab("Position") +
+    scale_x_continuous(limits=c(1,max(unique(df$pos))))
+
+  cowplot::plot_grid(g1,g2,nrow=2,align="v",rel_heights=c(1, 1))
+
+}
+
+# Plot gcbias across transcripts on top of each other
+# Since ggplot2 doesn't let you create two plots using two different
+# y-axes I needed to use the basic plot function in R
+plot_gcbias_transcript3 <- function(df, gene) {
+
+  if(gene %in% df$id) {
+
+    what <- df %>%
+       dplyr::filter(id == gene) %>%
+       dplyr::spread(tp,exp)
+
+    what$exp <- apply(what, 1, function(row) {
+      mean(c(as.numeric(row[["tp1"]]),
+             as.numeric(row[["tp2"]]),
+             as.numeric(row[["tp3"]]),
+             as.numeric(row[["tp4"]]),
+             as.numeric(row[["tp5"]]),
+             as.numeric(row[["tp6"]]),
+             as.numeric(row[["tp7"]])))
+    })
+
+    if(sum(is.na(what$exp)) == 0) {
+
+      par(mar = c(5,5,2,5))
+      with(what, plot(pos, predict(loess(exp ~ pos,span=0.25)),
+                      type="l",
+                      col="blue",
+                      ylab="Normalized Expression",
+                      xlab="Transcript Position (5' - 3')",
+                      lwd=2,
+                      main=gene))
+      abline(h=1,lty=2,col="grey2")
+
+      par(new = T)
+      with(what, plot(pos, predict(loess(gc ~ pos,span=0.25)),
+                      type="l",col="red3",axes=F, xlab=NA, ylab=NA,lwd=1,lty=3))
+      axis(side=4)
+      mtext(side=4,line=3,"%GC")
+
+    }
+
+  } else {
+    print(paste(gene, "NA"))
+  }
+
+}
+
+# Bin the windows by GC content and plot boxplots of the normalized
+# exprssion values within those bins
+plot_gcbias_boxplot <- function(df, include) {
+
+  # remove genes if only meant to include certain genes
+  if(sum(!is.na(include))>0) {
+    df <- df %>%
+      filter(id %in% include)
+  }
+
+  df$bins <- as.character(cut(df$gc, breaks=c(0,0.1,0.2,0.3,0.4,0.5,1.0),
+        labels=c("0-10%","11-20%","21-30%","31-40%","41-50%","51-100%")))
+
+  df %>%
+    dplyr::select(-gc) %>%
+    dplyr::group_by(id, pos) %>%
+    dplyr::summarise(exp = mean(exp), bins = dplyr::first(bins)) %>%
+    ggplot(aes(x=bins,y=log2(exp))) +
+    geom_boxplot() +
+    xlab("%GC") +
+    ylab("Log2 Normalized RPKM")
+}
+```
+
+And now we plot the data.
+
+## 3D7
+
+```{r}
+include <- readr::read_tsv("../data/gcbias/on3d7.txt",col_names=F)$X1
+bias_file <- readRDS("../data/gcbias/3d7_core_cds_exons_with_utrs_50bp_windows.rds")
+
+# get transcripts we care about
+tmp25 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m < 25) %$%
+  id
+
+tmp50 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 25 & m <= 50) %$%
+  id
+
+tmp75 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 50 & m <= 75) %$%
+  id
+
+tmp100 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 75 & m <= 100) %$%
+  id
+
+tmpgt <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m > 100) %$%
+  id
+
+# some transcripts overlap...can't get position. Don't include these
+ugh <- bias_file %>%
+  group_by(id, pos) %>%
+  summarise(l = length(unique(gc))) %>%
+  filter(l > 1) %$%
+  unique(id)
+
+# plot gcbias as a scatter plot
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+
+# plot gcbias across transcript position
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+
+# Plot gcbias plot as aboxplot
+g <- plot_gcbias_boxplot(bias_file,include)
+print(g)
+```
+
+## HB3
+
+```{r}
+include <- readr::read_tsv("../data/gcbias/onhb3.txt",col_names=F)$X1
+biasfile <- readRDS("../data/gcbias/hb3_core_cds_exons_50bp_windows.rds")
+
+# get transcripts we care about
+tmp25 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m < 25) %$%
+  id
+
+tmp50 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 25 & m <= 50) %$%
+  id
+
+tmp75 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 50 & m <= 75) %$%
+  id
+
+tmp100 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 75 & m <= 100) %$%
+  id
+
+tmpgt <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m > 100) %$%
+  id
+
+# some transcripts overlap...can't get position. Don't include these
+ugh <- bias_file %>%
+  group_by(id, pos) %>%
+  summarise(l = length(unique(gc))) %>%
+  filter(l > 1) %$%
+  unique(id)
+
+# plot gcbias as a scatter plot
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+
+# plot gcbias across transcript position
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+
+# Plot gcbias plot as aboxplot
+g <- plot_gcbias_boxplot(bias_file,include)
+print(g)
+```
+
+## IT
+
+```{r}
+include <- readr::read_tsv("../data/gcbias/onit.txt",col_names=F)$X1
+biasfile <- readRDS("../data/gcbias/it_core_cds_exons_50bp_windows.rds")
+
+# get transcripts we care about
+tmp25 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m < 25) %$%
+  id
+
+tmp50 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 25 & m <= 50) %$%
+  id
+
+tmp75 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 50 & m <= 75) %$%
+  id
+
+tmp100 <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m >= 75 & m <= 100) %$%
+  id
+
+tmpgt <- bias_file %>%
+  group_by(id) %>%
+  summarise(m = max(pos)) %>%
+  filter(m > 100) %$%
+  id
+
+# some transcripts overlap...can't get position. Don't include these
+ugh <- bias_file %>%
+  group_by(id, pos) %>%
+  summarise(l = length(unique(gc))) %>%
+  filter(l > 1) %$%
+  unique(id)
+
+# plot gcbias as a scatter plot
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_scatter2()
+print(g)
+
+# plot gcbias across transcript position
+g <- bias_file %>% filter(id %in% tmp25 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp50 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp75 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmp100 & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+g <- bias_file %>% filter(id %in% tmpgt & id %in% include & !(id %in% ugh)) %>% plot_gcbias_transcript2()
+print(g)
+
+# Plot gcbias plot as aboxplot
+g <- plot_gcbias_boxplot(bias_file,include)
+print(g)
+```
+
+## Session Information
+
+```{r session-info}
+```

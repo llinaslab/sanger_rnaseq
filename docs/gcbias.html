@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+<meta name="date" content="2018-09-25" />
+
+<title>GC bias sanity check</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">GC bias sanity check</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2018-09-25</p>
+<p><strong>Code version:</strong> fa4fca8</p>
+<p>We wanted to see whether the sequencing protocol properly got rid of most GC bias signals. To do this we had to calculate the coverage and GC content across transcript windows and plot them in several different ways.</p>
+<div id="methods" class="section level2">
+<h2>Methods</h2>
+<p>Here I describe the methods for looking at GC content bias in the RNA-seq data with and without UTRs. The workflow is the following:</p>
+<ol style="list-style-type: decimal">
+<li>Create GFF3 formatted files for core, protein-coding genes</li>
+<li>Create a file that includes 5’ and 3’ UTRs for core-protein-coding genes, only</li>
+<li>Break each exon into 50bp windows using bedtools</li>
+<li>Calculate the the nucleotide content using bedtools nuc</li>
+<li>Calculate the coverage over each 50bp window using bedtools multicov</li>
+<li>Merge the counts and nucleotide content file into one and convert counts into RPKMs</li>
+<li>Normalize the RPKMs by the median RPKM across the entire trasnscript; this normalizes the RPKM of the window by the RPKM of the transcript it comes from</li>
+<li>Look at GC bias in various ways:
+<ol style="list-style-type: decimal">
+<li>Bin windows by GC content and consider the average expression of each window over time</li>
+<li>Plot the GC content by normalized RPKM</li>
+<li>Plot the GC content and normalized RPKM across individual transcript positions and bin transcripts by their length</li>
+</ol></li>
+</ol>
+<p>In these plots we only include transcripts expressed at 5 RPKMs or more.</p>
+<p>The code is included in the <code>scripts/gcbias</code> folder on github. Here we can just visualize some of the results.</p>
+<p>First we write some functions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Plot gcbias scatter plots for individual transcripts</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">plot_gcbias_scatter &lt;-<span class="st"> </span><span class="cf">function</span>(df, gene) {</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(id <span class="op">==</span><span class="st"> </span>gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc =</span> <span class="kw">unique</span>(gc), <span class="dt">exp =</span> <span class="kw">mean</span>(exp)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>gc,<span class="dt">y=</span>exp)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.75</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>,<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">    </span><span class="kw">ggtitle</span>(gene) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;%GC&quot;</span>)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">}</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co"># Plot gcbias scatter plots for multiple transcripts</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">plot_gcbias_scatter2 &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">  df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc=</span><span class="kw">unique</span>(gc),<span class="dt">exp=</span><span class="kw">mean</span>(exp,<span class="dt">na.rm=</span>T)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc=</span><span class="kw">mean</span>(gc),<span class="dt">exp=</span><span class="kw">mean</span>(exp,<span class="dt">na.rm=</span>T)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>gc,<span class="dt">y=</span>exp)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.75</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>,<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">&quot;Average of&quot;</span>,<span class="kw">length</span>(<span class="kw">unique</span>(df<span class="op">$</span>id)),<span class="st">&quot;transcripts&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;%GC&quot;</span>)</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32">}</a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co"># Plot gcbias across individual transcripts</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">plot_gcbias_transcript &lt;-<span class="st"> </span><span class="cf">function</span>(df, gene) {</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">  g1 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(id <span class="op">==</span><span class="st"> </span>gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc =</span> <span class="kw">unique</span>(gc), <span class="dt">exp =</span> <span class="kw">mean</span>(exp)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pos,<span class="dt">y=</span>exp)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">se=</span>F,<span class="dt">span=</span><span class="fl">0.15</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="st">    </span><span class="kw">ggtitle</span>(gene) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb1-47" data-line-number="47">          <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb1-48" data-line-number="48">          <span class="dt">axis.line.x =</span> <span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-49" data-line-number="49"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb1-51" data-line-number="51">  g2 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-52" data-line-number="52"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(id <span class="op">==</span><span class="st"> </span>gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-53" data-line-number="53"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-54" data-line-number="54"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc =</span> <span class="kw">unique</span>(gc), <span class="dt">exp =</span> <span class="kw">mean</span>(exp)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-55" data-line-number="55"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pos,<span class="dt">y=</span>gc)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-56" data-line-number="56"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>,<span class="dt">se=</span>F,<span class="dt">span=</span><span class="fl">0.15</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-57" data-line-number="57"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;%GC&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-58" data-line-number="58"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Position&quot;</span>)</a>
+<a class="sourceLine" id="cb1-59" data-line-number="59"></a>
+<a class="sourceLine" id="cb1-60" data-line-number="60">  cowplot<span class="op">::</span><span class="kw">plot_grid</span>(g1,g2,<span class="dt">nrow=</span><span class="dv">2</span>,<span class="dt">align=</span><span class="st">&quot;v&quot;</span>, <span class="dt">rel_heights =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-61" data-line-number="61">}</a>
+<a class="sourceLine" id="cb1-62" data-line-number="62"></a>
+<a class="sourceLine" id="cb1-63" data-line-number="63"><span class="co"># Plot gcbias across multiple transcripts</span></a>
+<a class="sourceLine" id="cb1-64" data-line-number="64">plot_gcbias_transcript2 &lt;-<span class="st"> </span><span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb1-65" data-line-number="65"></a>
+<a class="sourceLine" id="cb1-66" data-line-number="66">  g1 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-67" data-line-number="67"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-68" data-line-number="68"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">exp=</span><span class="kw">mean</span>(exp,<span class="dt">na.rm=</span>T)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-69" data-line-number="69"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-70" data-line-number="70"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">exp=</span><span class="kw">mean</span>(exp,<span class="dt">na.rm=</span>T)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-71" data-line-number="71"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pos,<span class="dt">y=</span>exp)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-72" data-line-number="72"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">se=</span>F,<span class="dt">span=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-73" data-line-number="73"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-74" data-line-number="74"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Expression&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-75" data-line-number="75"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-76" data-line-number="76"><span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="kw">max</span>(<span class="kw">unique</span>(df<span class="op">$</span>pos)))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-77" data-line-number="77"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">&quot;Average of&quot;</span>,<span class="kw">length</span>(<span class="kw">unique</span>(df<span class="op">$</span>id)),<span class="st">&quot;transcripts&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-78" data-line-number="78"><span class="st">    </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">1</span>, <span class="dt">linetype=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-79" data-line-number="79"></a>
+<a class="sourceLine" id="cb1-80" data-line-number="80">  g2 &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-81" data-line-number="81"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-82" data-line-number="82"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc=</span><span class="kw">unique</span>(gc)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-83" data-line-number="83"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-84" data-line-number="84"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">gc=</span><span class="kw">mean</span>(gc)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-85" data-line-number="85"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pos,<span class="dt">y=</span>gc)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-86" data-line-number="86"><span class="st">    </span><span class="kw">stat_smooth</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>,<span class="dt">se=</span>F,<span class="dt">span=</span><span class="fl">0.25</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-87" data-line-number="87"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-88" data-line-number="88"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;%GC&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-89" data-line-number="89"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Position&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-90" data-line-number="90"><span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="kw">max</span>(<span class="kw">unique</span>(df<span class="op">$</span>pos))))</a>
+<a class="sourceLine" id="cb1-91" data-line-number="91"></a>
+<a class="sourceLine" id="cb1-92" data-line-number="92">  cowplot<span class="op">::</span><span class="kw">plot_grid</span>(g1,g2,<span class="dt">nrow=</span><span class="dv">2</span>,<span class="dt">align=</span><span class="st">&quot;v&quot;</span>,<span class="dt">rel_heights=</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-93" data-line-number="93"></a>
+<a class="sourceLine" id="cb1-94" data-line-number="94">}</a>
+<a class="sourceLine" id="cb1-95" data-line-number="95"></a>
+<a class="sourceLine" id="cb1-96" data-line-number="96"><span class="co"># Plot gcbias across transcripts on top of each other</span></a>
+<a class="sourceLine" id="cb1-97" data-line-number="97"><span class="co"># Since ggplot2 doesn&#39;t let you create two plots using two different</span></a>
+<a class="sourceLine" id="cb1-98" data-line-number="98"><span class="co"># y-axes I needed to use the basic plot function in R</span></a>
+<a class="sourceLine" id="cb1-99" data-line-number="99">plot_gcbias_transcript3 &lt;-<span class="st"> </span><span class="cf">function</span>(df, gene) {</a>
+<a class="sourceLine" id="cb1-100" data-line-number="100"></a>
+<a class="sourceLine" id="cb1-101" data-line-number="101">  <span class="cf">if</span>(gene <span class="op">%in%</span><span class="st"> </span>df<span class="op">$</span>id) {</a>
+<a class="sourceLine" id="cb1-102" data-line-number="102"></a>
+<a class="sourceLine" id="cb1-103" data-line-number="103">    what &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-104" data-line-number="104"><span class="st">       </span>dplyr<span class="op">::</span><span class="kw">filter</span>(id <span class="op">==</span><span class="st"> </span>gene) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-105" data-line-number="105"><span class="st">       </span>dplyr<span class="op">::</span><span class="kw">spread</span>(tp,exp)</a>
+<a class="sourceLine" id="cb1-106" data-line-number="106"></a>
+<a class="sourceLine" id="cb1-107" data-line-number="107">    what<span class="op">$</span>exp &lt;-<span class="st"> </span><span class="kw">apply</span>(what, <span class="dv">1</span>, <span class="cf">function</span>(row) {</a>
+<a class="sourceLine" id="cb1-108" data-line-number="108">      <span class="kw">mean</span>(<span class="kw">c</span>(<span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp1&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-109" data-line-number="109">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp2&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-110" data-line-number="110">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp3&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-111" data-line-number="111">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp4&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-112" data-line-number="112">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp5&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-113" data-line-number="113">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp6&quot;</span>]]),</a>
+<a class="sourceLine" id="cb1-114" data-line-number="114">             <span class="kw">as.numeric</span>(row[[<span class="st">&quot;tp7&quot;</span>]])))</a>
+<a class="sourceLine" id="cb1-115" data-line-number="115">    })</a>
+<a class="sourceLine" id="cb1-116" data-line-number="116"></a>
+<a class="sourceLine" id="cb1-117" data-line-number="117">    <span class="cf">if</span>(<span class="kw">sum</span>(<span class="kw">is.na</span>(what<span class="op">$</span>exp)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb1-118" data-line-number="118"></a>
+<a class="sourceLine" id="cb1-119" data-line-number="119">      <span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb1-120" data-line-number="120">      <span class="kw">with</span>(what, <span class="kw">plot</span>(pos, <span class="kw">predict</span>(<span class="kw">loess</span>(exp <span class="op">~</span><span class="st"> </span>pos,<span class="dt">span=</span><span class="fl">0.25</span>)),</a>
+<a class="sourceLine" id="cb1-121" data-line-number="121">                      <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,</a>
+<a class="sourceLine" id="cb1-122" data-line-number="122">                      <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>,</a>
+<a class="sourceLine" id="cb1-123" data-line-number="123">                      <span class="dt">ylab=</span><span class="st">&quot;Normalized Expression&quot;</span>,</a>
+<a class="sourceLine" id="cb1-124" data-line-number="124">                      <span class="dt">xlab=</span><span class="st">&quot;Transcript Position (5&#39; - 3&#39;)&quot;</span>,</a>
+<a class="sourceLine" id="cb1-125" data-line-number="125">                      <span class="dt">lwd=</span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb1-126" data-line-number="126">                      <span class="dt">main=</span>gene))</a>
+<a class="sourceLine" id="cb1-127" data-line-number="127">      <span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">2</span>,<span class="dt">col=</span><span class="st">&quot;grey2&quot;</span>)</a>
+<a class="sourceLine" id="cb1-128" data-line-number="128"></a>
+<a class="sourceLine" id="cb1-129" data-line-number="129">      <span class="kw">par</span>(<span class="dt">new =</span> T)</a>
+<a class="sourceLine" id="cb1-130" data-line-number="130">      <span class="kw">with</span>(what, <span class="kw">plot</span>(pos, <span class="kw">predict</span>(<span class="kw">loess</span>(gc <span class="op">~</span><span class="st"> </span>pos,<span class="dt">span=</span><span class="fl">0.25</span>)),</a>
+<a class="sourceLine" id="cb1-131" data-line-number="131">                      <span class="dt">type=</span><span class="st">&quot;l&quot;</span>,<span class="dt">col=</span><span class="st">&quot;red3&quot;</span>,<span class="dt">axes=</span>F, <span class="dt">xlab=</span><span class="ot">NA</span>, <span class="dt">ylab=</span><span class="ot">NA</span>,<span class="dt">lwd=</span><span class="dv">1</span>,<span class="dt">lty=</span><span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb1-132" data-line-number="132">      <span class="kw">axis</span>(<span class="dt">side=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb1-133" data-line-number="133">      <span class="kw">mtext</span>(<span class="dt">side=</span><span class="dv">4</span>,<span class="dt">line=</span><span class="dv">3</span>,<span class="st">&quot;%GC&quot;</span>)</a>
+<a class="sourceLine" id="cb1-134" data-line-number="134"></a>
+<a class="sourceLine" id="cb1-135" data-line-number="135">    }</a>
+<a class="sourceLine" id="cb1-136" data-line-number="136"></a>
+<a class="sourceLine" id="cb1-137" data-line-number="137">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb1-138" data-line-number="138">    <span class="kw">print</span>(<span class="kw">paste</span>(gene, <span class="st">&quot;NA&quot;</span>))</a>
+<a class="sourceLine" id="cb1-139" data-line-number="139">  }</a>
+<a class="sourceLine" id="cb1-140" data-line-number="140"></a>
+<a class="sourceLine" id="cb1-141" data-line-number="141">}</a>
+<a class="sourceLine" id="cb1-142" data-line-number="142"></a>
+<a class="sourceLine" id="cb1-143" data-line-number="143"><span class="co"># Bin the windows by GC content and plot boxplots of the normalized</span></a>
+<a class="sourceLine" id="cb1-144" data-line-number="144"><span class="co"># exprssion values within those bins</span></a>
+<a class="sourceLine" id="cb1-145" data-line-number="145">plot_gcbias_boxplot &lt;-<span class="st"> </span><span class="cf">function</span>(df, include) {</a>
+<a class="sourceLine" id="cb1-146" data-line-number="146"></a>
+<a class="sourceLine" id="cb1-147" data-line-number="147">  <span class="co"># remove genes if only meant to include certain genes</span></a>
+<a class="sourceLine" id="cb1-148" data-line-number="148">  <span class="cf">if</span>(<span class="kw">sum</span>(<span class="op">!</span><span class="kw">is.na</span>(include))<span class="op">&gt;</span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb1-149" data-line-number="149">    df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-150" data-line-number="150"><span class="st">      </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>include)</a>
+<a class="sourceLine" id="cb1-151" data-line-number="151">  }</a>
+<a class="sourceLine" id="cb1-152" data-line-number="152"></a>
+<a class="sourceLine" id="cb1-153" data-line-number="153">  df<span class="op">$</span>bins &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">cut</span>(df<span class="op">$</span>gc, <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb1-154" data-line-number="154">        <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0-10%&quot;</span>,<span class="st">&quot;11-20%&quot;</span>,<span class="st">&quot;21-30%&quot;</span>,<span class="st">&quot;31-40%&quot;</span>,<span class="st">&quot;41-50%&quot;</span>,<span class="st">&quot;51-100%&quot;</span>)))</a>
+<a class="sourceLine" id="cb1-155" data-line-number="155"></a>
+<a class="sourceLine" id="cb1-156" data-line-number="156">  df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-157" data-line-number="157"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>gc) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-158" data-line-number="158"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-159" data-line-number="159"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">exp =</span> <span class="kw">mean</span>(exp), <span class="dt">bins =</span> dplyr<span class="op">::</span><span class="kw">first</span>(bins)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-160" data-line-number="160"><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>bins,<span class="dt">y=</span><span class="kw">log2</span>(exp))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-161" data-line-number="161"><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-162" data-line-number="162"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;%GC&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-163" data-line-number="163"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Log2 Normalized RPKM&quot;</span>)</a>
+<a class="sourceLine" id="cb1-164" data-line-number="164">}</a></code></pre></div>
+<p>And now we plot the data.</p>
+</div>
+<div id="d7" class="section level2">
+<h2>3D7</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">include &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gcbias/on3d7.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">bias_file &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../data/gcbias/3d7_core_cds_exons_with_utrs_50bp_windows.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># get transcripts we care about</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">tmp25 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&lt;</span><span class="st"> </span><span class="dv">25</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">tmp50 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">25</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">tmp75 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">75</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">tmp100 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">75</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29">tmpgt &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="co"># some transcripts overlap...can&#39;t get position. Don&#39;t include these</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">ugh &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="st">  </span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">l =</span> <span class="kw">length</span>(<span class="kw">unique</span>(gc))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="st">  </span><span class="kw">filter</span>(l <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="st">  </span><span class="kw">unique</span>(id)</a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co"># plot gcbias as a scatter plot</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># plot gcbias across transcript position</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-7.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-8.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-9.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-10.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Plot gcbias plot as aboxplot</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">g &lt;-<span class="st"> </span><span class="kw">plot_gcbias_boxplot</span>(bias_file,include)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-2-11.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hb3" class="section level2">
+<h2>HB3</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">include &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gcbias/onhb3.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">biasfile &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../data/gcbias/hb3_core_cds_exons_50bp_windows.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># get transcripts we care about</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">tmp25 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&lt;</span><span class="st"> </span><span class="dv">25</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">tmp50 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">25</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17">tmp75 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-20" data-line-number="20"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">75</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb13-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb13-23" data-line-number="23">tmp100 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">75</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb13-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb13-29" data-line-number="29">tmpgt &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-30" data-line-number="30"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-32" data-line-number="32"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb13-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb13-35" data-line-number="35"><span class="co"># some transcripts overlap...can&#39;t get position. Don&#39;t include these</span></a>
+<a class="sourceLine" id="cb13-36" data-line-number="36">ugh &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-37" data-line-number="37"><span class="st">  </span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-38" data-line-number="38"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">l =</span> <span class="kw">length</span>(<span class="kw">unique</span>(gc))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-39" data-line-number="39"><span class="st">  </span><span class="kw">filter</span>(l <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb13-40" data-line-number="40"><span class="st">  </span><span class="kw">unique</span>(id)</a>
+<a class="sourceLine" id="cb13-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb13-42" data-line-number="42"><span class="co"># plot gcbias as a scatter plot</span></a>
+<a class="sourceLine" id="cb13-43" data-line-number="43">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb13-44" data-line-number="44"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># plot gcbias across transcript position</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-7.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-8.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-9.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-10.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># Plot gcbias plot as aboxplot</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">g &lt;-<span class="st"> </span><span class="kw">plot_gcbias_boxplot</span>(bias_file,include)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-3-11.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="it" class="section level2">
+<h2>IT</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">include &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gcbias/onit.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">biasfile &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../data/gcbias/it_core_cds_exons_50bp_windows.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co"># get transcripts we care about</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">tmp25 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&lt;</span><span class="st"> </span><span class="dv">25</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb24-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11">tmp50 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-13" data-line-number="13"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-14" data-line-number="14"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">25</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb24-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb24-17" data-line-number="17">tmp75 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-18" data-line-number="18"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-19" data-line-number="19"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-20" data-line-number="20"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">75</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-21" data-line-number="21"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb24-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb24-23" data-line-number="23">tmp100 &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-24" data-line-number="24"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-25" data-line-number="25"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-26" data-line-number="26"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;=</span><span class="st"> </span><span class="dv">75</span> <span class="op">&amp;</span><span class="st"> </span>m <span class="op">&lt;=</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-27" data-line-number="27"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb24-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb24-29" data-line-number="29">tmpgt &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-30" data-line-number="30"><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-31" data-line-number="31"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m =</span> <span class="kw">max</span>(pos)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-32" data-line-number="32"><span class="st">  </span><span class="kw">filter</span>(m <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-33" data-line-number="33"><span class="st">  </span>id</a>
+<a class="sourceLine" id="cb24-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb24-35" data-line-number="35"><span class="co"># some transcripts overlap...can&#39;t get position. Don&#39;t include these</span></a>
+<a class="sourceLine" id="cb24-36" data-line-number="36">ugh &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-37" data-line-number="37"><span class="st">  </span><span class="kw">group_by</span>(id, pos) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-38" data-line-number="38"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">l =</span> <span class="kw">length</span>(<span class="kw">unique</span>(gc))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-39" data-line-number="39"><span class="st">  </span><span class="kw">filter</span>(l <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb24-40" data-line-number="40"><span class="st">  </span><span class="kw">unique</span>(id)</a>
+<a class="sourceLine" id="cb24-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb24-42" data-line-number="42"><span class="co"># plot gcbias as a scatter plot</span></a>
+<a class="sourceLine" id="cb24-43" data-line-number="43">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb24-44" data-line-number="44"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_scatter2</span>()</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># plot gcbias across transcript position</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp25 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp50 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-7.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp75 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-8.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmp100 <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-9.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">g &lt;-<span class="st"> </span>bias_file <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(id <span class="op">%in%</span><span class="st"> </span>tmpgt <span class="op">&amp;</span><span class="st"> </span>id <span class="op">%in%</span><span class="st"> </span>include <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span>(id <span class="op">%in%</span><span class="st"> </span>ugh)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">plot_gcbias_transcript2</span>()</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-10.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># Plot gcbias plot as aboxplot</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">g &lt;-<span class="st"> </span><span class="kw">plot_gcbias_boxplot</span>(bias_file,include)</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/gcbias.Rmd/unnamed-chunk-4-11.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<pre><code>R version 3.5.0 (2018-04-23)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Gentoo/Linux
+
+Matrix products: default
+BLAS: /usr/local/lib64/R/lib/libRblas.so
+LAPACK: /usr/local/lib64/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] bindrcpp_0.2.2                       
+ [2] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [3] BSgenome_1.48.0                      
+ [4] rtracklayer_1.40.6                   
+ [5] Biostrings_2.48.0                    
+ [6] XVector_0.20.0                       
+ [7] GenomicRanges_1.32.6                 
+ [8] GenomeInfoDb_1.16.0                  
+ [9] org.Pf.plasmo.db_3.6.0               
+[10] AnnotationDbi_1.42.1                 
+[11] IRanges_2.14.10                      
+[12] S4Vectors_0.18.3                     
+[13] Biobase_2.40.0                       
+[14] BiocGenerics_0.26.0                  
+[15] scales_1.0.0                         
+[16] cowplot_0.9.3                        
+[17] magrittr_1.5                         
+[18] forcats_0.3.0                        
+[19] stringr_1.3.1                        
+[20] dplyr_0.7.6                          
+[21] purrr_0.2.5                          
+[22] readr_1.1.1                          
+[23] tidyr_0.8.1                          
+[24] tibble_1.4.2                         
+[25] ggplot2_3.0.0                        
+[26] tidyverse_1.2.1                      
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-137                bitops_1.0-6               
+ [3] matrixStats_0.54.0          lubridate_1.7.4            
+ [5] bit64_0.9-7                 httr_1.3.1                 
+ [7] rprojroot_1.3-2             tools_3.5.0                
+ [9] backports_1.1.2             R6_2.2.2                   
+[11] DBI_1.0.0                   lazyeval_0.2.1             
+[13] colorspace_1.3-2            withr_2.1.2                
+[15] tidyselect_0.2.4            bit_1.1-14                 
+[17] compiler_3.5.0              git2r_0.23.0               
+[19] cli_1.0.0                   rvest_0.3.2                
+[21] xml2_1.2.0                  DelayedArray_0.6.5         
+[23] labeling_0.3                digest_0.6.15              
+[25] Rsamtools_1.32.3            rmarkdown_1.10             
+[27] R.utils_2.6.0               pkgconfig_2.0.2            
+[29] htmltools_0.3.6             rlang_0.2.2                
+[31] readxl_1.1.0                rstudioapi_0.7             
+[33] RSQLite_2.1.1               bindr_0.1.1                
+[35] jsonlite_1.5                BiocParallel_1.14.2        
+[37] R.oo_1.22.0                 RCurl_1.95-4.11            
+[39] GenomeInfoDbData_1.1.0      Matrix_1.2-14              
+[41] Rcpp_0.12.18                munsell_0.5.0              
+[43] R.methodsS3_1.7.1           stringi_1.2.4              
+[45] yaml_2.2.0                  SummarizedExperiment_1.10.1
+[47] zlibbioc_1.26.0             plyr_1.8.4                 
+[49] grid_3.5.0                  blob_1.1.1                 
+[51] crayon_1.3.4                lattice_0.20-35            
+[53] haven_1.1.2                 hms_0.4.2                  
+[55] knitr_1.20                  pillar_1.3.0               
+[57] XML_3.98-1.16               glue_1.3.0                 
+[59] evaluate_0.11               modelr_0.1.2               
+[61] cellranger_1.1.0            gtable_0.2.0               
+[63] assertthat_0.2.0            broom_0.5.0                
+[65] GenomicAlignments_1.16.0    memoise_1.1.0              
+[67] workflowr_1.1.1            </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -37,7 +37,7 @@ How well do our abundance estimates match with previously generated microarray d
 
 Can we comment on the technical aspects of the sequencing protocol in regards to potential GC-bias?
 
-* [Checking for GC content bias]()
+* [Checking for GC content bias](gcbias.html)
 
 How do TSS predictions methods compare?
 
