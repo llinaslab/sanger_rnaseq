@@ -1,0 +1,39 @@
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PadleriG01/fasta/data/PlasmoDB-39_PadleriG01_Genome.fasta",
+  destfile="../data/genomes/padleri/padleri_g01_genome.fasta"
+  )
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PblacklockiG01/fasta/data/PlasmoDB-39_PblacklockiG01_Genome.fasta",
+  destfile="../data/genomes/pblacklocki/pblacklocki_g01_genome.fasta"
+)
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PgaboniG01/fasta/data/PlasmoDB-39_PgaboniG01_Genome.fasta",
+  destfile="../data/genomes/pgaboni/pgaboni_g01_genome.fasta"
+)
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PbillcollinsiG01/fasta/data/PlasmoDB-39_PbillcollinsiG01_Genome.fasta",
+  destfile="../data/genomes/pbillcollinsi/pbillcollinsi_g01_genome.fasta"
+)
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PreichenowiG01/fasta/data/PlasmoDB-39_PreichenowiG01_Genome.fasta",
+  destfile="../data/genomes/preichenowi/preichenowi_g01_genome.fasta"
+)
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PreichenowiCDC/fasta/data/PlasmoDB-39_PreichenowiCDC_Genome.fasta",
+  destfile="../data/genomes/preichenowi/preichenowi_cdc_genome.fasta"
+)
+
+download.file(
+  url="http://plasmodb.org/common/downloads/release-39/PpraefalciparumG01/fasta/data/PlasmoDB-39_PpraefalciparumG01_Genome.fasta",
+  destfile="../data/genomes/ppraefalciparum/ppraefalciparum_g01_genome.fasta"
+)
+
+cat ./ppraefalciparum/ppraefalciparum_g01_genome.fasta ./padleri/padleri_g01_genome.fasta ./pfhb3/PfHB3.Jul2015.fasta ./pf3d7/PlasmoDB-28_Pfalciparum3D7_Genome.fasta ./pfit/PfIT.Jun2015.fasta ./pblacklocki/pblacklocki_g01_genome.fasta ./preichenowi/preichenowi_g01_genome.fasta ./preichenowi/preichenowi_cdc_genome.fasta ./pbillcollinsi/pbillcollinsi_g01_genome.fasta ./pgaboni/pgaboni_g01_genome.fasta > genomes.fasta
+
+makeblastdb -dbtype nucl -in genomes.fasta -out genomes
+

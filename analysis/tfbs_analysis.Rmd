@@ -3,6 +3,8 @@ title: "Transcription Factor Binding Site Analysis"
 author: "Philipp Ross"
 date: 2017-07-16
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r read-chunk, include=FALSE, cache=FALSE}
