@@ -1,7 +1,7 @@
 ---
 title: "Alternative TSS Usage"
 author: "Philipp Ross"
-date: 03-31-2017
+date: 09-25-2018
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -21,7 +21,74 @@ knitr::read_chunk("chunks.R")
 
 **Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
+Using the cageR software package, we were able to detect around 70 genes with "shifting promoters." We define this as a shift of at least 100 base pairs in a gene's primary TSS between two points throughout the *P. falciparum* blood stage.
 
+```{r}
+shifting <- readr::read_tsv("../output/ctss_clustering/modified/annotated_shifting.tsv")
+shifting %>% 
+  dplyr::mutate(shift=abs(groupX.pos-groupY.pos)) %$% 
+  summary(shift)
+shifting %>% 
+  dplyr::mutate(shift=abs(groupX.pos-groupY.pos)) %>% 
+  ggplot(aes(x=shift)) + 
+  geom_histogram(color="grey70") + 
+  ggtitle("TSS Shift")
+```
+
+```{r}
+shifting_genes <- shifting %>% dplyr::mutate(shift=abs(groupX.pos-groupY.pos)) %$% unique(name)
+```
+
+```{r}
+x3d7_abund <- readRDS("../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+pcg <- tibble::as_tibble(rtracklayer::import.gff3("../data/annotations/PF3D7_codinggenes_for_bedtools.gff"))$ID
+
+get_filtered_ids <- function(abund,tpm_threshold) {
+  fabund <- abund %>% 
+    dplyr::group_by(gene_id) %>% 
+    dplyr::summarise(f=sum(TPM>=tpm_threshold)) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::filter(f>0 & gene_id %in% pcg)
+  return(fabund$gene_id)
+}
+
+fx3d7 <- get_filtered_ids(x3d7_abund,5)
+
+sx3d7_abund <- x3d7_abund %>% 
+  dplyr::filter(gene_id %in% fx3d7) %>% 
+  dplyr::select(gene_id,tp,TPM) %>% 
+  dplyr::group_by(gene_id) %>% 
+  dplyr::summarise(m=mean(TPM))
+
+sx3d7_abund %>% 
+  dplyr::filter(gene_id %in% shifting_genes) %>%
+  ggplot(aes(x=m)) +
+  geom_histogram(color="grey70") + 
+  ggtitle("Mean Gene Expression")
+```
+
+```{r,eval=F,echo=F}
+sx3d7_abund <- x3d7_abund %>% 
+  dplyr::filter(gene_id %in% fx3d7) %>% 
+  dplyr::select(gene_id,tp,TPM) %>% 
+  dplyr::group_by(gene_id) %>% 
+  dplyr::summarise(m=mean(TPM)) %>% 
+  dplyr::inner_join(x3d7_abund) %>% 
+  dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
+  dplyr::select(gene_id,tp,norm_tpm) %>% 
+  dplyr::ungroup() %>%
+  tidyr::spread(tp,norm_tpm)
+
+sx3d7_abund <- sx3d7_abund %>% 
+  dplyr::rename(`8`=`2`,
+                `16`=`3`,
+                `24`=`4`,
+                `32`=`5`,
+                `40`=`6`,
+                `48`=`7`) %>%
+  tidyr::gather(tp,norm_tpm,-gene_id) %>%
+  dplyr::mutate(tp=as.numeric(tp))
+```
 
 ## Session Information
 

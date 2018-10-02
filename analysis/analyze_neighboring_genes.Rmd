@@ -407,7 +407,7 @@ fx3d7_abund <- x3d7_abund %>%
   dplyr::inner_join(x3d7_abund) %>% 
   dplyr::mutate(norm_tpm=(((TPM/m)-mean(TPM/m))/sd(TPM/m))) %>% 
   dplyr::select(gene_id,tp,norm_tpm) %>% 
-  ungroup() %>%
+  dplyr::ungroup() %>%
   tidyr::spread(tp,norm_tpm)
 
 sx3d7_abund <- fx3d7_abund %>% 
