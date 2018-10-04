@@ -1,7 +1,7 @@
 ---
 title: "Transcription Factor Binding Site Analysis"
 author: "Philipp Ross"
-date: 2017-07-16
+date: 2018-09-25
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -29,12 +29,25 @@ First we need to create promoter regions to analyze:
 
 ```{r}
 promoter_region <- 1000
+core_genes <- readr::read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+
+upstream_ORF <- rtracklayer::import.gff3("../data/annotations/genes_3D7_v24.gff") %>% 
+  tibble::as_tibble() %>% 
+  dplyr::filter(ID %in% core_genes) %>%
+  dplyr::mutate(newend=ifelse(strand=="+",start,end+promoter_region),
+                newstart=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::select(-start,-end) %>%
+  dplyr::rename(start=newstart,end=newend) %>%
+  GenomicRanges::GRanges()
 
 promoters_3d7 <- rtracklayer::import.gff3("../output/final_utrs/longest_utrs_3d7_plasmodb_compatible.gff") %>% 
   tibble::as_tibble() %>% 
   dplyr::mutate(Parent=stringr::str_replace(stringr::str_replace(stringr::str_replace(unlist(Parent), "rna_", ""), "-1", ""),"[.][0-9]","")) %>% 
   dplyr::distinct() %>%
-  dplyr::mutate(end=ifelse(strand=="+",start,end+promoter_region),start=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::mutate(newend=ifelse(strand=="+",start,end+promoter_region),
+                newstart=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::select(-start,-end) %>%
+  dplyr::rename(start=newstart,end=newend) %>%
   dplyr::filter(type=="5UTR") %>%
   GenomicRanges::GRanges()
 
@@ -42,7 +55,9 @@ promoters_hb3 <- rtracklayer::import.gff3("../output/final_utrs/longest_utrs_hb3
   tibble::as_tibble() %>% 
   dplyr::mutate(Parent=stringr::str_replace(stringr::str_replace(stringr::str_replace(unlist(Parent), "rna_", ""), "-1", ""),"[.][0-9]","")) %>% 
   dplyr::distinct() %>%
-  dplyr::mutate(end=ifelse(strand=="+",start,end+promoter_region),start=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::mutate(newend=ifelse(strand=="+",start,end+promoter_region),
+                newstart=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::select(-start,-end) %>%
   dplyr::filter(type=="5UTR") %>%
   GenomicRanges::GRanges()
 
@@ -50,14 +65,20 @@ promoters_it <- rtracklayer::import.gff3("../output/final_utrs/longest_utrs_it_p
   tibble::as_tibble() %>% 
   dplyr::mutate(Parent=stringr::str_replace(stringr::str_replace(stringr::str_replace(unlist(Parent), "rna_", ""), "-1", ""),"[.][0-9]","")) %>% 
   dplyr::distinct() %>%
-  dplyr::mutate(end=ifelse(strand=="+",start,end+promoter_region),start=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::mutate(newend=ifelse(strand=="+",start,end+promoter_region),
+                newstart=ifelse(strand=="+",start-promoter_region,end)) %>%
+  dplyr::select(-start,-end) %>%
   dplyr::filter(type=="5UTR") %>%
   GenomicRanges::GRanges()
 
+rtracklayer::export.gff3(object=upstream_ORF,con="../output/tfbs_analysis/upstream_ORF.gff")
 rtracklayer::export.gff3(object=promoters_3d7,con="../output/tfbs_analysis/promoters_3d7.gff")
 rtracklayer::export.gff3(object=promoters_hb3,con="../output/tfbs_analysis/promoters_hb3.gff")
 rtracklayer::export.gff3(object=promoters_it,con="../output/tfbs_analysis/promoters_it.gff")
 
+seqs_upstream_ORF <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24, upstream_ORF)
+names(seqs_upstream_ORF) <- unlist(upstream_ORF$ID)
+Biostrings::writeXStringSet(seqs_upstream_ORF,"../output/tfbs_analysis/upstream_ORF.fasta")
 seqs3d7 <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24, promoters_3d7)
 names(seqs3d7) <- stringr::str_replace(stringr::str_replace(unlist(promoters_3d7$Parent), "rna_", ""), "-1", "")
 Biostrings::writeXStringSet(seqs3d7,"../output/tfbs_analysis/promoters_3d7.fasta")
@@ -72,7 +93,7 @@ Biostrings::writeXStringSet(seqsit,"../output/tfbs_analysis/promoters_it.fasta")
 We should also create files that parse the genomic coordinates so as to be able to load them into a genome browser:
 
 ```{r,engine='bash',eval=F}
-for strain in 3d7 hb3 it; do bedtools getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed ../output/tfbs_analysis/promoters_it.gff -fo ../output/tfbs_analysis/promoters_it_genome_coords.fasta -s; done
+for strain in 3d7 hb3 it; do bedtools getfasta -fi ../data/genomes/pf3d7/PlasmoDB-24_Pfalciparum3D7_Genome.fasta -bed ../output/tfbs_analysis/promoters_${strain}.gff -fo ../output/tfbs_analysis/promoters_${strain}_genome_coords.fasta -s; done
 ```
 
 Now we need to run fimo on these regions and search for our motifs:
@@ -80,8 +101,14 @@ Now we need to run fimo on these regions and search for our motifs:
 ```{r, engine='bash',eval=F}
 # generate background files
 for strain in 3d7 hb3 it; do fasta-get-markov -m 3 ../output/tfbs_analysis/promoters_${strain}.fasta ../output/tfbs_analysis/promoters_${strain}.background; done
+
+fasta-get-markov -m 3 ../output/tfbs_analysis/upstream_ORF.fasta ../output/tfbs_analysis/upstream_ORF.background
+
 # run fimo for promoters with gene names
 for strain in 3d7 hb3 it; do fimo --bgfile ../output/tfbs_analysis/promoters_${strain}.background --no-qvalue -oc ../output/tfbs_analysis/promoters_${strain} --thresh 1e-2 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/promoters_${strain}.fasta; done
+
+fimo --bgfile ../output/tfbs_analysis/upstream_ORF.background --no-qvalue -oc ../output/tfbs_analysis/upstream_ORF --thresh 1e-2 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/upstream_ORF.fasta
+
 # and for promoters with genome coordinates
 for strain in 3d7 hb3 it; do fimo --bgfile ../output/tfbs_analysis/promoters_${strain}.background --no-qvalue --parse-genomic-coord -oc ../output/tfbs_analysis/promoters_${strain}_genome_coords --thresh 1e-2 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/promoters_${strain}_genome_coords.fasta; done
 ```
@@ -89,35 +116,81 @@ for strain in 3d7 hb3 it; do fimo --bgfile ../output/tfbs_analysis/promoters_${s
 Now we can import that data and analyze it for positional information:
 
 ```{r}
-motifs_3d7 <- rtracklayer::import.gff3("../output/tfbs_analysis/promoters_3d7/fimo.gff") %>% tibble::as_tibble()
+motifs_upstream_ORF <- readr::read_tsv("../output/tfbs_analysis/upstream_ORF/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
 
-for (name in unique(motifs_3d7$Name)) {
+for (motif in unique(motifs_upstream_ORF$motif_id)) {
+  n <- motifs_upstream_ORF %>% 
+    dplyr::filter(motif_id==motif)
+  #print(ks.test(n$start,runif(10000),alternative="less"))
+  g <- n %>% ggplot(aes(x=start)) + 
+    geom_line(stat="density") + 
+    xlab("Start Site") + 
+    ylab("Density") +
+    ggtitle(motif)
+  #print(g)
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/upstream_ORF/",motif,".svg"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/upstream_ORF/",motif,".png"))
+}
+
+rm(motifs_upstream_ORF)
+
+motifs_3d7 <- readr::read_tsv("../output/tfbs_analysis/promoters_3d7/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+
+for (motif in unique(motifs_3d7$motif_id)) {
   n <- motifs_3d7 %>% 
-    dplyr::filter(Name==name)
+    dplyr::filter(motif_id==motif)
   #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + geom_histogram(color="grey70") + xlab("Start Site") + ylab("Frequency")
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_3d7/",name,".pdf"))
+  g <- n %>% ggplot(aes(x=start)) + 
+    geom_line(stat="density") + 
+    xlab("Start Site") + 
+    ylab("Density") +
+    ggtitle(motif)
+  #print(g)
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_3d7/",motif,".svg"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_3d7/",motif,".png"))
 }
 
-motifs_hb3 <- rtracklayer::import.gff3("../output/tfbs_analysis/promoters_hb3/fimo.gff") %>% tibble::as_tibble()
+rm(motifs_3d7)
 
-for (name in unique(motifs_hb3$Name)) {
+motifs_hb3 <- readr::read_tsv("../output/tfbs_analysis/promoters_hb3/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+
+for (motif in unique(motifs_hb3$motif_id)) {
   n <- motifs_hb3 %>% 
-    dplyr::filter(Name==name)
+    dplyr::filter(motif_id==motif)
   #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + geom_histogram(color="grey70")
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_hb3/",name,".pdf"))
+  g <- n %>% ggplot(aes(x=start)) + 
+    geom_line(stat="density") + 
+    xlab("Start Site") + 
+    ylab("Density") +
+    ggtitle(motif)
+  #print(g)
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_hb3/",motif,".svg"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_hb3/",motif,".png"))
 }
 
-motifs_it <- rtracklayer::import.gff3("../output/tfbs_analysis/promoters_it/fimo.gff") %>% tibble::as_tibble()
+rm(motifs_hb3)
 
-for (name in unique(motifs_it$Name)) {
+motifs_it <- readr::read_tsv("../output/tfbs_analysis/promoters_it/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+
+for (motif in unique(motifs_it$motif_id)) {
   n <- motifs_it %>% 
-    dplyr::filter(Name==name)
+    dplyr::filter(motif_id==motif)
   #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + geom_histogram(color="grey70")
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_it/",name,".pdf"))
+  g <- n %>% ggplot(aes(x=start)) + 
+    geom_line(stat="density") + 
+    xlab("Start Site") + 
+    ylab("Density") +
+    ggtitle(motif)
+  #print(g)
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_it/",motif,".svg"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_it/",motif,".png"))
 }
+
+rm(motifs_it)
 ```
 
 ## ApiAP2 Activity Predictions
@@ -133,29 +206,39 @@ It would be interesting to see whether there is an enrichment for a particular m
 ```{r}
 for (strain in c("3d7","hb3","it")) {
 
-divergent <- readr::read_tsv(paste0("../output/neighboring_genes/",strain,"_divergent.tsv")) %>%
-  dplyr::filter(dist < 1000 & dist > 0 & cor >= 0.5)
+  divergent <- readr::read_tsv(paste0("../output/neighboring_genes/",strain,"_divergent.tsv")) %>%
+    dplyr::filter(dist < 1000 & dist > 0 & cor >= 0.5)
 
-transcripts <- tibble::as_tibble(rtracklayer::import.gff3(paste0("../output/neighboring_genes/full_transcripts_",strain,".gff")))
-biprom <- tibble::tibble(seqnames=character(),start=integer(),end=integer(),strand=character(),source=character(),type=character(),ID=character())
+  transcripts <- tibble::as_tibble(
+    rtracklayer::import.gff3(
+      paste0("../output/neighboring_genes/full_transcripts_",strain,".gff")))
+  
+  biprom <- tibble::tibble(seqnames=character(),
+                           start=integer(),
+                           end=integer(),
+                           strand=character(),
+                           source=character(),
+                           type=character(),
+                           ID=character())
 
-for (i in 1:nrow(divergent)) {
-  start_gene <- dplyr::filter(transcripts, ID == divergent$left_gene[i])
-  end_gene <- dplyr::filter(transcripts, ID == divergent$right_gene[i])
-  new <- tibble::tibble(seqnames=start_gene$seqnames,
+  for (i in 1:nrow(divergent)) {
+    start_gene <- dplyr::filter(transcripts, ID == divergent$left_gene[i])
+    end_gene <- dplyr::filter(transcripts, ID == divergent$right_gene[i])
+    new <- tibble::tibble(seqnames=start_gene$seqnames,
                         start=start_gene$end,
                         end=end_gene$start,
                         strand="+",
                         source="PlasmoDB",
                         type="BiPromoter",
                         ID=paste0(start_gene$ID,"-",end_gene$ID))
-  biprom <- dplyr::bind_rows(biprom, new)
-}
-biprom <- GenomicRanges::GRanges(biprom)
-rtracklayer::export.gff3(object=biprom,con=paste0("../output/tfbs_analysis/bidirectional_",strain,".gff"))
-seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24, biprom)
-names(seqs) <- biprom$ID
-Biostrings::writeXStringSet(seqs,paste0("../output/tfbs_analysis/bidirectional_",strain,".fasta"))
+    biprom <- dplyr::bind_rows(biprom, new)
+  }
+  
+  biprom <- GenomicRanges::GRanges(biprom)
+  rtracklayer::export.gff3(object=biprom,con=paste0("../output/tfbs_analysis/bidirectional_",strain,".gff"))
+  seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24, biprom)
+  names(seqs) <- biprom$ID
+  Biostrings::writeXStringSet(seqs,paste0("../output/tfbs_analysis/bidirectional_",strain,".fasta"))
 }
 ```
 
@@ -163,26 +246,27 @@ Now create background files and run fimo:
 
 ```{r, engine='bash',eval=F}
 for strain in 3d7 hb3 it; do fasta-get-markov -m 3 ../output/tfbs_analysis/bidirectional_${strain}.fasta ../output/tfbs_analysis/bidirectional_${strain}.background; done
+
 for strain in 3d7 hb3 it; do fimo --bgfile ../output/tfbs_analysis/bidirectional_${strain}.background --no-qvalue -oc ../output/tfbs_analysis/bidirectional_${strain} --thresh 1e-2 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/bidirectional_${strain}.fasta; done
 ```
 
 And now we can read those files in and check the motif occurences:
 
 ```{r}
-bimotifs_3d7 <- rtracklayer::import.gff3("../output/tfbs_analysis/bidirectional_3d7/fimo.gff") %>% tibble::as_tibble()
+bimotifs_3d7 <- readr::read_tsv("../output/tfbs_analysis/bidirectional_3d7/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+biprom_3d7 <- rtracklayer::import.gff("../output/tfbs_analysis/bidirectional_3d7.gff") %>%
+  tibble::as_tibble()
 
-df <- tibble::as_tibble(biprom_3d7)
-newdf <- tibble::tibble(name=character(),norm_start=numeric())
+tmp <- dplyr::inner_join(bimotifs_3d7,biprom_3d7, by=c("sequence_name"="ID")) %>%
+  dplyr::select(motif_id,sequence_name,start.x,width) %>%
+  dplyr::mutate(norm_start=start.x/width)
 
-for (m in unique(bimotifs_3d7$seqnames)) {
-  w <- dplyr::filter(df, ID == m)$width
-  newdf <- dplyr::bind_rows(newdf, dplyr::filter(bimotifs_3d7, seqnames == m) %>% dplyr::transmute(name=seqnames, norm_start = start / w, motif=Name))
-}
-
-for (n in unique(newdf$motif)) {
-  b <- newdf %>% dplyr::filter(motif==n)
+for (m in unique(tmp$motif_id)) {
+  b <- tmp %>% dplyr::filter(motif_id==m)
   g <- b %>% ggplot(aes(x=norm_start)) + geom_line(stat="density")
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/bidirectional_3d7/",n,".pdf"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/bidirectional_3d7/",m,".svg"))
+  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/bidirectional_3d7/",m,".png"))
 }
 ```
 
@@ -190,8 +274,31 @@ for (n in unique(newdf$motif)) {
 
 Additionally, we can look at TSSs that we can confidentally say is shifting and analyze the motifs within these regions to find a nice example to display. We did this for KARHP:
 
+```{r,engine='bash',eval=F}
+fasta-get-markov -m 3 ../output/tfbs_analysis/kahrp_short.fasta ../output/tfbs_analysis/kahrp_short.background
 
+fimo --bgfile ../output/tfbs_analysis/kahrp_short.background -oc ../output/tfbs_analysis/kahrp_short --thresh 1e-3 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/kahrp_short.fasta
 
+fasta-get-markov -m 3 ../output/tfbs_analysis/kahrp_long.fasta ../output/tfbs_analysis/kahrp_long.background
+
+fimo --bgfile ../output/tfbs_analysis/kahrp_long.background -oc ../output/tfbs_analysis/kahrp_long --thresh 1e-3 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/kahrp_long.fasta
+```
+
+Now we can look which motifs are unique to the short and long isoforms.
+
+```{r}
+kahrp_short <- readr::read_tsv("../output/tfbs_analysis/kahrp_short/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+
+kahrp_long <- readr::read_tsv("../output/tfbs_analysis/kahrp_long/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`)
+
+short_unique <- kahrp_short %>% dplyr::filter(!(motif_id %in% kahrp_long$motif_id))
+long_unique <- kahrp_long %>% dplyr::filter(!(motif_id %in% kahrp_short$motif_id))
+
+DT::datatable(short_unique, rownames = FALSE)
+DT::datatable(long_unique, rownames = FALSE)
+```
 
 ## Session Information
 

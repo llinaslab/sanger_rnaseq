@@ -65,13 +65,13 @@ What can the CAGE data tell us about the *falciparum* genome-wide promoters? Do 
 
 Do we see alternative transcription start sites being used often? 
 
-* [Alternative TSS usage]()
+* [Alternative TSS usage](dynamic_tss.html)
 
 **Transcription factor binding sites**
 
 Based on our newly predicted TSSs, can we make refined genome-wide TFBS predictions? Do these predictions give us any additional insight?
 
-* [Transcription factor binding site predictions]()
+* [Transcription factor binding site predictions](tfbs_analysis.html)
 
 **Strain comparison**
 
