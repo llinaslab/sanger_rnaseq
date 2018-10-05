@@ -1,8 +1,10 @@
 ---
 title: "Differential transcript detection"
 author: "Philipp Ross"
-date: 2017-04-17
+date: 2018-09-25
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r read-chunk, include=FALSE, cache=FALSE}

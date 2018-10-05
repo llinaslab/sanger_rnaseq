@@ -1,8 +1,9 @@
 ---
 title: "Differential phase detection"
 author: "Philipp Ross"
-date: 2017-04-17
-output: html_document
+date: 2018-09-25
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r read-chunk, include=FALSE, cache=FALSE}
@@ -108,7 +109,7 @@ timepoint_phase <- timepoint_phase %>%
   tidyr::separate(col=rows, into=c("tp","strain"), sep="-") %>%
   dplyr::rename(x=V1,y=V2)
 
-write_tsv(x = timepoint_phase, path = "../output/differential_phase/uncorected_timepoint_phase.tsv" )
+write_tsv(x=timepoint_phase,path="../output/differential_phase/uncorected_timepoint_phase.tsv" )
 
 timepoint_phase %>% 
   ggplot(aes(x=x,y=y,label=tp,color=toupper(strain))) + 
@@ -123,7 +124,7 @@ timepoint_phase %>%
 To correct for the phases we can do the following:
 
 ```{r}
-array_3d7 <- read.delim ("../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt")
+array_3d7 <- read.delim("../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt")
 
 df1 <- exp %>% 
   dplyr::filter(gene_id %in% onall & gene_id %in% high_amp) %>%
