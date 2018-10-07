@@ -1,23 +1,21 @@
-source("code/utils.R")
+source("../code/utils.R")
 load_essentials()
 sshhh("limma")
 sshhh("org.Pf.plasmo.db")
 
-setwd("~/Dropbox/projects/sanger_rnaseq/")
-
 # Main --------------------------------------------------------------------
 
 # import gene expression
-x3d7exp <- readRDS("output/neighboring_genes/gene_reduced_3d7_abund.rds")
-xhb3exp <- readRDS("output/neighboring_genes/gene_reduced_hb3_abund.rds")
-xitexp  <- readRDS("output/neighboring_genes/gene_reduced_it_abund.rds")
+x3d7exp <- readRDS("../output/neighboring_genes/gene_reduced_3d7_abund.rds")
+xhb3exp <- readRDS("../output/neighboring_genes/gene_reduced_hb3_abund.rds")
+xitexp  <- readRDS("../output/neighboring_genes/gene_reduced_it_abund.rds")
 
 exp <- dplyr::bind_rows(x3d7exp,xhb3exp,xitexp)
 
 rm(x3d7exp,xhb3exp,xitexp)
 
 # import core genes for comparison
-core_genes <- readr::read_tsv("data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+core_genes <- readr::read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
 
 # unique gene IDs
 ug <- unique(exp$gene_id)
@@ -125,13 +123,13 @@ off_hb3it_exp  <- inner_join(off_hb3it_exp, gene_names, by = "gene_id")
 cat("\nWriting data to output... ")
 
 write_tsv(x = off_3d7hb3_exp,
-          path = "output/differential_detection/off_genes_3d7_hb3.tsv")
+          path = "../output/differential_detection/off_genes_3d7_hb3.tsv")
 write_tsv(x = off_3d7it_exp,
-          path = "output/differential_detection/off_genes_3d7_it.tsv")
+          path = "../output/differential_detection/off_genes_3d7_it.tsv")
 write_tsv(x = off_hb3it_exp,
-          path = "output/differential_detection/off_genes_hb3_it.tsv")
+          path = "../output/differential_detection/off_genes_hb3_it.tsv")
 write_tsv(x = inner_join(detected, gene_names, by = "gene_id"),
-          path = "output/differential_detection/detected.tsv")
+          path = "../output/differential_detection/detected.tsv")
 
 off_hb3_not_3d7 <- off_3d7hb3_exp %>% filter(strain == "hb3" & max < 5) %$% gene_id
 off_3d7_not_hb3 <- off_3d7hb3_exp %>% filter(strain == "3d7" & max < 5) %$% gene_id
@@ -140,7 +138,7 @@ off_3d7_not_it  <- off_3d7it_exp %>% filter(strain == "3d7" & max < 5) %$% gene_
 off_hb3_not_it  <- off_hb3it_exp %>% filter(strain == "hb3" & max < 5) %$% gene_id
 off_it_not_hb3  <- off_hb3it_exp %>% filter(strain == "it" & max < 5) %$% gene_id
 
-output <- "output/differential_detection/"
+output <- "../output/differential_detection/"
 
 write(off_hb3_not_3d7,paste0(output,"off_genes_3d7_hb3/off_hb3_list.txt"),sep="\n")
 write(off_3d7_not_hb3,paste0(output,"off_genes_3d7_hb3/off_3d7_list.txt"),sep="\n")
@@ -157,7 +155,7 @@ write(off_only_3d7,paste0(output,"off_only_3d7_list.txt"),sep="\n")
 write(off_only_hb3,paste0(output,"off_only_hb3_list.txt"),sep="\n")
 write(off_only_it,paste0(output,"off_only_it_list.txt"),sep="\n")
 
-saveRDS(von,"output/differential_detection/von.rds")
-saveRDS(voff,"output/differential_detection/voff.rds")
+saveRDS(von,"../output/differential_detection/von.rds")
+saveRDS(voff,"../output/differential_detection/voff.rds")
 
 cat("Done!\n")

@@ -29,21 +29,157 @@ First we need to detect transcript differences. To do this we run the `detect_tr
 
 Next we run the topGO script:
 
-```{r,engine='bash'}
+```{r,engine='bash',eval=F}
 bash code/differential_detection/run_topgo.sh data/gene_ontology/Pf3D7_go_sept2014.txt data/gene_ontology/Pf3D7_desc_sept2014.txt
 ```
 
 ## Are undetected genes sometimes due to known polymorphic regions?
 
+We can address this by calculating the coverage across each exon and comparing the fraction covered by reads.
 
+```{r,engine='bash',eval=F}
+for i in $(seq 7); 
+  do bedtools coverage -a  -b ../data/bam/3d7.3d7_v3_chr.tp${i}.bam -s -split > ../output/differential_detection/coverages/3d7_tp${i}_cov.tsv;
+done
+
+for strain in hb3 it;
+  do for i in $(seq 7); 
+    do bedtools coverage -a  -b ../data/bam/${strain}.3d7chr.tp${i}.bam -s -split > ../output/differential_detection/coverages/${strain}_tp${i}_cov.tsv;
+  done
+done
+```
+
+```{r}
+read_cov <- function(file) {
+
+  df <- readr::read_tsv(file,col_names=F) %>%
+    dplyr::select(X9,X10,X11,X12,X13) %>%
+    dplyr::rename(att=X9,reads=X10,nonzero=X11,len=X12,fraction=X13)
+
+  df$exon <- apply(df, 1, function(x) {
+    stringr::str_replace(stringr::str_split(stringr::str_split(x[["att"]],";")[[1]][1],"=")[[1]][2],"exon_","")
+  })
+
+  return(dplyr::select(df,-att))
+}
+
+files_3d7 <- list.files("../output/differential_detection/coverages/",pattern="3d7",full.names=T)
+files_hb3 <- list.files("../output/differential_detection/coverages/",pattern="hb3",full.names=T)
+files_it <- list.files("../output/differential_detection/coverages/",pattern="it",full.names=T)
+
+tp1_3d7 <- read_cov(files_3d7[1]) %>% mutate(strain="3D7",tp="T1")
+tp2_3d7 <- read_cov(files_3d7[2]) %>% mutate(strain="3D7",tp="T2")
+tp3_3d7 <- read_cov(files_3d7[3]) %>% mutate(strain="3D7",tp="T3")
+tp4_3d7 <- read_cov(files_3d7[4]) %>% mutate(strain="3D7",tp="T4")
+tp5_3d7 <- read_cov(files_3d7[5]) %>% mutate(strain="3D7",tp="T5")
+tp6_3d7 <- read_cov(files_3d7[6]) %>% mutate(strain="3D7",tp="T6")
+tp7_3d7 <- read_cov(files_3d7[7]) %>% mutate(strain="3D7",tp="T7")
+df_3d7 <- rbind(tp1_3d7,tp2_3d7,tp3_3d7,tp4_3d7,tp5_3d7,tp6_3d7,tp7_3d7)
+rm(tp1_3d7,tp2_3d7,tp3_3d7,tp4_3d7,tp5_3d7,tp6_3d7,tp7_3d7)
+
+tp1_hb3 <- read_cov(files_hb3[1]) %>% mutate(strain="HB3",tp="T1")
+tp2_hb3 <- read_cov(files_hb3[2]) %>% mutate(strain="HB3",tp="T2")
+tp3_hb3 <- read_cov(files_hb3[3]) %>% mutate(strain="HB3",tp="T3")
+tp4_hb3 <- read_cov(files_hb3[4]) %>% mutate(strain="HB3",tp="T4")
+tp5_hb3 <- read_cov(files_hb3[5]) %>% mutate(strain="HB3",tp="T5")
+tp6_hb3 <- read_cov(files_hb3[6]) %>% mutate(strain="HB3",tp="T6")
+tp7_hb3 <- read_cov(files_hb3[7]) %>% mutate(strain="HB3",tp="T7")
+df_hb3 <- rbind(tp1_hb3,tp2_hb3,tp3_hb3,tp4_hb3,tp5_hb3,tp6_hb3,tp7_hb3)
+rm(tp1_hb3,tp2_hb3,tp3_hb3,tp4_hb3,tp5_hb3,tp6_hb3,tp7_hb3)
+
+tp1_it <- read_cov(files_it[1]) %>% mutate(strain="IT",tp="T1")
+tp2_it <- read_cov(files_it[2]) %>% mutate(strain="IT",tp="T2")
+tp3_it <- read_cov(files_it[3]) %>% mutate(strain="IT",tp="T3")
+tp4_it <- read_cov(files_it[4]) %>% mutate(strain="IT",tp="T4")
+tp5_it <- read_cov(files_it[5]) %>% mutate(strain="IT",tp="T5")
+tp6_it <- read_cov(files_it[6]) %>% mutate(strain="IT",tp="T6")
+tp7_it <- read_cov(files_it[7]) %>% mutate(strain="IT",tp="T7")
+df_it <- rbind(tp1_it,tp2_it,tp3_it,tp4_it,tp5_it,tp6_it,tp7_it)
+rm(tp1_it,tp2_it,tp3_it,tp4_it,tp5_it,tp6_it,tp7_it)
+
+coverages <- rbind(df_3d7,df_hb3,df_it)
+coverages <- coverages[,c(5,6,7,1,2,3,4)] %>%
+  separate(exon, into = c("gene_id","exon"), sep = "-") %>%
+  group_by(gene_id,strain,tp) %>%
+  summarise(reads=sum(reads),nonzero=sum(nonzero),len=sum(len),fraction=sum(nonzero)/sum(len))
+
+readr::write_tsv(x=coverages,path="../output/differential_detection/coverages/coverages.tsv")
+```
+
+```{r}
+coverages$tp <- factor(coverages$tp, levels = c("T1","T2","T3","T4","T5","T6","T7"))
+
+core_genes <- read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
+
+mean_coverages <- coverages %>%
+  group_by(gene_id,strain) %>%
+  summarise(fraction=mean(fraction)) %>%
+  spread(strain,fraction) %>%
+  mutate(diffhb3 = `3D7` - HB3, diffit = `3D7` - IT)
+
+max_coverages <- coverages %>%
+  group_by(gene_id,strain) %>%
+  summarise(fraction=max(fraction)) %>%
+  spread(strain,fraction) %>%
+  mutate(diffhb3 = `3D7` - HB3, diffit = `3D7` - IT)
+
+g1 <- ggplot(mean_coverages,aes(x=diffhb3)) +
+  geom_histogram(color="grey90") +
+  xlab("Difference from HB3")
+g2 <- ggplot(mean_coverages,aes(x=diffit)) +
+  geom_histogram(color="grey90") +
+  xlab("Difference from IT")
+
+p <- plot_grid(g1,g2,nrow=1)
+print(p)
+```
+
+```{r}
+g <- ggplot(mean_coverages,aes(x=`3D7`,y=HB3)) + geom_point() + geom_point(data=mean_coverages %>% dplyr::filter(gene_id == "PF3D7_1222600"),color = "#E41A1C") + geom_text(data=mean_coverages %>% dplyr::filter(gene_id == "PF3D7_1222600"),label="PF3D7_1222600", color = "#E41A1C", hjust = 1.1)
+print(g)
+
+g <- ggplot(mean_coverages,aes(x=`3D7`,y=HB3)) + geom_point() + geom_point(data=mean_coverages %>% dplyr::filter(gene_id == "PF3D7_0930300"),color = "#E41A1C") + geom_text(data=mean_coverages %>% dplyr::filter(gene_id == "PF3D7_0930300"),label="PF3D7_0930300", color = "#E41A1C", hjust = 1.1)
+print(g)
+```
+
+```{r}
+g <- ggplot(mean_coverages,aes(x=`3D7`,y=HB3)) + geom_point() + geom_point(data=mean_coverages %>% dplyr::filter(`3D7`<0.25 & HB3 >0.75),color = "#E41A1C") + geom_text(data=mean_coverages %>% dplyr::filter(`3D7`<0.25 & HB3 >0.75), aes(label=gene_id), color = "#E41A1C", hjust = -0.5, check_overlap = TRUE)
+print(g)
+```
+
+```{r}
+g <- ggplot(mean_coverages,aes(x=`3D7`,y=IT)) + geom_point() + geom_point(data=mean_coverages %>% dplyr::filter(`3D7`<0.5 & IT >0.5),color = "#E41A1C") + geom_text(data=mean_coverages %>% dplyr::filter(`3D7`<0.5 & IT >0.5), aes(label=gene_id), color = "#E41A1C", hjust = -0.5, check_overlap = TRUE)
+print(g)
+```
+
+```{r}
+g <- ggplot(mean_coverages,aes(x=IT,y=HB3)) + geom_point() + geom_point(data=mean_coverages %>% dplyr::filter(IT<0.25 & HB3 >0.75),color = "#E41A1C") + geom_text(data=mean_coverages %>% dplyr::filter(IT<0.25 & HB3 >0.75), aes(label=gene_id), color = "#E41A1C", hjust = -0.5, check_overlap = TRUE)
+print(g)
+```
 
 ## Results
 
-Some genes may barely get over the threshold of 5 RPKMs, which was chosen arbitrarily. We are not interested in those results. We want to see what transcripts are clearly abundant in one strain, while clearly absent or at the very least severely down-regulated in another strain. The question then becomes whether this is due to poor coverage across the gene (highly polymorphic) or actual low transcript copy number. MSP1 is an example of a highly polymorphic gene in HB3 versus 3D7. It is not covered very well across the gene and thus has been marked as "undetected." MSP2 is an example of a gene that is detected, however, also highly polymorphic.
+Some genes may barely get over the threshold of 5 TPMs, which was chosen arbitrarily. We are not interested in those results. We want to see what transcripts are clearly abundant in one strain, while clearly absent or at the very least severely down-regulated in another strain. The question then becomes whether this is due to poor coverage across the gene (highly polymorphic) or actual low transcript copy number. MSP1 is an example of a highly polymorphic gene in HB3 versus 3D7. It is not covered very well across the gene and thus has been marked as "undetected." MSP2 is an example of a gene that is detected, but is also highly polymorphic.
 
 Looking through this CGH data will help as well: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2901668/
 
-####Up in 3D7
+```{r}
+off_3d7_hb3 <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
+DT::datatable(off_3d7_hb3,rownames = F)
+```
+
+
+```{r}
+off_3d7_it <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
+DT::datatable(off_3d7_hb3,rownames = F)
+```
+
+```{r}
+off_hb3_it <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
+DT::datatable(off_3d7_hb3,rownames = F)
+```
+
+#### Up in 3D7
 
 PF3D7_0202000 2145.335 versus 2.995
 knob-associated histidine-rich protein (KAHRP)
@@ -90,7 +226,7 @@ poly(A) polymerase PAP, putative
 PF3D7_1031000 27.841 versus 0.468
 25 kDa ookinete surface antigen precursor (Pfs25)
 
-####Up in HB3
+#### Up in HB3
 
 10 out of top 30 are pseudogenes
 
@@ -98,9 +234,9 @@ Not many differences beyond highly variant genes (variant due to clonal variatio
 
 stevor, exported protein family 4, pfmc-2tm mauler’s cleft two transmembrane protein, mspr4, g-beta repeat protein
 
-###3D7 and IT
+### 3D7 and IT
 
-####Up in 3D7
+#### Up in 3D7
 
 See a lot of the same genes here as I did in 3D7 versus HB3.
 
@@ -134,7 +270,7 @@ fatty acid elongation protein, GNS1/SUR4 family, putative
 PF3D7_1038400
 gametocyte-specific protein (Pf11-1)
 
-####Up in IT
+#### Up in IT
 
 PF3D7_0114300
 exported protein family 4, pseudogene (EPF4)
@@ -142,16 +278,16 @@ exported protein family 4, pseudogene (EPF4)
 PF3D7_0936700
 lysophospholipase, putative
 
-###HB3 and IT
+### HB3 and IT
 
 Not much difference here.
 
-####Up in HB3
+#### Up in HB3
 
 PF3D7_1477800
 acyl-CoA binding protein (ACBP)
 
-####Up in IT
+#### Up in IT
 
 PF3D7_0202000
 knob-associated histidine-rich protein (KAHRP)
@@ -167,7 +303,6 @@ DnaJ protein, putative
 
 PF3D7_0625600
 poly(A) polymerase PAP, putative
-
 
 ## Session Information
 
