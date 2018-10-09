@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Philipp Ross" />
+
+<meta name="date" content="2018-09-25" />
+
+<title>Differential phase detection</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sanger RNA-seq</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Differential phase detection</h1>
+<h4 class="author"><em>Philipp Ross</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2018-10-09</p>
+<p><strong>Code version:</strong> acf38fa</p>
+<div id="calculating-the-phases-for-each-gene" class="section level2">
+<h2>Calculating the phases for each gene</h2>
+<p>First let’s import and process the data we need to use for this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># import expression data</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">x3d7exp &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">xhb3exp &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">xitexp  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">exp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(x3d7exp,xhb3exp,xitexp)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">rm</span>(x3d7exp,xhb3exp,xitexp)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># import core genes for comparison</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">core_genes &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gene_lists/core_pf3d7_genes.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co"># only consider genes with a TPM of 5 within at least one sample</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">detected  &lt;-<span class="st"> </span>exp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>core_genes) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id, strain) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">sum</span>(TPM <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">on =</span> <span class="kw">ifelse</span>(n <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>n)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">on3d7 &lt;-<span class="st"> </span>detected <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;3d7&quot;</span> <span class="op">&amp;</span><span class="st"> </span>on <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span><span class="st"> </span>gene_id</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">onhb3 &lt;-<span class="st"> </span>detected <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;hb3&quot;</span> <span class="op">&amp;</span><span class="st"> </span>on <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span><span class="st"> </span>gene_id</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">onit  &lt;-<span class="st"> </span>detected <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;it&quot;</span> <span class="op">&amp;</span><span class="st"> </span>on <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%$%</span><span class="st"> </span>gene_id</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">on3d7hb3 &lt;-<span class="st"> </span><span class="kw">intersect</span>(on3d7,onhb3)</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">on3d7it  &lt;-<span class="st"> </span><span class="kw">intersect</span>(on3d7,onit)</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">onhb3it  &lt;-<span class="st"> </span><span class="kw">intersect</span>(onhb3,onit)</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co"># create a list of all genes on between strains</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">onall &lt;-<span class="st"> </span><span class="kw">Reduce</span>(intersect, <span class="kw">list</span>(on3d7, onhb3, onit))</a></code></pre></div>
+<p>We also only want to consider genes with a decent amplitude to remove genes that are constitutively on:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">amps &lt;-<span class="st"> </span>exp <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id, strain) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">min=</span><span class="kw">min</span>(TPM),<span class="dt">max=</span><span class="kw">max</span>(TPM)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">amp=</span>max<span class="op">/</span>(min<span class="op">+</span><span class="dv">1</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>()</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">amps &lt;-<span class="st"> </span>amps <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(<span class="kw">as.data.frame</span>(org.Pf.plasmoGENENAME),<span class="dt">by=</span><span class="st">&quot;gene_id&quot;</span>)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">g &lt;-<span class="st"> </span>amps <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">strain =</span> <span class="kw">toupper</span>(strain)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>amp,<span class="dt">group=</span>strain,<span class="dt">color=</span>strain)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">  </span>fill_colors <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="st">  </span>outline_colors <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Amplitude&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans=</span><span class="st">&quot;log10&quot;</span>, </a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">                     <span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>,<span class="dv">1000</span>,<span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">                     <span class="dt">labels=</span><span class="kw">trans_format</span>(<span class="st">&#39;log10&#39;</span>,<span class="kw">math_format</span>(<span class="dv">10</span><span class="op">^</span>.x))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        <span class="dt">legend.title=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        <span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.5</span>),</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">        <span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="fl">0.5</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">0.75</span>)</a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/differential_phase/amps.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/differential_phase/amps.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">high_amp &lt;-<span class="st"> </span>amps <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">log2</span>(amp) <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>) <span class="op">%$%</span><span class="st"> </span><span class="kw">unique</span>(gene_id)</a></code></pre></div>
+<p>In Broadbent et al. they generate a circular plot to represent the different timepoints as x and y coordinates following dimensional reduction using multidimensional scaling. Prior to this we need to correct for impure Plasmodium cell populations as demonstrated in the following plot:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">wide_uncorrected &lt;-<span class="st"> </span>exp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>high_amp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(TPM)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(exp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">norm_tpm=</span>(((TPM<span class="op">/</span>m)<span class="op">-</span><span class="kw">mean</span>(TPM<span class="op">/</span>m))<span class="op">/</span><span class="kw">sd</span>(TPM<span class="op">/</span>m))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,tp,norm_tpm,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unite</span>(tp_strain, tp, strain, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(tp_strain, norm_tpm, gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">spread</span>(tp_strain, norm_tpm) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>gene_id)</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">d &lt;-<span class="st"> </span><span class="kw">as.dist</span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">cor</span>(wide_uncorrected))<span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">fit &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">isoMDS</span>(d, <span class="dt">k =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>initial  value 6.803612 
+iter   5 value 5.340021
+iter  10 value 5.178667
+iter  10 value 5.174423
+iter  10 value 5.172857
+final  value 5.172857 
+converged</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">timepoint_phase &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(fit<span class="op">$</span>points)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">timepoint_phase<span class="op">$</span>rows &lt;-<span class="st"> </span><span class="kw">rownames</span>(fit<span class="op">$</span>points)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">timepoint_phase &lt;-<span class="st"> </span>timepoint_phase <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">separate</span>(<span class="dt">col=</span>rows, <span class="dt">into=</span><span class="kw">c</span>(<span class="st">&quot;tp&quot;</span>,<span class="st">&quot;strain&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;-&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">x=</span>V1,<span class="dt">y=</span>V2)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">g &lt;-<span class="st"> </span>timepoint_phase <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y,<span class="dt">label=</span>tp,<span class="dt">color=</span><span class="kw">toupper</span>(strain))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">check_overlap=</span>T,<span class="dt">nudge_x=</span><span class="fl">0.05</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Non-Corrected MDS Plot&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="st">  </span>outline_colors</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/differential_phase/uncorrected_timepoint_mds.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/differential_phase/uncorrected_timepoint_mds.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>timepoint_phase,<span class="dt">path=</span><span class="st">&quot;../output/differential_phase/uncorected_timepoint_phase.tsv&quot;</span> )</a></code></pre></div>
+<p>Although it doesn’t look terrible, there are times when it seems that 3D7 seems to somehow “get ahead” of HB3 and IT in terms of the IDC developmental timepoint. We tried to correct for this by locally realigning time points to the 3D7 53 time point microarray expression data set and predicting the expression values following local realignment.</p>
+<p>A “local realignment” refers to adjusting each time point individually whereas a “global realignment” refers to use a descriptive statistic such as the mean or median shift to globally shift all expression values by the same amount.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># filter out undetected genes and genes with low amplitudes</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># mean normalize and scale TPMs</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># group observations accordingly</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># use periodic spline to predict expression levels for 53 time points</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">pred_exp1 &lt;-<span class="st"> </span>exp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>high_amp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(TPM)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(exp, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;gene_id&quot;</span>,<span class="st">&quot;strain&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">norm_tpm=</span>(((TPM<span class="op">/</span>m)<span class="op">-</span><span class="kw">mean</span>(TPM<span class="op">/</span>m))<span class="op">/</span><span class="kw">sd</span>(TPM<span class="op">/</span>m))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,tp,norm_tpm,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">hpi=</span><span class="kw">ifelse</span>(tp<span class="op">==</span><span class="dv">1</span>,<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">                           <span class="cf">if</span>(tp<span class="op">==</span><span class="dv">2</span>){<span class="dv">8</span>}</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">                           <span class="cf">else</span> <span class="cf">if</span>(tp<span class="op">==</span><span class="dv">3</span>){<span class="dv">16</span>}</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">                           <span class="cf">else</span> <span class="cf">if</span>(tp<span class="op">==</span><span class="dv">4</span>){<span class="dv">24</span>}</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">                           <span class="cf">else</span> <span class="cf">if</span>(tp<span class="op">==</span><span class="dv">5</span>){<span class="dv">32</span>}</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">                           <span class="cf">else</span> <span class="cf">if</span>(tp<span class="op">==</span><span class="dv">6</span>){<span class="dv">40</span>}</a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">                           <span class="cf">else</span>{<span class="dv">48</span>})) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id,strain) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(splines<span class="op">::</span><span class="kw">periodicSpline</span>(norm_tpm <span class="op">~</span><span class="st"> </span>hpi, ., <span class="dt">period =</span> <span class="dv">48</span>), <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">53</span>,<span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">pred_exp2 &lt;-<span class="st"> </span><span class="kw">apply</span>(pred_exp1, <span class="dv">1</span>, <span class="cf">function</span>(row) {<span class="kw">list</span>(<span class="dt">gene_id=</span>row[[<span class="dv">1</span>]],<span class="dt">strain=</span>row[[<span class="dv">2</span>]],<span class="dt">x=</span>row[[<span class="dv">3</span>]][[<span class="dv">1</span>]],<span class="dt">y=</span>row[[<span class="dv">3</span>]][[<span class="dv">2</span>]])})</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">pred_exp &lt;-<span class="st"> </span><span class="kw">do.call</span>(dplyr<span class="op">::</span>bind_rows, </a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">                    <span class="kw">lapply</span>(pred_exp2, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb8-28" data-line-number="28">                      tibble<span class="op">::</span><span class="kw">tibble</span>(</a>
+<a class="sourceLine" id="cb8-29" data-line-number="29">                        <span class="dt">gene_id=</span><span class="kw">rep</span>(x[[<span class="dv">1</span>]],<span class="dv">53</span>),</a>
+<a class="sourceLine" id="cb8-30" data-line-number="30">                        <span class="dt">strain=</span><span class="kw">rep</span>(x[[<span class="dv">2</span>]],<span class="dv">53</span>),</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31">                        <span class="dt">tp=</span>x[[<span class="dv">3</span>]],</a>
+<a class="sourceLine" id="cb8-32" data-line-number="32">                        <span class="dt">exp=</span>x[[<span class="dv">4</span>]])}))</a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="kw">rm</span>(pred_exp1,pred_exp2)</a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co"># import and format array datta</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37">array_3d7 &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;../data/array_correlations/selected_3d7array_foldchanges_v3_geneids.txt&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>()</a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40">dups &lt;-<span class="st"> </span><span class="kw">as.character</span>(array_3d7<span class="op">$</span>GeneID[<span class="kw">duplicated</span>(array_3d7 <span class="op">%$%</span><span class="st"> </span>GeneID)])</a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42">array_3d7 &lt;-<span class="st"> </span>array_3d7 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(GeneID <span class="op">%nin%</span><span class="st"> </span>dups) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(tp,exp,<span class="op">-</span>GeneID) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">gene_id =</span> GeneID)</a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47">array_3d7<span class="op">$</span>gene_id &lt;-<span class="st"> </span><span class="kw">as.character</span>(array_3d7<span class="op">$</span>gene_id)</a>
+<a class="sourceLine" id="cb8-48" data-line-number="48">array_3d7 &lt;-<span class="st"> </span>array_3d7 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">tp =</span> <span class="kw">ifelse</span>(<span class="kw">as.numeric</span>(stringr<span class="op">::</span><span class="kw">str_replace_all</span>(tp, <span class="st">&quot;Timepoint.&quot;</span>,<span class="st">&quot;&quot;</span>)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">9</span>, <span class="kw">paste0</span>(<span class="st">&quot;array_&quot;</span>,stringr<span class="op">::</span><span class="kw">str_replace_all</span>(tp, <span class="st">&quot;Timepoint.&quot;</span>,<span class="st">&quot;&quot;</span>)), <span class="kw">paste0</span>(<span class="st">&quot;array_0&quot;</span>,stringr<span class="op">::</span><span class="kw">str_replace_all</span>(tp, <span class="st">&quot;Timepoint.&quot;</span>,<span class="st">&quot;&quot;</span>))))</a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co"># format predicted expression</span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52">exp_3d7 &lt;-<span class="st"> </span>pred_exp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;3d7&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>strain)</a>
+<a class="sourceLine" id="cb8-53" data-line-number="53">exp_hb3 &lt;-<span class="st"> </span>pred_exp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;hb3&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>strain)</a>
+<a class="sourceLine" id="cb8-54" data-line-number="54">exp_it &lt;-<span class="st"> </span>pred_exp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;it&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>strain)</a>
+<a class="sourceLine" id="cb8-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb8-56" data-line-number="56">exp_3d7<span class="op">$</span>tp &lt;-<span class="st"> </span><span class="kw">ifelse</span>(exp_3d7<span class="op">$</span>tp <span class="op">&gt;</span><span class="st"> </span><span class="dv">9</span>, <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_&quot;</span>,exp_3d7<span class="op">$</span>tp)), <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_0&quot;</span>,exp_3d7<span class="op">$</span>tp)))</a>
+<a class="sourceLine" id="cb8-57" data-line-number="57">exp_hb3<span class="op">$</span>tp &lt;-<span class="st"> </span><span class="kw">ifelse</span>(exp_hb3<span class="op">$</span>tp <span class="op">&gt;</span><span class="st"> </span><span class="dv">9</span>, <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_&quot;</span>,exp_hb3<span class="op">$</span>tp)), <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_0&quot;</span>,exp_hb3<span class="op">$</span>tp)))</a>
+<a class="sourceLine" id="cb8-58" data-line-number="58">exp_it<span class="op">$</span>tp &lt;-<span class="st"> </span><span class="kw">ifelse</span>(exp_it<span class="op">$</span>tp <span class="op">&gt;</span><span class="st"> </span><span class="dv">9</span>, <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_&quot;</span>,exp_it<span class="op">$</span>tp)), <span class="kw">paste</span>(<span class="kw">paste0</span>(<span class="st">&quot;rnaseq_0&quot;</span>,exp_it<span class="op">$</span>tp)))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># perform transcriptome realignment</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">realign_transcriptome &lt;-<span class="st"> </span><span class="cf">function</span>(rnaseq,array,strain) {</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  wide_array  &lt;-<span class="st"> </span>tidyr<span class="op">::</span><span class="kw">spread</span>(array,tp,exp)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  wide_rnaseq &lt;-<span class="st"> </span>tidyr<span class="op">::</span><span class="kw">spread</span>(rnaseq,tp,exp)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  joined &lt;-<span class="st"> </span><span class="kw">inner_join</span>(wide_rnaseq, wide_array, <span class="dt">by =</span> <span class="st">&quot;gene_id&quot;</span>)</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  best_cor &lt;-<span class="st"> </span><span class="kw">max.col</span>(<span class="kw">t</span>(<span class="kw">cor</span>(joined[,<span class="dv">2</span><span class="op">:</span><span class="dv">54</span>],joined[,<span class="dv">55</span><span class="op">:</span><span class="dv">107</span>],<span class="dt">use=</span><span class="st">&quot;na.or.complete&quot;</span>)))</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  new_wide_rnaseq &lt;-<span class="st"> </span>wide_rnaseq[<span class="kw">c</span>(<span class="dv">1</span>,best_cor[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">32</span>,<span class="dv">40</span>,<span class="dv">48</span>)])]</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="kw">colnames</span>(new_wide_rnaseq) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;gene_id&quot;</span>,<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">32</span>,<span class="dv">40</span>,<span class="dv">48</span>)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">  </a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">  tmp &lt;-<span class="st"> </span>new_wide_rnaseq <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="st">    </span>tidyr<span class="op">::</span><span class="kw">gather</span>(tp,exp,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(splines<span class="op">::</span><span class="kw">periodicSpline</span>(exp <span class="op">~</span><span class="st"> </span>tp, ., <span class="dt">period =</span> <span class="dv">48</span>), <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">48</span>,<span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">  tmp &lt;-<span class="st"> </span><span class="kw">apply</span>(tmp, <span class="dv">1</span>, <span class="cf">function</span>(row) {<span class="kw">list</span>(<span class="dt">gene_id=</span>row[[<span class="dv">1</span>]],<span class="dt">x=</span>row[[<span class="dv">2</span>]][[<span class="dv">1</span>]],<span class="dt">y=</span>row[[<span class="dv">2</span>]][[<span class="dv">2</span>]])})</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">  tmp &lt;-<span class="st"> </span><span class="kw">do.call</span>(dplyr<span class="op">::</span>bind_rows, </a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">                    <span class="kw">lapply</span>(tmp, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19">                      tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">gene_id=</span><span class="kw">rep</span>(x[[<span class="dv">1</span>]],<span class="dv">48</span>),</a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">                                     <span class="dt">tp=</span>x[[<span class="dv">2</span>]],</a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">                                     <span class="dt">exp=</span>x[[<span class="dv">3</span>]])}))</a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">  out &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(tmp,<span class="dt">strain=</span>strain)</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24">  <span class="kw">return</span>(out)</a>
+<a class="sourceLine" id="cb9-25" data-line-number="25">  </a>
+<a class="sourceLine" id="cb9-26" data-line-number="26">}</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">aligned_3d7 &lt;-<span class="st"> </span><span class="kw">realign_transcriptome</span>(exp_3d7,array_3d7,<span class="st">&quot;3d7&quot;</span>)</a>
+<a class="sourceLine" id="cb9-29" data-line-number="29">aligned_hb3 &lt;-<span class="st"> </span><span class="kw">realign_transcriptome</span>(exp_hb3,array_3d7,<span class="st">&quot;hb3&quot;</span>)</a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">aligned_it  &lt;-<span class="st"> </span><span class="kw">realign_transcriptome</span>(exp_it,array_3d7,<span class="st">&quot;it&quot;</span>)</a>
+<a class="sourceLine" id="cb9-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb9-32" data-line-number="32">final &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(aligned_3d7,aligned_hb3,aligned_it) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">16</span>,<span class="dv">24</span>,<span class="dv">32</span>,<span class="dv">40</span>,<span class="dv">48</span>))</a>
+<a class="sourceLine" id="cb9-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb9-35" data-line-number="35">wide_corrected &lt;-<span class="st"> </span>final <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unite</span>(tp_strain, tp, strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id, tp_strain, exp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">spread</span>(tp_strain, exp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>gene_id)</a>
+<a class="sourceLine" id="cb9-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb9-41" data-line-number="41">d &lt;-<span class="st"> </span><span class="kw">as.dist</span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">cor</span>(wide_corrected))<span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb9-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb9-43" data-line-number="43">fit &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">isoMDS</span>(d<span class="fl">+0.0000001</span>, <span class="dt">k =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>initial  value 9.243506 
+final  value 8.112635 
+converged</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">dfit &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(fit<span class="op">$</span>points)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">dfit<span class="op">$</span>tp_strain &lt;-<span class="st"> </span><span class="kw">rownames</span>(dfit)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">rownames</span>(dfit) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">g &lt;-<span class="st"> </span>dfit <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">separate</span>(tp_strain, <span class="kw">c</span>(<span class="st">&quot;tp&quot;</span> ,<span class="st">&quot;strain&quot;</span>), <span class="st">&quot;_&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>V1,<span class="dt">y=</span>V2,<span class="dt">label=</span>tp,<span class="dt">color=</span><span class="kw">toupper</span>(strain))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">check_overlap=</span>F,<span class="dt">nudge_x=</span><span class="fl">0.05</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Locally Shifted MDS Plot&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.grid =</span> <span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="st">  </span>outline_colors</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/differential_phase/corrected_timepoint_phase.svg&quot;</span>,g)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">wide &lt;-<span class="st"> </span>exp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>high_amp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">m=</span><span class="kw">mean</span>(TPM)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(exp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">norm_tpm=</span>(((TPM<span class="op">/</span>m)<span class="op">-</span><span class="kw">mean</span>(TPM<span class="op">/</span>m))<span class="op">/</span><span class="kw">sd</span>(TPM<span class="op">/</span>m))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,tp,norm_tpm,strain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unite</span>(gene_strain, gene_id, strain, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_strain, norm_tpm, tp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">spread</span>(gene_strain, norm_tpm)</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">d &lt;-<span class="st"> </span><span class="kw">as.dist</span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">cor</span>(wide))<span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">fit &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">isoMDS</span>(d, <span class="dt">k =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17">gene_phase &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(fit<span class="op">$</span>points)</a>
+<a class="sourceLine" id="cb12-18" data-line-number="18">gene_phase<span class="op">$</span>rows &lt;-<span class="st"> </span><span class="kw">rownames</span>(fit<span class="op">$</span>points)</a>
+<a class="sourceLine" id="cb12-19" data-line-number="19">gene_phase &lt;-<span class="st"> </span>gene_phase <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">separate</span>(<span class="dt">col=</span>rows, <span class="dt">into=</span><span class="kw">c</span>(<span class="st">&quot;gene_id&quot;</span>,<span class="st">&quot;strain&quot;</span>), <span class="dt">sep=</span><span class="st">&quot;-&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">x=</span>V1,<span class="dt">y=</span>V2)</a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23">gene_phase<span class="op">$</span>phase &lt;-<span class="st"> </span><span class="kw">apply</span>(gene_phase[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dv">1</span>, <span class="cf">function</span>(x) {<span class="kw">atan2</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>])})</a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="kw">rownames</span>(gene_phase) &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb12-26" data-line-number="26">gene_phase &lt;-<span class="st"> </span>gene_phase <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id,strain,x,y,phase)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>gene_phase,<span class="dt">path=</span><span class="st">&quot;../output/differential_phase/gene_phase.tsv&quot;</span>)</a></code></pre></div>
+</div>
+<div id="phase-comparison-histograms" class="section level2">
+<h2>Phase comparison histograms</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">gene_phase &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../output/differential_phase/gene_phase.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co"># Prepare phase shifts between strains</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">s &lt;-<span class="st"> </span>gene_phase <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(gene_id, strain, phase) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">spread</span>(strain, phase) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">3D7 - HB3</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>hb3),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>hb3))),</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">         <span class="st">`</span><span class="dt">3D7 - IT</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>it),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>it))),</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">         <span class="st">`</span><span class="dt">HB3 - IT</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(hb3<span class="op">-</span>it),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(hb3<span class="op">-</span>it))))</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co"># plot histograms</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;3D7 - HB3&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;3D7 vs. HB3&quot;</span>)</a>
+<a class="sourceLine" id="cb14-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb14-28" data-line-number="28">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_hb3_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb14-29" data-line-number="29">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_hb3_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb14-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb14-31" data-line-number="31"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;3D7 - IT&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;3D7 vs. IT&quot;</span>)</a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_it_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb15-17" data-line-number="17">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_it_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb15-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;HB3 - IT&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;HB3 vs. IT&quot;</span>)</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/hb3_it_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb16-17" data-line-number="17">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/hb3_it_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># plot scatterplots</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="dt">x=</span>hb3)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_hb3_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb17-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_hb3_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="dt">x=</span>it)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_it_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/3d7_it_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb18-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>hb3,<span class="dt">x=</span>it)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/hb3_it_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/hb3_it_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-9-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># calculate median that 3D7 is off by</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">m &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">offset =</span> <span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span><span class="kw">mean</span>(<span class="kw">c</span>(hb3,it))),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span><span class="kw">mean</span>(<span class="kw">c</span>(hb3,it)))))) <span class="op">%$%</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span><span class="kw">median</span>(offset)</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co"># Recalculate phase shifts</span></a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">s &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span> =<span class="st"> </span><span class="kw">ifelse</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="st">`</span><span class="dt">3d7</span><span class="st">`</span> <span class="op">-</span><span class="st"> </span>m, <span class="st">`</span><span class="dt">3d7</span><span class="st">`</span> <span class="op">+</span><span class="st"> </span>m)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="st">`</span><span class="dt">3D7 - HB3</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>hb3),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>hb3))),</a>
+<a class="sourceLine" id="cb20-11" data-line-number="11">         <span class="st">`</span><span class="dt">3D7 - IT</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>it),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(<span class="st">`</span><span class="dt">3d7</span><span class="st">`</span><span class="op">-</span>it))),</a>
+<a class="sourceLine" id="cb20-12" data-line-number="12">         <span class="st">`</span><span class="dt">HB3 - IT</span><span class="st">`</span> =<span class="st"> </span><span class="kw">min</span>(<span class="kw">c</span>(<span class="kw">abs</span>(hb3<span class="op">-</span>it),<span class="dv">2</span><span class="op">*</span>pi<span class="op">-</span><span class="kw">abs</span>(hb3<span class="op">-</span>it))))</a>
+<a class="sourceLine" id="cb20-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb20-14" data-line-number="14"><span class="co"># plot histograms</span></a>
+<a class="sourceLine" id="cb20-15" data-line-number="15">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-16" data-line-number="16"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-17" data-line-number="17"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-19" data-line-number="19"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-20" data-line-number="20"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;3D7 - HB3&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-21" data-line-number="21"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-22" data-line-number="22"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-23" data-line-number="23"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-24" data-line-number="24"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-25" data-line-number="25"><span class="st">  </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-26" data-line-number="26"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-27" data-line-number="27"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-28" data-line-number="28"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;3D7 vs. HB3&quot;</span>)</a>
+<a class="sourceLine" id="cb20-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb20-30" data-line-number="30">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_hb3_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb20-31" data-line-number="31">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_hb3_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb20-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb20-33" data-line-number="33"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;3D7 - IT&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-11" data-line-number="11"><span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;3D7 vs. IT&quot;</span>)</a>
+<a class="sourceLine" id="cb21-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb21-16" data-line-number="16">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_it_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb21-17" data-line-number="17">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_it_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb21-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb21-19" data-line-number="19"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="op">-</span>hb3,<span class="op">-</span>it) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">gather</span>(strains,diff,<span class="op">-</span>gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strains <span class="op">==</span><span class="st"> &quot;HB3 - IT&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diff)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Phase Difference&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="st">    </span><span class="kw">panel_border</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,pi<span class="op">/</span><span class="dv">2</span>,pi),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;pi/2&quot;</span>,<span class="st">&quot;pi&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>),<span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">size=</span><span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;HB3 vs. IT&quot;</span>)</a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_hb3_it_phase_comparison_histogram.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb22-17" data-line-number="17">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_hb3_it_phase_comparison_histogram.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb22-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb22-19" data-line-number="19"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># plot scatterplots</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="dt">x=</span>hb3)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_hb3_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_hb3_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb23-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb23-15" data-line-number="15"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="st">`</span><span class="dt">3d7</span><span class="st">`</span>,<span class="dt">x=</span>it)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb24-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_it_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb24-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_3d7_it_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb24-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb24-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-5.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">g &lt;-<span class="st"> </span>s <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>onall) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>hb3,<span class="dt">x=</span>it)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.50</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.line =</span> <span class="kw">element_blank</span>())</a>
+<a class="sourceLine" id="cb25-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb25-11" data-line-number="11">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_hb3_it_phase_comparison_scatter.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb25-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/corrected_hb3_it_phase_comparison_scatter.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb25-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb25-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/strain_differential_phase.Rmd/unnamed-chunk-10-6.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session Information</h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<pre><code>R version 3.5.0 (2018-04-23)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Gentoo/Linux
+
+Matrix products: default
+BLAS: /usr/local/lib64/R/lib/libRblas.so
+LAPACK: /usr/local/lib64/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] gdtools_0.1.7                        
+ [2] bindrcpp_0.2.2                       
+ [3] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [4] BSgenome_1.48.0                      
+ [5] rtracklayer_1.40.6                   
+ [6] Biostrings_2.48.0                    
+ [7] XVector_0.20.0                       
+ [8] GenomicRanges_1.32.7                 
+ [9] GenomeInfoDb_1.16.0                  
+[10] org.Pf.plasmo.db_3.6.0               
+[11] AnnotationDbi_1.42.1                 
+[12] IRanges_2.14.12                      
+[13] S4Vectors_0.18.3                     
+[14] Biobase_2.40.0                       
+[15] BiocGenerics_0.26.0                  
+[16] scales_1.0.0                         
+[17] cowplot_0.9.3                        
+[18] magrittr_1.5                         
+[19] forcats_0.3.0                        
+[20] stringr_1.3.1                        
+[21] dplyr_0.7.6                          
+[22] purrr_0.2.5                          
+[23] readr_1.1.1                          
+[24] tidyr_0.8.1                          
+[25] tibble_1.4.2                         
+[26] ggplot2_3.0.0                        
+[27] tidyverse_1.2.1                      
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-137                bitops_1.0-6               
+ [3] matrixStats_0.54.0          lubridate_1.7.4            
+ [5] bit64_0.9-7                 httr_1.3.1                 
+ [7] rprojroot_1.3-2             tools_3.5.0                
+ [9] backports_1.1.2             R6_2.3.0                   
+[11] DBI_1.0.0                   lazyeval_0.2.1             
+[13] colorspace_1.3-2            withr_2.1.2                
+[15] tidyselect_0.2.4            bit_1.1-14                 
+[17] compiler_3.5.0              git2r_0.23.0               
+[19] cli_1.0.1                   rvest_0.3.2                
+[21] xml2_1.2.0                  DelayedArray_0.6.6         
+[23] labeling_0.3                digest_0.6.17              
+[25] Rsamtools_1.32.3            svglite_1.2.1              
+[27] rmarkdown_1.10              R.utils_2.7.0              
+[29] pkgconfig_2.0.2             htmltools_0.3.6            
+[31] rlang_0.2.2                 readxl_1.1.0               
+[33] rstudioapi_0.8              RSQLite_2.1.1              
+[35] bindr_0.1.1                 jsonlite_1.5               
+[37] BiocParallel_1.14.2         R.oo_1.22.0                
+[39] RCurl_1.95-4.11             GenomeInfoDbData_1.1.0     
+[41] Matrix_1.2-14               Rcpp_0.12.19               
+[43] munsell_0.5.0               R.methodsS3_1.7.1          
+[45] stringi_1.2.4               yaml_2.2.0                 
+[47] MASS_7.3-49                 SummarizedExperiment_1.10.1
+[49] zlibbioc_1.26.0             plyr_1.8.4                 
+[51] grid_3.5.0                  blob_1.1.1                 
+[53] crayon_1.3.4                lattice_0.20-35            
+[55] splines_3.5.0               haven_1.1.2                
+[57] hms_0.4.2                   knitr_1.20                 
+[59] pillar_1.3.0                XML_3.98-1.16              
+[61] glue_1.3.0                  evaluate_0.11              
+[63] modelr_0.1.2                cellranger_1.1.0           
+[65] gtable_0.2.0                assertthat_0.2.0           
+[67] broom_0.5.0                 GenomicAlignments_1.16.0   
+[69] memoise_1.1.0               workflowr_1.1.1            </code></pre>
+</div>
+
+<hr>
+<p>
+    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+</p>
+<hr>
+
+<!-- To enable disqus, uncomment the section below and provide your disqus_shortname -->
+
+<!-- disqus
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'rmarkdown'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+-->
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
