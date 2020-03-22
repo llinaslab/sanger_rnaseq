@@ -2,24 +2,26 @@
 title: "Neighboring Genes Analysis"
 author: "Philipp Ross"
 date: 2017-04-08
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Overview
 
@@ -63,12 +65,15 @@ We also want to filter out genes for which we have no 5' or 3' UTR predictions
 ```{r}
 utrs_3d7 <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_3d7.gff"))
 utrs_3d7$Parent <- unlist(utrs_3d7$Parent)
+utrs_3d7$Strain <- "3D7"
 
 utrs_hb3 <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_hb3.gff"))
 utrs_hb3$Parent <- unlist(utrs_hb3$Parent)
+utrs_hb3$Strain <- "HB3"
 
 utrs_it <- tibble::as_tibble(rtracklayer::import.gff3("../output/final_utrs/final_utrs_it.gff"))
 utrs_it$Parent <- unlist(utrs_it$Parent)
+utrs_it$Strain <- "IT"
 ```
 
 And genes for which we actually detect a confident level of transcription:
@@ -169,7 +174,7 @@ fx3d7_convergent <- x3d7_convergent %>%
 ```
 
 ```{r}
-fxhb3_divergent<- xhb3_divergent %>% 
+fxhb3_divergent <- xhb3_divergent %>% 
   dplyr::filter(left_gene %in% utrs_hb3[utrs_hb3$type == "5UTR",]$Parent & 
                 right_gene %in% utrs_hb3[utrs_hb3$type == "5UTR",]$Parent &
                 left_gene %in% fxhb3 & right_gene %in% fxhb3) %>%
@@ -183,7 +188,7 @@ fxhb3_convergent <- xhb3_convergent %>%
 ```
 
 ```{r}
-fxit_divergent<- xit_divergent %>% 
+fxit_divergent <- xit_divergent %>% 
   dplyr::filter(left_gene %in% utrs_it[utrs_it$type == "5UTR",]$Parent & 
                 right_gene %in% utrs_it[utrs_it$type == "5UTR",]$Parent &
                 left_gene %in% fxit & right_gene %in% fxit) %>%
@@ -505,9 +510,24 @@ g <- tmp %>% ggplot(aes(x=group,y=cor,group=group)) +
   xlab("") +
   ylab(expression("Correlation ("~rho~")")) 
 
-ggsave(plot=g,filename="../output/neighboring_genes/divergent_groups.svg",height=3,width=4)
+ggsave(plot=g,filename="../output/neighboring_genes/divergent_groups.pdf",height=3,width=4)
 
 print(g)
+```
+
+Now to make a table of predicted bidirectional promoters:
+
+```{r}
+bidirectional <- fx3d7_divergent %>% 
+  dplyr::filter(dist<=1000,cor>=0.5) %>%
+  dplyr::select(-orientation) %>%
+  dplyr::inner_join(tibble::as_tibble(as.data.frame(org.Pf.plasmoGENENAME)),by=c("left_gene"="gene_id")) %>%
+  dplyr::rename(left_gene_name=gene_name) %>%
+  dplyr::inner_join(tibble::as_tibble(as.data.frame(org.Pf.plasmoGENENAME)),by=c("right_gene"="gene_id")) %>%
+  dplyr::rename(right_gene_name=gene_name) %>%
+  dplyr::select(left_gene,left_gene_name,right_gene,right_gene_name,dist,cor)
+
+readr::write_tsv(x=bidirectional,path="../output/neighboring_genes/bidirectional_promoters.tsv")
 ```
 
 ### Transcriptional interference
@@ -532,12 +552,8 @@ g <- tmp %>% ggplot(aes(x=group,y=cor,group=group)) +
   xlab("") +
   ylab(expression("Correlation ("~rho~")")) 
 
-ggsave(plot=g,filename="../output/neighboring_genes/convergent_groups.svg",height=3,width=4)
+ggsave(plot=g,filename="../output/neighboring_genes/convergent_groups.pdf",height=3,width=4)
 
 print(g)
 ```
 
-## Session Information
-
-```{r session-info}
-```

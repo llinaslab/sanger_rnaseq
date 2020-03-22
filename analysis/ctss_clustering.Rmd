@@ -2,18 +2,10 @@
 title: "CTSS clustering"
 author: "Philipp Ross"
 date: 2017-03-27
-output: html_document
+output: workflowr::wflow_html
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
-```
 
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
 
 **Last updated:** `r Sys.Date()`
 
@@ -81,12 +73,16 @@ introns.bed  <- rtracklayer::import.bed("../data/annotations/introns_nuclear_3D7
   GenomicRanges::GRanges()
 
 for (tp in seq(1,7)) {
-  sum(GenomicRanges::countOverlaps(
-    eval(parse(text=paste0("tc",tp))), genes.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
-  sum(GenomicRanges::countOverlaps(
-    eval(parse(text=paste0("tc",tp))), exons.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
-  sum(GenomicRanges::countOverlaps(
-    eval(parse(text=paste0("tc",tp))), introns.bed) > 0) / length(eval(parse(text=paste0("tc",tp))))
+  print(paste0("TP",tp))
+  print(paste0("Genes"))
+  print(sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), genes.bed) > 0) / length(eval(parse(text=paste0("tc",tp)))))
+  print(paste0("Exons"))
+  print(sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), exons.bed) > 0) / length(eval(parse(text=paste0("tc",tp)))))
+  print(paste0("Introns"))
+  print(sum(GenomicRanges::countOverlaps(
+    eval(parse(text=paste0("tc",tp))), introns.bed) > 0) / length(eval(parse(text=paste0("tc",tp)))))
 }
 ```
 
@@ -369,5 +365,3 @@ write_tsv(x=annotated_shifting,path="../output/ctss_clustering/modified/annotate
 
 ## Session Information
 
-```{r session-info}
-```

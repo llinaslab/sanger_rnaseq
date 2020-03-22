@@ -2,23 +2,26 @@
 title: "Differential phase detection"
 author: "Philipp Ross"
 date: 2018-09-25
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Calculating the phases for each gene
 
@@ -261,6 +264,7 @@ g <- dfit %>%
   outline_colors
 
 cowplot::save_plot("../output/differential_phase/corrected_timepoint_phase.svg",g)
+print(g)
 ```
 
 ```{r,eval=F}
@@ -309,7 +313,17 @@ s <- gene_phase %>%
   dplyr::rowwise() %>%
   dplyr::mutate(`3D7 - HB3` = min(c(abs(`3d7`-hb3),2*pi-abs(`3d7`-hb3))),
          `3D7 - IT` = min(c(abs(`3d7`-it),2*pi-abs(`3d7`-it))),
-         `HB3 - IT` = min(c(abs(hb3-it),2*pi-abs(hb3-it))))
+         `HB3 - IT` = min(c(abs(hb3-it),2*pi-abs(hb3-it)))) %>%
+  dplyr::ungroup()
+
+s %>% 
+  dplyr::select(-`3d7`,-hb3,-it) %>%
+  readr::write_tsv(path="../output/differential_phase/gene_phase_shifts.tsv")
+
+googledrive::drive_upload(media="../output/differential_phase/gene_phase_shifts.tsv",
+                          path="Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables",
+                          name="Phase shifts",
+                          type="spreadsheet")
 
 # plot histograms
 g <- s %>%
@@ -327,8 +341,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("3D7 vs. HB3")
 
-cowplot::save_plot("../output/3d7_hb3_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/3d7_hb3_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/3d7_hb3_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/3d7_hb3_phase_comparison_histogram.png",g)
 
 print(g)
 
@@ -347,8 +361,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("3D7 vs. IT")
 
-cowplot::save_plot("../output/3d7_it_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/3d7_it_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/3d7_it_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/3d7_it_phase_comparison_histogram.png",g)
 
 print(g)
 
@@ -367,8 +381,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("HB3 vs. IT")
 
-cowplot::save_plot("../output/hb3_it_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/hb3_it_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/hb3_it_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/hb3_it_phase_comparison_histogram.png",g)
 
 print(g)
   
@@ -383,8 +397,8 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/3d7_hb3_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/3d7_hb3_phase_comparison_scatter.png",g)
+cowplot::save_plot("../output/differential_phase/3d7_hb3_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/3d7_hb3_phase_comparison_scatter.png",g)
 
 print(g)
 
@@ -398,8 +412,8 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/3d7_it_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/3d7_it_phase_comparison_scatter.png",g)
+cowplot::save_plot("../output/differential_phase/3d7_it_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/3d7_it_phase_comparison_scatter.png",g)
 
 print(g)
 
@@ -413,8 +427,8 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/hb3_it_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/hb3_it_phase_comparison_scatter.png",g)
+cowplot::save_plot("../output/differential_phase/hb3_it_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/hb3_it_phase_comparison_scatter.png",g)
 
 print(g)
 ```
@@ -449,8 +463,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("3D7 vs. HB3")
 
-cowplot::save_plot("../output/corrected_3d7_hb3_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/corrected_3d7_hb3_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_hb3_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_hb3_phase_comparison_histogram.png",g)
 
 print(g)
 
@@ -469,8 +483,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("3D7 vs. IT")
 
-cowplot::save_plot("../output/corrected_3d7_it_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/corrected_3d7_it_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_it_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_it_phase_comparison_histogram.png",g)
 
 print(g)
 
@@ -489,8 +503,8 @@ g <- s %>%
   theme(axis.line.x=element_line(size=0),axis.line.y=element_line(size=0)) +
   ggtitle("HB3 vs. IT")
 
-cowplot::save_plot("../output/corrected_hb3_it_phase_comparison_histogram.svg",g)
-cowplot::save_plot("../output/corrected_hb3_it_phase_comparison_histogram.png",g)
+cowplot::save_plot("../output/differential_phase/corrected_hb3_it_phase_comparison_histogram.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_hb3_it_phase_comparison_histogram.png",g)
 
 print(g)
   
@@ -505,8 +519,8 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/corrected_3d7_hb3_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/corrected_3d7_hb3_phase_comparison_scatter.png",g)
+cowplot::save_plot("../outputdifferential_phase//corrected_3d7_hb3_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_hb3_phase_comparison_scatter.png",g)
 
 print(g)
 
@@ -520,8 +534,8 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/corrected_3d7_it_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/corrected_3d7_it_phase_comparison_scatter.png",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_it_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_3d7_it_phase_comparison_scatter.png",g)
 
 print(g)
 
@@ -535,13 +549,9 @@ g <- s %>%
   geom_vline(xintercept = 0) +
   theme(axis.line = element_blank())
 
-cowplot::save_plot("../output/corrected_hb3_it_phase_comparison_scatter.svg",g)
-cowplot::save_plot("../output/corrected_hb3_it_phase_comparison_scatter.png",g)
+cowplot::save_plot("../output/differential_phase/corrected_hb3_it_phase_comparison_scatter.svg",g)
+cowplot::save_plot("../output/differential_phase/corrected_hb3_it_phase_comparison_scatter.png",g)
 
 print(g)
 ```
 
-## Session Information
-
-```{r session-info}
-```

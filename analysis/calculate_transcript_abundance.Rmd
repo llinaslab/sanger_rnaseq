@@ -1,22 +1,25 @@
 ---
 title: "Calculate transcript abundances"
 author: "Philipp Ross"
-date: 2017-03-26
-output: html_document
+date: 2018-09-25
+output: workflowr::wflow_html
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
-sshhh("tidyverse")
-sshhh("rtracklayer")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 We can use several different methods to calculate transcript abundances. Here I will use Stringtie and HTSeq to calculate TPM values.
 
@@ -24,14 +27,14 @@ We can use several different methods to calculate transcript abundances. Here I 
 
 First, we make sure we have the appropriate annotation file:
 
-```
+```{r,engine='bash',eval=F}
 cat data/annotations/exons_nuclear_3D7_v24.gff | \
   gffread -F -E -o- > output/transcript_abundance/stringtie_annotation.gff
 ```
 
 Now let's run Stringtie:
 
-```
+```{r,engine='bash',eval=F}
 for strain in 3d7 hb3 it; do
   for i in $(seq 1 7); do
     for s in rf fr; do
@@ -51,14 +54,14 @@ done
 
 We'll also quantify read counts using HTSeq. First generate another annotation since HTSeq likes using GTF files:
 
-```
+```{r,engine='bash',eval=F}
 cat data/annotations/exons_nuclear_3D7_v24.gff | \
   gffread -F -E -T -o- > output/transcript_abundance/htseq_annotation.gtf
 ```
 
 And then run HTSeq using the following command:
 
-```
+```{r,engine='bash',eval=F}
 for strain in 3d7 hb3 it; do
   for i in $(seq 1 7); do
     for s in yes reverse; do
@@ -95,7 +98,7 @@ for (strain in c("3d7","hb3","it")) {
     # generate file path
     f <- paste0("../output/transcript_abundance/stringtie/",strain,"_tp",tp,"_rf.gtf")
     # import the file and convert to the right format
-    df <- tibble::as_tibble(import.gff(f)) %>% 
+    df <- tibble::as_tibble(rtracklayer::import.gff(f)) %>% 
             dplyr::filter(type=="transcript") %>% 
             dplyr::select(transcript_id,cov,FPKM,TPM) %>% 
             dplyr::mutate(cov=as.double(cov),FPKM=as.double(FPKM),TPM=as.double(TPM),tp=tp,strain=strain) %>%
@@ -123,7 +126,7 @@ saveRDS(object=xit_tpm,file="../output/transcript_abundance/stringtie_it_abund.r
 
 In order to properly calculate TPMs, we need to calculate the effective transcript lengths. To do this we need the mean or median fragment length distribution for each sample. We can generate this data using picard:
 
-```
+```{r,engine='bash',eval=F}
 for file in $(find data/bam/mapped_to_3d7/ -name *.bam); do 
   picard CollectInsertSizeMetrics INPUT=$file HISTOGRAM_FILE=${file%.*}_insert_size.hist OUTPUT=${file%.*}_insert_size.out; 
 done
@@ -133,15 +136,15 @@ Now we can read each file in and record the mean fragment length:
 
 ```{r}
 # create a tibble with the right columns
-inserts <- tibble(sample=character(),mean_insert_size=double(),median_insert_size=double(),tp=integer())
+inserts <- tibble::tibble(sample=character(),mean_insert_size=double(),median_insert_size=double(),tp=integer())
 # for each strain
 for (strain in c("3d7","hb3","it")) {
   for (tp in seq(1,7)) {
     # generate the file path
     f <- paste0("../data/bam/mapped_to_3d7/",strain,".3d7_v3_chr.tp",tp,"_insert_size.out")
     # extract mean and median insert sizes
-    mean_is <- read_tsv(f,skip=6,n_max = 1)$MEAN_INSERT_SIZE
-    median_is <- read_tsv(f,skip=6,n_max = 1)$MEDIAN_INSERT_SIZE
+    mean_is <- readr::read_tsv(f,skip=6,n_max = 1)$MEAN_INSERT_SIZE
+    median_is <- readr::read_tsv(f,skip=6,n_max = 1)$MEDIAN_INSERT_SIZE
     # bind this row to the tibble we created earlier
     inserts <- dplyr::bind_rows(inserts,tibble(sample=paste0("x",strain,"_tp",tp),mean_insert_size=mean_is,median_insert_size=median_is,tp=tp))
   }
@@ -154,13 +157,13 @@ Import the HTSeq data:
 
 ```{r}
 # import our calculate transcript lengths
-transcript_lengths <- read_tsv("../output/transcript_abundance/transcript_lengths.tsv")
+transcript_lengths <- readr::read_tsv("../output/transcript_abundance/transcript_lengths.tsv")
 
 # for each strain
 for (strain in c("3d7","hb3","it")) {
   # create a tibble with the right colums
   assign(x     = paste0("x",strain,"_counts"),
-         value = tibble(transcript_id=character(),
+         value = tibble::tibble(transcript_id=character(),
                         sense_counts=double(),
                         antisense_counts=double()))
   # for each time point
@@ -182,7 +185,7 @@ for (strain in c("3d7","hb3","it")) {
            value = dplyr::bind_rows(eval(parse(text=paste0("x",strain,"_counts"))),df))
   }
   # join this tibble with our transcript lengths for convenient TPM calculations
-   assign(x     = paste0("x",strain,"_counts"),
+   assign(x      = paste0("x",strain,"_counts"),
            value = dplyr::inner_join(eval(parse(text=paste0("x",strain,"_counts"))),transcript_lengths))
 }
 # clean up
@@ -199,15 +202,15 @@ calc_tpms <- function(counts) {
   # caluclate the normalizing factor for each sample
   # normFactor = sum of all length normalized transcript counts
   normFactors <- counts %>% 
-  mutate(normCount=sense_counts/length) %>% 
-  group_by(tp) %>% 
-  summarise(normFactor=1/sum(normCount))
+  dplyr::mutate(normCount=sense_counts/length) %>% 
+  dplyr::group_by(tp) %>% 
+  dplyr::summarise(normFactor=1/sum(normCount))
   
   # calculate the TPMs by joining it together with normFactors
   # and multiplying the length corrected counts by these factors
   # and by one million
-  abund <- inner_join(normFactors,counts) %>%
-  mutate(sense_tpm=(sense_counts/length)*normFactor*1e6,antisense_tpm=(antisense_counts/length)*normFactor*1e6) %>%
+  abund <- dplyr::inner_join(normFactors,counts) %>%
+  dplyr::mutate(sense_tpm=(sense_counts/length)*normFactor*1e6,antisense_tpm=(antisense_counts/length)*normFactor*1e6) %>%
   dplyr::select(transcript_id,sense_counts,antisense_counts,sense_tpm,antisense_tpm,tp)
   
   return(abund)
@@ -232,20 +235,20 @@ Write these abundance values to output:
 
 ```{r}
 # Sense TPM tables
-select(x3d7_abund,transcript_id,sense_tpm,tp) %>% spread(tp,sense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_3d7_sense_tpms.tsv")
-select(xhb3_abund,transcript_id,sense_tpm,tp) %>% spread(tp,sense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_hb3_sense_tpms.tsv")
-select(xit_abund,transcript_id,sense_tpm,tp) %>% spread(tp,sense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_it_sense_tpms.tsv")
+dplyr::select(x3d7_abund,transcript_id,sense_tpm,tp) %>% tidyr::spread(tp,sense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_3d7_sense_tpms.tsv")
+dplyr::select(xhb3_abund,transcript_id,sense_tpm,tp) %>% tidyr::spread(tp,sense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_hb3_sense_tpms.tsv")
+dplyr::select(xit_abund,transcript_id,sense_tpm,tp) %>% tidyr::spread(tp,sense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_it_sense_tpms.tsv")
 
 # Antisense TPM tables
-select(x3d7_abund,transcript_id,antisense_tpm,tp) %>% spread(tp,antisense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_3d7_antisense_tpms.tsv")
-select(xhb3_abund,transcript_id,antisense_tpm,tp) %>% spread(tp,antisense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_hb3_antisense_tpms.tsv")
-select(xit_abund,transcript_id,antisense_tpm,tp) %>% spread(tp,antisense_tpm) %>%
-  write_tsv(path="../output/transcript_abundance/htseq_it_antisense_tpms.tsv")
+dplyr::select(x3d7_abund,transcript_id,antisense_tpm,tp) %>% tidyr::spread(tp,antisense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_3d7_antisense_tpms.tsv")
+dplyr::select(xhb3_abund,transcript_id,antisense_tpm,tp) %>% tidyr::spread(tp,antisense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_hb3_antisense_tpms.tsv")
+dplyr::select(xit_abund,transcript_id,antisense_tpm,tp) %>% tidyr::spread(tp,antisense_tpm) %>%
+  readr::write_tsv(path="../output/transcript_abundance/htseq_it_antisense_tpms.tsv")
 
 # Sense and antisense counts in long format
 saveRDS(object=x3d7_abund,file="../output/transcript_abundance/htseq_3d7_abund.rds")
@@ -254,8 +257,3 @@ saveRDS(object=xit_abund,file="../output/transcript_abundance/htseq_it_abund.rds
 ```
 
 That's it! Now we can use these files for future analyses.
-
-## Session Information
-
-```{r session-info}
-```

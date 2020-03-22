@@ -1,25 +1,52 @@
 ---
 title: "Comparing predicted UTRs"
 author: "Philipp Ross"
-date: 2018-09-24
-output: html_document
+date: 2018-09-25
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
 
-```{r knitr-opts-chunk, include=FALSE}
+```{r}
+scatter_theme <- theme_classic() + 
+  theme(axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16),
+        axis.title=element_blank(),
+        axis.line.x=element_line(colour="black",size=1.5),
+        axis.ticks.x=element_line(colour="black",size=1.5),
+        axis.line.y=element_line(colour="black",size=1.5),
+        axis.ticks.y=element_line(colour="black",size=1.5),
+        legend.text=element_blank())
+
+hist_theme <- theme_classic() + 
+  theme(axis.text.x=element_text(size=16), 
+        axis.text.y=element_text(size=16),
+        axis.title=element_blank(),
+        axis.line.x=element_line(colour="black",size=1.5),
+        axis.ticks.x=element_line(colour="black",size=1.5),
+        axis.line.y=element_line(colour="black",size=1.5),
+        axis.ticks.y=element_line(colour="black",size=1.5),
+        legend.text=element_blank())
+
+height <- 4
+width  <- 4
 ```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Comparing different UTR and TSS predictions
 
@@ -33,11 +60,14 @@ First, let's import our 5UTR data:
 library(org.Pf.plasmo.db)
 aliases <- tibble::as_tibble(data.frame(org.Pf.plasmoALIAS2ORF))
 
-utrs <- tibble::as_tibble(rtracklayer::import.gff("../output/final_utrs/final_5utrs_3d7.gff"))
-utrs$Parent <- unlist(utrs$Parent)
+fiveutrs <- tibble::as_tibble(rtracklayer::import.gff("../output/final_utrs/final_5utrs_3d7.gff"))
+fiveutrs$Parent <- unlist(fiveutrs$Parent)
+
+threeutrs <- tibble::as_tibble(rtracklayer::import.gff("../output/final_utrs/final_3utrs_3d7.gff"))
+threeutrs$Parent <- unlist(threeutrs$Parent)
 ```
 
-### Comparing to Caro et al.
+## Comparing to Caro et al.
 
 ```{r}
 # Comparing our UTR estimates to the Derisi predictions
@@ -61,18 +91,125 @@ derisi2 <- fix_derisi_utrs(derisi2)
 derisi3 <- fix_derisi_utrs(derisi3)
 derisi4 <- fix_derisi_utrs(derisi4)
 derisi5 <- fix_derisi_utrs(derisi5)
+
+longest_derisi <- dplyr::bind_rows(derisi1, derisi2, derisi3, derisi4, derisi5) %>% 
+  dplyr::group_by(gene_id.y, type) %>% 
+  summarize(width=max(width)) %>% 
+  dplyr::ungroup()
 ```
 
+### Longest 5' UTRs
+
 ```{r}
-tmp1 <- dplyr::select(derisi1, gene_id.y, width)
+tmp1 <- dplyr::filter(longest_derisi, type=="5p") %>% 
+  dplyr::select(gene_id.y, width) %>%
+  dplyr::rename(derisi_length=width)
+tmp2 <- dplyr::select(fiveutrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+g <- ggplot(compare_derisi,aes(derisi_length+1,width+1)) + 
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("Caro Predictions") + 
+  ylab("Chappell Predictions") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+ggsave(plot=g,filename="../output/compare/derisi_5utr_scatter.png",height=height,width=width)
+ggsave(plot=g,filename="../output/compare/derisi_5utr_scatter.svg",height=height,width=width)
+print(g)
+
+g <- ggplot(compare_derisi,aes(derisi_length-width)) +
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("Frequency") +
+  ylab("UTR Length Difference") +
+  hist_theme
+
+ggsave(plot=g,filename="../output/compare/derisi_5utr_histogram.png",height=height,width=width)
+ggsave(plot=g,filename="../output/compare/derisi_5utr_histogram.svg",height=height,width=width)
+print(g)
+
+cor.test(compare_derisi$derisi_length,compare_derisi$width)
+compare_derisi %>% dplyr::mutate(diff=derisi_length-width) %>% summary()
+```
+
+### Longest 3' UTRs
+
+```{r}
+tmp1 <- dplyr::filter(longest_derisi, type=="3p") %>% 
+  dplyr::select(gene_id.y, width) %>%
+  dplyr::rename(derisi_length=width)
+tmp2 <- dplyr::select(threeutrs, Parent, width)
+compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
+rm(tmp1,tmp2)
+
+g <- ggplot(compare_derisi,aes(derisi_length+1,width+1)) +
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+ggsave(plot=g,filename="../output/compare/derisi_3utr_scatter.png",height=height,width=width)
+ggsave(plot=g,filename="../output/compare/derisi_3utr_scatter.svg",height=height,width=width)
+print(g)
+
+g <- ggplot(compare_derisi,aes(derisi_length-width)) +
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("") +
+  ylab("") +
+  hist_theme
+
+ggsave(plot=g,filename="../output/compare/derisi_3utr_histogram.png",height=height,width=width)
+ggsave(plot=g,filename="../output/compare/derisi_3utr_histogram.svg",height=height,width=width)
+print(g)
+
+cor.test(compare_derisi$derisi_length,compare_derisi$width)
+compare_derisi %>% dplyr::mutate(diff=derisi_length-width) %>% summary()
+```
+
+### Timepoint 1
+
+```{r}
+tmp1 <- dplyr::filter(derisi1, type=="5p") %>% 
+  dplyr::select(gene_id.y, width) %>%
+  dplyr::rename(derisi_length=width)
 tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-cor.test(compare_derisi$width.x,compare_derisi$width.y)
+g <- ggplot(compare_derisi,aes(derisi_length,width)) + 
+  geom_point(alpha=0.2) + 
+  geom_abline(color="red") +
+  xlab("Derisi Predictions") + 
+  ylab("Chappell Predictions") 
+
+cowplot::save_plot(filename="../output/compare/derisi_scatter_1.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_scatter_1.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_derisi,aes(derisi_length-width)) + 
+  geom_histogram(color="grey70") +
+  xlab("") + 
+  ylab("")
+
+cowplot::save_plot(filename="../output/compare/derisi_histogram_1.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_histogram_1.svg",plot=g)
+print(g)
+
+cor.test(compare_derisi$derisi_length,compare_derisi$width)
+compare_derisi %>% dplyr::mutate(diff=derisi_length-width) %>% summary()
 ```
+
+### Timepoint 2
 
 ```{r}
 tmp1 <- dplyr::select(derisi2, gene_id.y, width)
@@ -80,10 +217,30 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+g <- ggplot(compare_derisi,aes(width.x,width.y)) + 
+  geom_point() + 
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") 
+
+cowplot::save_plot(filename="../output/compare/derisi_scatter_2.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_scatter_2.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_derisi,aes(width.x-width.y)) + 
+  geom_histogram(color="grey70") +
+  xlab("") + 
+  ylab("")
+
+cowplot::save_plot(filename="../output/compare/derisi_histogram_2.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_histogram_2.svg",plot=g)
+print(g)
+
 cor.test(compare_derisi$width.x,compare_derisi$width.y)
+compare_derisi %>% dplyr::mutate(diff=width.x-width.y) %>% summary()
 ```
+
+### Timepoint 3
 
 ```{r}
 tmp1 <- dplyr::select(derisi3, gene_id.y, width)
@@ -91,21 +248,30 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+g <- ggplot(compare_derisi,aes(width.x,width.y)) + 
+  geom_point() + 
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") 
+
+cowplot::save_plot(filename="../output/compare/derisi_scatter_3.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_scatter_3.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_derisi,aes(width.x-width.y)) + 
+  geom_histogram(color="grey70") +
+  xlab("") + 
+  ylab("")
+
+cowplot::save_plot(filename="../output/compare/derisi_histogram_3.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_histogram_3.svg",plot=g)
+print(g)
+
 cor.test(compare_derisi$width.x,compare_derisi$width.y)
+compare_derisi %>% dplyr::mutate(diff=width.x-width.y) %>% summary()
 ```
 
-```{r}
-tmp1 <- dplyr::select(derisi3, gene_id.y, width)
-tmp2 <- dplyr::select(utrs, Parent, width)
-compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
-rm(tmp1,tmp2)
-
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
-cor.test(compare_derisi$width.x,compare_derisi$width.y)
-```
+### Timepoint 4
 
 ```{r}
 tmp1 <- dplyr::select(derisi4, gene_id.y, width)
@@ -113,10 +279,30 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point()+ geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+g <- ggplot(compare_derisi,aes(width.x,width.y)) + 
+  geom_point() + 
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") 
+
+cowplot::save_plot(filename="../output/compare/derisi_scatter_4.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_scatter_4.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_derisi,aes(width.x-width.y)) + 
+  geom_histogram(color="grey70") +
+  xlab("") + 
+  ylab("")
+
+cowplot::save_plot(filename="../output/compare/derisi_histogram_4.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_histogram_4.svg",plot=g)
+print(g)
+
 cor.test(compare_derisi$width.x,compare_derisi$width.y)
+compare_derisi %>% dplyr::mutate(diff=width.x-width.y) %>% summary()
 ```
+
+### Timepoint 5
 
 ```{r}
 tmp1 <- dplyr::select(derisi5, gene_id.y, width)
@@ -124,17 +310,263 @@ tmp2 <- dplyr::select(utrs, Parent, width)
 compare_derisi <- dplyr::inner_join(tmp1,tmp2,by=c("gene_id.y"="Parent"))
 rm(tmp1,tmp2)
 
-ggplot(compare_derisi,aes(width.x,width.y)) + geom_point() + geom_abline(color="red")
-ggplot(compare_derisi,aes(width.x-width.y)) + geom_histogram(color="grey70")
+g <- ggplot(compare_derisi,aes(width.x,width.y)) + 
+  geom_point() + 
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") 
+
+cowplot::save_plot(filename="../output/compare/derisi_scatter_5.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_scatter_5.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_derisi,aes(width.x-width.y)) + 
+  geom_histogram(color="grey70") +
+  xlab("") + 
+  ylab("")
+
+cowplot::save_plot(filename="../output/compare/derisi_histogram_5.png",plot=g)
+cowplot::save_plot(filename="../output/compare/derisi_histogram_5.svg",plot=g)
+print(g)
+
 cor.test(compare_derisi$width.x,compare_derisi$width.y)
+compare_derisi %>% dplyr::mutate(diff=width.x-width.y) %>% summary()
 ```
 
-### Comparing to Adjalley et al.
+## Comparing to Adjalley et al.
 
 ```{r}
 # Comparing our UTR estimates to the Adjalley predictions
-adjalley <- tibble::as_tibble(rtracklayer::import.gff("../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff"))
+adjalley <- tibble::as_tibble(rtracklayer::import.gff("../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff")) %>%
+  dplyr::filter(FilterSize > 4) %>%
+  dplyr::inner_join(dplyr::select(fiveutrs,Parent,end), by=c("AssignedFeat"="Parent")) %>%
+  dplyr::select(AssignedFeat,start,end.x,end.y,strand) %>%
+  dplyr::rename(end=end.y,end_position=end.x)
 
+# calculate longest predictions
+
+plus <- adjalley %>% 
+  dplyr::filter(strand=="+") %>%
+  dplyr::mutate(position=(start+end_position)/2,width=end-start) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=min(position))
+minus <- adjalley %>% 
+  dplyr::filter(strand=="-") %>% 
+  dplyr::mutate(position=(start+end_position)/2,width=start-end) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=max(position))
+
+longest_adjalley <- dplyr::bind_rows(plus,minus)
+
+# calculate shortest predictions
+
+plus <- adjalley %>% 
+  dplyr::filter(strand=="+") %>%
+  dplyr::mutate(position=(start+end_position)/2,width=end-start) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=max(position))
+minus <- adjalley %>% 
+  dplyr::filter(strand=="-") %>% 
+  dplyr::mutate(position=(start+end_position)/2,width=start-end) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=min(position))
+
+shortest_adjalley <- dplyr::bind_rows(plus,minus)
+
+# calculate mean predictions
+
+plus <- adjalley %>% 
+  dplyr::filter(strand=="+") %>%
+  dplyr::mutate(position=(start+end_position)/2,width=end-start) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=mean(position))
+minus <- adjalley %>% 
+  dplyr::filter(strand=="-") %>% 
+  dplyr::mutate(position=(start+end_position)/2,width=start-end) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=mean(position))
+
+mean_adjalley <- dplyr::bind_rows(plus,minus)
+
+# calculate median predictions
+
+plus <- adjalley %>% 
+  dplyr::filter(strand=="+") %>%
+  dplyr::mutate(position=(start+end_position)/2,width=end-start) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=median(position))
+minus <- adjalley %>% 
+  dplyr::filter(strand=="-") %>% 
+  dplyr::mutate(position=(start+end_position)/2,width=start-end) %>%
+  dplyr::filter(width>=0) %>%
+  dplyr::group_by(AssignedFeat) %>% 
+  dplyr::summarise(start=median(position))
+
+median_adjalley <- dplyr::bind_rows(plus,minus)
+```
+
+### Longest 5' UTRs
+
+```{r}
+tmp1 <- dplyr::select(longest_adjalley, AssignedFeat, start)
+tmp2 <- dplyr::select(fiveutrs, Parent, start, end, width, strand)
+compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent")) %>%
+  dplyr::mutate(adjalley_width=ifelse(strand=="+",end-start.x,start.x-end))
+
+g <- ggplot(compare_adjalley,aes(adjalley_width+1,width+1)) +
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("Adjalley Predictions") + 
+  ylab("Chappell Predictions") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+cowplot::save_plot(filename="../output/compare/adjalley_longest_scatter.png",plot=g)
+cowplot::save_plot(filename="../output/compare/adjalley_longest_scatter.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_adjalley,aes(adjalley_width-width)) + 
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("UTR Length Difference") +
+  ylab("Frequency") +
+  hist_theme
+
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_longest_histogram.png"),plot=g)
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_longest_histogram.svg"),plot=g)
+print(g)
+
+cor.test(compare_adjalley$adjalley_width,compare_adjalley$width)
+compare_adjalley %>% dplyr::mutate(diff=adjalley_width-width) %>% summary() %>% print()
+```
+
+### Shortest 5' UTRs
+
+```{r}
+tmp1 <- dplyr::select(shortest_adjalley, AssignedFeat, start)
+tmp2 <- dplyr::select(fiveutrs, Parent, start, end, width, strand)
+compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent")) %>%
+  dplyr::mutate(adjalley_width=ifelse(strand=="+",end-start.x,start.x-end))
+
+g <- ggplot(compare_adjalley,aes(adjalley_width+1,width+1)) +
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+cowplot::save_plot(filename="../output/compare/adjalley_shortest_scatter.png",plot=g)
+cowplot::save_plot(filename="../output/compare/adjalley_shortest_scatter.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_adjalley,aes(adjalley_width-width)) + 
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("") +
+  ylab("") +
+  hist_theme
+
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_shortest_histogram.png"),plot=g)
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_shortest_histogram.svg"),plot=g)
+print(g)
+
+cor.test(compare_adjalley$adjalley_width,compare_adjalley$width)
+compare_adjalley %>% dplyr::mutate(diff=adjalley_width-width) %>% summary() %>% print()
+```
+
+### Mean 5' UTRs
+
+```{r}
+tmp1 <- dplyr::select(mean_adjalley, AssignedFeat, start)
+tmp2 <- dplyr::select(fiveutrs, Parent, start, end, width, strand)
+compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent")) %>%
+  dplyr::mutate(adjalley_width=ifelse(strand=="+",end-start.x,start.x-end))
+
+g <- ggplot(compare_adjalley,aes(adjalley_width+1,width+1)) +
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+cowplot::save_plot(filename="../output/compare/adjalley_mean_scatter.png",plot=g)
+cowplot::save_plot(filename="../output/compare/adjalley_mean_scatter.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_adjalley,aes(adjalley_width-width)) + 
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("") +
+  ylab("") +
+  hist_theme
+
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_mean_histogram.png"),plot=g)
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_mean_histogram.svg"),plot=g)
+print(g)
+
+cor.test(compare_adjalley$adjalley_width,compare_adjalley$width)
+compare_adjalley %>% dplyr::mutate(diff=adjalley_width-width) %>% summary() %>% print()
+```
+
+### Median 5' UTRs
+
+```{r}
+tmp1 <- dplyr::select(median_adjalley, AssignedFeat, start)
+tmp2 <- dplyr::select(fiveutrs, Parent, start, end, width, strand)
+compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent")) %>%
+  dplyr::mutate(adjalley_width=ifelse(strand=="+",end-start.x,start.x-end))
+
+g <- ggplot(compare_adjalley,aes(adjalley_width+1,width+1)) +
+  geom_point(alpha=0.3,size=3.0) +
+  geom_abline(color="red") +
+  xlab("") + 
+  ylab("") +
+  scale_x_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scale_y_continuous(trans="log10",breaks=c(1,10,100,1000,10000),
+                     labels=scales::trans_format('log10',math_format(10^.x)),limits=c(1,10000)) +
+  scatter_theme
+
+cowplot::save_plot(filename="../output/compare/adjalley_median_scatter.png",plot=g)
+cowplot::save_plot(filename="../output/compare/adjalley_median_scatter.svg",plot=g)
+print(g)
+
+g <- ggplot(compare_adjalley,aes(adjalley_width-width)) + 
+  geom_histogram(color="grey70",fill="black",bins=25) +
+  geom_vline(xintercept=0,color="red",linetype=2,size=1.0) +
+  xlab("") +
+  ylab("") +
+  hist_theme
+
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_median_histogram.png"),plot=g)
+cowplot::save_plot(filename=paste0("../output/compare/adjalley_median_histogram.svg"),plot=g)
+print(g)
+
+cor.test(compare_adjalley$adjalley_width,compare_adjalley$width)
+compare_adjalley %>% dplyr::mutate(diff=adjalley_width-width) %>% summary() %>% print()
+```
+
+### Varying thresholds
+
+```{r}
 for (i in 1:8) {
   adjalley_filtered <- adjalley %>%
     dplyr::mutate(position=(start+end)/2) %>%
@@ -142,13 +574,15 @@ for (i in 1:8) {
   tmp1 <- dplyr::select(adjalley_filtered, AssignedFeat, position)
   tmp2 <- dplyr::select(utrs, Parent, start)
   compare_adjalley <- dplyr::inner_join(tmp1,tmp2,by=c("AssignedFeat"="Parent"))
-  g <- ggplot(compare_adjalley,aes(position-start)) + geom_histogram(fill="#aec6cf",color="grey50")
+  compare_adjalley %>% dplyr::mutate(diff=position-start) %>% summary() %>% print()
+  g <- ggplot(compare_adjalley,aes(position-start)) + 
+    geom_histogram(color="grey70") +
+    xlab("") + 
+    ylab("")
+  cowplot::save_plot(filename=paste0("../output/compare/adjalley_histogram_",i,".png"),plot=g)
+  cowplot::save_plot(filename=paste0("../output/compare/adjalley_histogram_",i,".svg"),plot=g)
   print(g)
 }
 rm(tmp1,tmp2)
 ```
 
-## Session Information
-
-```{r session-info}
-```

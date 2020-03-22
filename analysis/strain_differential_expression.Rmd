@@ -2,24 +2,26 @@
 title: "Differential transcript expression"
 author: "Philipp Ross"
 date: 2018-09-25
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Process data
 
@@ -114,6 +116,24 @@ diffhb3it  <- diff_exp %>% filter(strain_pair == "hb3-it") %>% separate(strain_p
 diff3d7hb3$qvalue <- qvalue::qvalue(diff3d7hb3$p.value)$qvalues
 diff3d7it$qvalue  <- qvalue::qvalue(diff3d7it$p.value)$qvalues
 diffhb3it$qvalue  <- qvalue::qvalue(diffhb3it$p.value)$qvalues
+```
+
+```{r}
+readr::write_tsv(x=diff3d7hb3,path="../output/differential_expression/diff3d7hb3.tsv")
+googledrive::drive_upload(media="../output/differential_expression/diff3d7hb3.tsv",
+                          path="Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables",
+                          name="diff3d7hb3",
+                          type="spreadsheet")
+readr::write_tsv(x=diff3d7it,path="../output/differential_expression/diff3d7it.tsv")
+googledrive::drive_upload(media="../output/differential_expression/diff3d7it.tsv",
+                          path="Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables",
+                          name="diff3d7it",
+                          type="spreadsheet")
+readr::write_tsv(x=diffhb3it,path="../output/differential_expression/diffhb3it.tsv")
+googledrive::drive_upload(media="../output/differential_expression/diffhb3it.tsv",
+                          path="Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables",
+                          name="diffhb3it",
+                          type="spreadsheet")
 ```
 
 And finally, we can plot the results and write everything to a file:
@@ -366,21 +386,86 @@ for file in $(ls ../output/differential_expression/*.txt); do Rscript code/topgo
 Plot the abundances for the following ApiAP2 transcripts...
 
 ```{r}
-what <- c("PF3D7_0604100","PF3D7_1222400","PF3D7_1408200",
+plot_ap2_strain_abundances <- function(df, gid) {
+
+  gene_names <- list("PF3D7_0604100"="SIP2",
+                     "PF3D7_1222400"="",
+                     "PF3D7_1143100"="AP2-O",
+                     "PF3D7_0516800"="AP2-O2",
+                     "PF3D7_0420300"="",
+                     "PF3D7_0613800"="",
+                     "PF3D7_0802100"="",
+                     "PF3D7_1107800"="",
+                     "PF3D7_1139300"="",
+                     "PF3D7_1239200"="",
+                     "PF3D7_1317200"="AP2-G3",
+                     "PF3D7_1342900"="",
+                     "PF3D7_1222600"="AP2-G",
+                     "PF3D7_1466400"="AP2-EXP",
+                     "PF3D7_0622900"="AP2-TEL",
+                     "PF3D7_1350900"="AP2-O4",
+                     "PF3D7_0404100"="AP2-SP2",
+                     "PF3D7_0730300"="AP2-L",
+                     "PF3D7_1408200"="AP2-G2",
+                     "PF3D7_1429200"="AP2-O3",
+                     "PF3D7_1449500"="AP2-O5",
+                     "PF3D7_1456000"="",
+                     "PF3D7_1305200"="",
+                     "PF3D7_0611200"="",
+                     "PF3D7_0934400"="",
+                     "PF3D7_1007700"="AP2-I",
+                     "PF3D7_1115500"="",
+                     "PF3D7_0932200"="")
+
+  df %>%
+    dplyr::filter(gene_id == gid) %>%
+    ggplot(aes(x = toupper(strain), y = as.numeric(TPM), group = tp, fill = toupper(strain))) +
+    geom_bar(stat="identity", position="dodge", colour="black") +
+    ylab("") +
+    xlab("") +
+    ggtitle(paste0(gene_names[[gid]],"\n",gid)) +
+    scale_fill_hue(l=55) +
+    theme_classic() +
+    theme(axis.text.x = element_blank(),
+          axis.text.y = element_text(vjust=0.5, size=24),
+          plot.title = element_text(size=28,hjust = 0.5),
+          axis.line.x = element_line(size=0.5),
+          axis.line.y = element_line(size=0.5),
+          axis.ticks.x = element_blank(),
+          axis.ticks.y = element_line(size = 0.5),
+          axis.ticks.length = unit(0.25, "cm"),
+          axis.ticks = element_line(size = 0.5),
+          legend.position = "none") +
+    fill_colors +
+    panel_border(colour="black",size=1)
+}
+```
+
+```{r}
+significant <- c("PF3D7_0604100","PF3D7_1222400","PF3D7_1408200",
           "PF3D7_1143100","PF3D7_0516800","PF3D7_1466400",
           "PF3D7_0420300","PF3D7_0613800","PF3D7_0802100",
           "PF3D7_1107800","PF3D7_1139300","PF3D7_1239200",
           "PF3D7_1317200","PF3D7_1342900","PF3D7_1449500")
 
-for (w in what) {
-  g <- plot_strain_abundances(abund,w)
+for (w in significant) {
+  g <- plot_ap2_strain_abundances(abund,w)
+  ggsave(plot=g,filename=paste0("../output/differential_expression/",w,".svg"),height=4,width=4)
+  ggsave(plot=g,filename=paste0("../output/differential_expression/",w,".png"),height=4,width=4)
+  print(g)
+}
+
+nonsignificant <- c("PF3D7_1222600","PF3D7_0622900","PF3D7_1350900","PF3D7_0404100",
+                    "PF3D7_0730300","PF3D7_1429200",
+                    "PF3D7_1456000","PF3D7_1305200","PF3D7_0611200",
+                    "PF3D7_0934400","PF3D7_1007700","PF3D7_1115500",
+                    "PF3D7_0932200")
+
+for (w in nonsignificant) {
+  g <- plot_ap2_strain_abundances(abund,w)
   ggsave(plot=g,filename=paste0("../output/differential_expression/",w,".svg"),height=4,width=4)
   ggsave(plot=g,filename=paste0("../output/differential_expression/",w,".png"),height=4,width=4)
   print(g)
 }
 ```
 
-## Session Information
-
-```{r session-info}
-```

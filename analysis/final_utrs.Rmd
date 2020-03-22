@@ -1,23 +1,27 @@
 ---
 title: "Make final UTRs"
 author: "Philipp Ross"
-date: 2017-03-08
-output: html_document
+date: 2018-09-25
+output: workflowr::wflow_html
+editor_options: 
+  chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Making final/longest UTRs
 
@@ -38,33 +42,33 @@ These predictions were all combined into lists of "longest possible transcripts"
 
 ```{r,eval=F,engine='bash'}
 # 3D7
-Rscript scripts/create_final_utrs.R 
-  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff
-  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff
-  ../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff
-  ../data/utrs/original_utrs/tso_thr5.gff
-  ../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff
-  TRUE
+Rscript scripts/create_final_utrs.R \
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff \
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff \
+  ../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff \
+  ../data/utrs/original_utrs/tso_thr5.gff \
+  ../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff \
+  TRUE \
   ../output/final_utrs/final_utrs_3d7.gff
   
 # HB3
-Rscript scripts/create_final_utrs.R 
-  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff
-  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff
-  ../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff
-  ../data/utrs/original_utrs/tso_thr5.gff
-  ../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff
-  TRUE
+Rscript scripts/create_final_utrs.R \
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff \
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff \
+  ../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff \
+  ../data/utrs/original_utrs/tso_thr5.gff \
+  ../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff \
+  TRUE \
   ../output/final_utrs/final_utrs_hb3.gff
 
 #IT
-Rscript scripts/create_final_utrs.R 
-  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff
-  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff
-  ../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff
-  ../data/utrs/original_utrs/tso_thr5.gff
-  ../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff
-  TRUE
+Rscript scripts/create_final_utrs.R \
+  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff \
+  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff \
+  ../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff \
+  ../data/utrs/original_utrs/tso_thr5.gff \
+  ../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff \
+  TRUE \
   ../output/final_utrs/final_utrs_it.gff
 ```
 
@@ -73,7 +77,7 @@ Finally, we should read in the resulting data:
 ```{r read}
 # function to read in the data
 read_utrs <- function(file, input_strain) {
-  df <- as.data.frame(rtracklayer::import.gff3(file)) %>%
+  df <- tibble::as_tibble(rtracklayer::import.gff3(file)) %>%
     dplyr::select(Parent,type,width)
   df$strain <- input_strain
   df$Parent <- as.character(df$Parent)
@@ -185,8 +189,8 @@ Now import that data:
 
 ```{r}
 utrplus <- readr::read_tsv("../output/homopolymer_analysis/minus_100bp_slop_3d7_5utrs_counts.tsv") # UTR plus 100bp upstream
-plus<- readr::read_tsv("../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv") # only 100 bp upstream of UTR
-utrs <- readr::read_tsv("../output/homopolymer_analysis/3d7_5utrs_counts.tsv") # only UTR
+plus    <- readr::read_tsv("../output/homopolymer_analysis/minus_100bp_flank_3d7_5utrs_counts.tsv") # only 100 bp upstream of UTR
+utrs    <- readr::read_tsv("../output/homopolymer_analysis/3d7_5utrs_counts.tsv") # only UTR
 
 originalutrs <- tibble::as_tibble(rtracklayer::import.gff3("../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff"))
 originalutrs$Parent <- as.character(originalutrs$Parent)
@@ -202,17 +206,24 @@ And now plot the data:
 tmp <- dplyr::inner_join(originalutrs, utrplus, by = c("Parent" = "gene_id"))
 
 g <- tmp %>%
-  dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+  ggplot(aes(y=width/longest,x=longest)) + 
+  geom_point(alpha=0.25,color="black") + 
+  stat_smooth(method="lm",color="red") +
+  ylab("Normalized Length") + 
+  xlab("Longest Homopolymer") +
+  ggtitle("All UTRs Plus 100 bps")
+
+cowplot::save_plot("../output/final_utrs/utrplus_homopolymers.png",g)
+cowplot::save_plot("../output/final_utrs/utrplus_homopolymers.svg",g)
+
 print(g)
 
 tmp %>%
-  dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
+  dplyr::do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
 ```
 
 ```{r}
@@ -223,13 +234,17 @@ g <- tmp %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
   ggplot(aes(y=width,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+
+cowplot::save_plot("../output/final_utrs/plus_homopolymers.png",g)
+cowplot::save_plot("../output/final_utrs/plus_homopolymers.svg",g)
+
 print(g)
 
 tmp %>%
-  dplyr::filter(width < 8000) %>%
+  #dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  do(broom::tidy(cor.test(.$width,.$longest)))
+  dplyr::do(broom::tidy(cor.test(.$width,.$longest)))
 ```
 
 ```{r}
@@ -240,33 +255,65 @@ g <- tmp %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
   ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+
+cowplot::save_plot("../output/final_utrs/utr_homopolymers.png",g)
+cowplot::save_plot("../output/final_utrs/utr_homopolymers.svg",g)
+
 print(g)
 
 tmp %>%
-  dplyr::filter(width < 8000) %>%
+  #dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
+  dplyr::do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
+```
+
+```{r}
+tmp <- dplyr::inner_join(fixedutrs, plus, by = c("Parent" = "gene_id"))
+
+g <- tmp %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  ggplot(aes(y=width/longest,x=longest)) + 
+  geom_point(alpha=0.25,color="black") + 
+  stat_smooth(method="lm",color="red") +
+  ylab("") + 
+  xlab("") +
+  scale_y_continuous(limits=c(-10,800)) +
+  scale_x_continuous(breaks=c(10,20,30,40,50))
+  #ggtitle("Fixed UTRs")
+
+cowplot::save_plot("../output/final_utrs/fixedplus_homopolymers.png",g)
+cowplot::save_plot("../output/final_utrs/fixedplus_homopolymers.svg",g)
+
+print(g)
+
+tmp %>%
+  dplyr::group_by(Parent) %>%
+  dplyr::summarise(width=unique(width),longest=max(longest)) %>%
+  dplyr::do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
 ```
 
 ```{r}
 tmp <- dplyr::inner_join(fixedutrs, utrplus, by = c("Parent" = "gene_id"))
 
 g <- tmp %>%
-  dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  ggplot(aes(y=width/longest,x=longest)) + geom_point(alpha=0.5) + stat_smooth(method="lm")
+  ggplot(aes(y=width/longest,x=longest)) + 
+  geom_point(alpha=0.25,color="black") + 
+  stat_smooth(method="lm",color="red") +
+  ylab("Normalized Length") + 
+  xlab("Longest Homopolymer") +
+  ggtitle("Fixed UTRs")
+
+cowplot::save_plot("../output/final_utrs/fixedutrplus_homopolymers.png",g)
+cowplot::save_plot("../output/final_utrs/fixedutrplus_homopolymers.svg",g)
+
 print(g)
 
 tmp %>%
-  dplyr::filter(width < 8000) %>%
   dplyr::group_by(Parent) %>%
   dplyr::summarise(width=unique(width),longest=max(longest)) %>%
-  do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
-```
-
-## Session Information
-
-```{r session-info}
+  dplyr::do(broom::tidy(cor.test(.$width/.$longest,.$longest)))
 ```

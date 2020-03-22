@@ -60,6 +60,8 @@ plot_strain_abundances <- function(df, gid) {
 
   gene_names <- get_gene_names()
 
+  ifelse(gid %in% names(gene_names),TRUE,stop(gid," is not in gene_names"))
+
   df %>%
     dplyr::filter(gene_id == gid) %>%
     ggplot(aes(x = toupper(strain), y = as.numeric(TPM), group = tp, fill = toupper(strain))) +
@@ -80,9 +82,11 @@ plot_strain_abundances <- function(df, gid) {
           axis.ticks.length = unit(0.25, "cm"),
           axis.ticks = element_line(size = 0.5),
           legend.text = element_text(size = 12),
-          legend.title = element_blank()) +
+          legend.title = element_blank(),
+          legend.position="none") +
     fill_colors +
-    panel_border(colour="black")
+    panel_border(colour="black",remove=F,size=1)
+
 }
 
 # Strain Profiles
@@ -100,9 +104,7 @@ plot_strain_profiles <- function(df, gid) {
     ggtitle(paste(gid, " \n ", gene_names[[gid]])) +
     stat_smooth(aes(group = strain), se = F, size = 1.5) +
     geom_point(aes(group = strain), size = 2) +
-    theme(legend.position="bottom",
-          legend.direction="vertical",
-          legend.title = element_blank(),
+    theme(legend.position="none",
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
@@ -165,6 +167,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 # Plot a bunch of genes to one output file
 plot_gene_list <- function(func, df, list, output) {
 
+  theme_set(theme_cowplot())
   require(gridExtra)
   # match function name
   plotting_func <- match.fun(func)
@@ -181,7 +184,7 @@ plot_gene_list <- function(func, df, list, output) {
       }
       i <- i + 1
       if (i > length(list)) {
-        g[[j]] <- grid.rect(gp=gpar(col="white"))
+        g[[j]] <- grid::grid.rect(gp=grid::gpar(col="white"))
         break
       }
     }

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Philipp Ross" />
 
-<meta name="date" content="2018-09-24" />
+<meta name="date" content="2018-09-25" />
 
 <title>Comparing predicted UTRs</title>
 
@@ -359,19 +359,248 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
 <div class="fluid-row" id="header">
 
 
 
 <h1 class="title toc-ignore">Comparing predicted UTRs</h1>
 <h4 class="author"><em>Philipp Ross</em></h4>
-<h4 class="date"><em>2018-09-24</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
 
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-09-25</p>
-<p><strong>Code version:</strong> c5562e7</p>
+<p><strong>Last updated:</strong> 2018-11-18</p>
+<strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
+<ul>
+<li>
+<details>
+<p><summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Environment:</strong> empty </summary></p>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Seed:</strong> <code>set.seed(12345)</code> </summary></p>
+<p>The command <code>set.seed(12345)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Session information:</strong> recorded </summary></p>
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/llinaslab/sanger_rnaseq/tree/dd9d56a8fbb07e41b641cd5e2fda6fe162519c0a" target="_blank">dd9d56a</a> </summary></p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.DS_Store
+    Ignored:    analysis/.httr-oauth
+    Ignored:    analysis/figure/
+    Ignored:    code/.DS_Store
+    Ignored:    code/differential_expression/
+    Ignored:    code/differential_phase/
+    Ignored:    data/
+    Ignored:    docs/.DS_Store
+    Ignored:    docs/figure/.DS_Store
+    Ignored:    docs/figure/neighboring_genes.Rmd/.DS_Store
+    Ignored:    output/compare/
+    Ignored:    output/ctss_clustering/
+    Ignored:    output/differential_detection/
+    Ignored:    output/differential_expression/
+    Ignored:    output/differential_phase/
+    Ignored:    output/extensive_transcription/
+    Ignored:    output/final_utrs/
+    Ignored:    output/gcbias/
+    Ignored:    output/homopolymer_analysis/
+    Ignored:    output/neighboring_genes/
+    Ignored:    output/promoter_architecture/
+    Ignored:    output/tfbs_analysis/
+    Ignored:    output/transcript_abundance/
+
+Untracked files:
+    Untracked:  _workflowr.yml
+    Untracked:  docs/figure/tfbs_analysis.Rmd/
+    Untracked:  figures/
+
+Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/_site.yml
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/analyze_neighboring_genes.Rmd
+    Modified:   analysis/array_correlations.Rmd
+    Modified:   analysis/calculate_transcript_abundance.Rmd
+    Deleted:    analysis/chunks.R
+    Modified:   analysis/comparing_utrs.Rmd
+    Modified:   analysis/ctss_clustering.Rmd
+    Modified:   analysis/dynamic_tss.Rmd
+    Modified:   analysis/extensive_transcription.Rmd
+    Modified:   analysis/final_utrs.Rmd
+    Modified:   analysis/gcbias.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
+    Modified:   analysis/process_neighboring_genes.Rmd
+    Modified:   analysis/promoter_architecture.Rmd
+    Modified:   analysis/strain_differential_detection.Rmd
+    Modified:   analysis/strain_differential_expression.Rmd
+    Modified:   analysis/strain_differential_phase.Rmd
+    Modified:   analysis/tfbs_analysis.Rmd
+    Modified:   code/differential_detection/detect_transcripts.R
+    Deleted:    docs/Rplots.pdf
+
+</code></pre>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</details>
+</li>
+</ul>
+<details>
+<summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/analysis/comparing_utrs.Rmd" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+updated utr comparison
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/comparing_utrs.html" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+updated utr comparison
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/c5562e7adaacbd40f1e9a9b9ed8956f4aa0772e3/docs/comparing_utrs.html" target="_blank">c5562e7</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+updated utr comparison
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/analysis/comparing_utrs.Rmd" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+added homopolymer analysis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/analysis/comparing_utrs.Rmd" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+<td style="text-align:left;">
+comparing UTRs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/comparing_utrs.html" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+<td style="text-align:left;">
+comparing UTRs
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+</details>
+<hr />
 <div id="comparing-different-utr-and-tss-predictions" class="section level2">
 <h2>Comparing different UTR and TSS predictions</h2>
 <p>Since we were able to predict both UTRs and TSSs using our data, we wanted to know how our predictions compared to previously published predictions. Here, we compare the UTRs predicted in <a href="https://www.ncbi.nlm.nih.gov/pubmed/25493618">Caro et al.</a> and <a href="https://www.ncbi.nlm.nih.gov/pubmed/26947071">Adjalley et al.</a>.</p>
@@ -382,8 +611,9 @@ div.tocify {
 <a class="sourceLine" id="cb1-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">utrs &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff</span>(<span class="st">&quot;../output/final_utrs/final_5utrs_3d7.gff&quot;</span>))</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">utrs<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">unlist</span>(utrs<span class="op">$</span>Parent)</a></code></pre></div>
-<div id="comparing-to-caro-et-al." class="section level3">
-<h3>Comparing to Caro et al.</h3>
+</div>
+<div id="comparing-to-caro-et-al." class="section level2">
+<h2>Comparing to Caro et al.</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Comparing our UTR estimates to the Derisi predictions</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">derisi1 &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.bed</span>(<span class="st">&quot;../data/compare_utrs/GSM1410291_UTRs_1.bed&quot;</span>))</a>
@@ -405,15 +635,105 @@ div.tocify {
 <a class="sourceLine" id="cb2-19" data-line-number="19">derisi3 &lt;-<span class="st"> </span><span class="kw">fix_derisi_utrs</span>(derisi3)</a>
 <a class="sourceLine" id="cb2-20" data-line-number="20">derisi4 &lt;-<span class="st"> </span><span class="kw">fix_derisi_utrs</span>(derisi4)</a>
 <a class="sourceLine" id="cb2-21" data-line-number="21">derisi5 &lt;-<span class="st"> </span><span class="kw">fix_derisi_utrs</span>(derisi5)</a></code></pre></div>
+<div id="timepoint-1" class="section level3">
+<h3>Timepoint 1</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi1, gene_id.y, width)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb3-6" data-line-number="6">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) </a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_1.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_1.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-4-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/figure/comparing_utrs.Rmd/unnamed-chunk-4-1.png" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-4-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_1.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_1.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-4-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-4-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
 <pre><code>
     Pearson&#39;s product-moment correlation
@@ -426,16 +746,115 @@ alternative hypothesis: true correlation is not equal to 0
 sample estimates:
       cor 
 0.4551951 </code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi2, gene_id.y, width)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">compare_derisi <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>width.x<span class="op">-</span>width.y) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<pre><code>  gene_id.y            width.x          width.y          diff         
+ Length:7621        Min.   :   0.0   Min.   :   2   Min.   :-5101.00  
+ Class :character   1st Qu.: 221.0   1st Qu.: 281   1st Qu.: -328.00  
+ Mode  :character   Median : 498.0   Median : 513   Median :  -37.00  
+                    Mean   : 610.5   Mean   : 674   Mean   :  -63.45  
+                    3rd Qu.: 810.0   3rd Qu.: 895   3rd Qu.:  196.00  
+                    Max.   :6810.0   Max.   :5404   Max.   : 5601.00  </code></pre>
+</div>
+<div id="timepoint-2" class="section level3">
+<h3>Timepoint 2</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi2, gene_id.y, width)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) </a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_2.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_2.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-5-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/figure/comparing_utrs.Rmd/unnamed-chunk-5-1.png" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-5-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_2.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_2.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-5-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-5-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
 <pre><code>
     Pearson&#39;s product-moment correlation
 
@@ -447,36 +866,114 @@ alternative hypothesis: true correlation is not equal to 0
 sample estimates:
      cor 
 0.408461 </code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
-<pre><code>
-    Pearson&#39;s product-moment correlation
-
-data:  compare_derisi$width.x and compare_derisi$width.y
-t = 40.612, df = 7201, p-value &lt; 2.2e-16
-alternative hypothesis: true correlation is not equal to 0
-95 percent confidence interval:
- 0.4127160 0.4503005
-sample estimates:
-      cor 
-0.4316956 </code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">compare_derisi <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>width.x<span class="op">-</span>width.y) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<pre><code>  gene_id.y            width.x          width.y            diff        
+ Length:7928        Min.   :   0.0   Min.   :   2.0   Min.   :-5111.0  
+ Class :character   1st Qu.: 146.0   1st Qu.: 283.0   1st Qu.: -418.0  
+ Mode  :character   Median : 428.0   Median : 518.0   Median :  -93.0  
+                    Mean   : 508.4   Mean   : 675.7   Mean   : -167.4  
+                    3rd Qu.: 690.2   3rd Qu.: 897.0   3rd Qu.:  120.0  
+                    Max.   :8149.0   Max.   :5404.0   Max.   : 7725.0  </code></pre>
+</div>
+<div id="timepoint-3" class="section level3">
+<h3>Timepoint 3</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi3, gene_id.y, width)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
 <a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb15-6" data-line-number="6">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) </a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_3.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb15-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_3.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/figure/comparing_utrs.Rmd/unnamed-chunk-6-1.png" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-6-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_3.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_3.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-6-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
 <pre><code>
     Pearson&#39;s product-moment correlation
@@ -489,16 +986,115 @@ alternative hypothesis: true correlation is not equal to 0
 sample estimates:
       cor 
 0.4316956 </code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi4, gene_id.y, width)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()<span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">compare_derisi <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>width.x<span class="op">-</span>width.y) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<pre><code>  gene_id.y            width.x          width.y          diff        
+ Length:7203        Min.   :   0.0   Min.   :   2   Min.   :-5111.0  
+ Class :character   1st Qu.: 346.5   1st Qu.: 289   1st Qu.: -268.0  
+ Mode  :character   Median : 541.0   Median : 528   Median :    6.0  
+                    Mean   : 655.6   Mean   : 689   Mean   :  -33.4  
+                    3rd Qu.: 816.5   3rd Qu.: 912   3rd Qu.:  233.5  
+                    Max.   :8229.0   Max.   :5404   Max.   : 7805.0  </code></pre>
+</div>
+<div id="timepoint-4" class="section level3">
+<h3>Timepoint 4</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi4, gene_id.y, width)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) </a>
+<a class="sourceLine" id="cb21-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb21-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_4.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_4.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/figure/comparing_utrs.Rmd/unnamed-chunk-7-1.png" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-7-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_4.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb22-7" data-line-number="7">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_4.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-7-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
 <pre><code>
     Pearson&#39;s product-moment correlation
 
@@ -510,16 +1106,115 @@ alternative hypothesis: true correlation is not equal to 0
 sample estimates:
       cor 
 0.4188608 </code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi5, gene_id.y, width)</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">compare_derisi <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>width.x<span class="op">-</span>width.y) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<pre><code>  gene_id.y            width.x          width.y            diff          
+ Length:7199        Min.   :   0.0   Min.   :   2.0   Min.   :-5111.000  
+ Class :character   1st Qu.: 340.0   1st Qu.: 287.0   1st Qu.: -261.500  
+ Mode  :character   Median : 549.0   Median : 523.0   Median :   15.000  
+                    Mean   : 674.9   Mean   : 682.7   Mean   :   -7.868  
+                    3rd Qu.: 855.5   3rd Qu.: 902.0   3rd Qu.:  262.500  
+                    Max.   :7030.0   Max.   :5404.0   Max.   : 5821.000  </code></pre>
+</div>
+<div id="timepoint-5" class="section level3">
+<h3>Timepoint 5</h3>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(derisi5, gene_id.y, width)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, width)</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">compare_derisi &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;gene_id.y&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="kw">rm</span>(tmp1,tmp2)</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x,width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) </a>
+<a class="sourceLine" id="cb27-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_5.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_scatter_5.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb27-14" data-line-number="14"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-8-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/3e6a944eb4944f8f899fd3830a53e70e8aafb928/docs/figure/comparing_utrs.Rmd/unnamed-chunk-8-1.png" target="_blank">3e6a944</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-8-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_derisi,<span class="kw">aes</span>(width.x<span class="op">-</span>width.y)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_5.png&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb28-7" data-line-number="7">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/compare/derisi_histogram_5.svg&quot;</span>,<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
 <p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-8-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-8-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">cor.test</span>(compare_derisi<span class="op">$</span>width.x,compare_derisi<span class="op">$</span>width.y)</a></code></pre></div>
 <pre><code>
     Pearson&#39;s product-moment correlation
 
@@ -531,29 +1226,354 @@ alternative hypothesis: true correlation is not equal to 0
 sample estimates:
      cor 
 0.299489 </code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">compare_derisi <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>width.x<span class="op">-</span>width.y) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>()</a></code></pre></div>
+<pre><code>  gene_id.y            width.x           width.y            diff        
+ Length:8627        Min.   :    0.0   Min.   :   2.0   Min.   :-5111.0  
+ Class :character   1st Qu.:    0.0   1st Qu.: 277.0   1st Qu.: -718.0  
+ Mode  :character   Median :    0.0   Median : 508.0   Median : -415.0  
+                    Mean   :  164.4   Mean   : 660.9   Mean   : -496.4  
+                    3rd Qu.:   63.0   3rd Qu.: 877.0   3rd Qu.: -189.0  
+                    Max.   :13050.0   Max.   :5404.0   Max.   :12541.0  </code></pre>
 </div>
-<div id="comparing-to-adjalley-et-al." class="section level3">
-<h3>Comparing to Adjalley et al.</h3>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># Comparing our UTR estimates to the Adjalley predictions</span></a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">adjalley &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff</span>(<span class="st">&quot;../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff&quot;</span>))</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {</a>
-<a class="sourceLine" id="cb27-5" data-line-number="5">  adjalley_filtered &lt;-<span class="st"> </span>adjalley <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">position=</span>(start<span class="op">+</span>end)<span class="op">/</span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(FilterSize<span class="op">&gt;</span>i)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8">  tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(adjalley_filtered, AssignedFeat, position)</a>
-<a class="sourceLine" id="cb27-9" data-line-number="9">  tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, start)</a>
-<a class="sourceLine" id="cb27-10" data-line-number="10">  compare_adjalley &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;AssignedFeat&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
-<a class="sourceLine" id="cb27-11" data-line-number="11">  g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_adjalley,<span class="kw">aes</span>(position<span class="op">-</span>start)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">fill=</span><span class="st">&quot;#aec6cf&quot;</span>,<span class="dt">color=</span><span class="st">&quot;grey50&quot;</span>)</a>
-<a class="sourceLine" id="cb27-12" data-line-number="12">  <span class="kw">print</span>(g)</a>
-<a class="sourceLine" id="cb27-13" data-line-number="13">}</a></code></pre></div>
-<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-5.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-6.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-7.png" width="672" style="display: block; margin: auto;" /><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-8.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">rm</span>(tmp1,tmp2)</a></code></pre></div>
 </div>
+<div id="comparing-to-adjalley-et-al." class="section level2">
+<h2>Comparing to Adjalley et al.</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># Comparing our UTR estimates to the Adjalley predictions</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">adjalley &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff</span>(<span class="st">&quot;../data/compare_utrs/sorted_Adjalley_Chabbert_TSSs.gff&quot;</span>))</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {</a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">  adjalley_filtered &lt;-<span class="st"> </span>adjalley <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">position=</span>(start<span class="op">+</span>end)<span class="op">/</span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(FilterSize<span class="op">&gt;</span>i)</a>
+<a class="sourceLine" id="cb33-8" data-line-number="8">  tmp1 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(adjalley_filtered, AssignedFeat, position)</a>
+<a class="sourceLine" id="cb33-9" data-line-number="9">  tmp2 &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(utrs, Parent, start)</a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">  compare_adjalley &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tmp1,tmp2,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;AssignedFeat&quot;</span>=<span class="st">&quot;Parent&quot;</span>))</a>
+<a class="sourceLine" id="cb33-11" data-line-number="11">  compare_adjalley <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">diff=</span>position<span class="op">-</span>start) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summary</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</a>
+<a class="sourceLine" id="cb33-12" data-line-number="12">  g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(compare_adjalley,<span class="kw">aes</span>(position<span class="op">-</span>start)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_histogram</span>(<span class="dt">color=</span><span class="st">&quot;grey70&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-14" data-line-number="14"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-15" data-line-number="15"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb33-16" data-line-number="16">  cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="kw">paste0</span>(<span class="st">&quot;../output/compare/adjalley_histogram_&quot;</span>,i,<span class="st">&quot;.png&quot;</span>),<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb33-17" data-line-number="17">  cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="kw">paste0</span>(<span class="st">&quot;../output/compare/adjalley_histogram_&quot;</span>,i,<span class="st">&quot;.svg&quot;</span>),<span class="dt">plot=</span>g)</a>
+<a class="sourceLine" id="cb33-18" data-line-number="18">  <span class="kw">print</span>(g)</a>
+<a class="sourceLine" id="cb33-19" data-line-number="19">}</a></code></pre></div>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:36663       Min.   :  40331   Min.   :  43094   Min.   :-4992.0  
+ Class :character   1st Qu.: 428840   1st Qu.: 427513   1st Qu.: -222.0  
+ Mode  :character   Median : 836668   Median : 836849   Median :  292.0  
+                    Mean   : 963933   Mean   : 963522   Mean   :  410.9  
+                    3rd Qu.:1305788   3rd Qu.:1305295   3rd Qu.: 1044.0  
+                    Max.   :3253500   Max.   :3253655   Max.   :12155.0  </code></pre>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:29055       Min.   :  41434   Min.   :  43094   Min.   :-4967.0  
+ Class :character   1st Qu.: 421766   1st Qu.: 421138   1st Qu.: -262.0  
+ Mode  :character   Median : 824344   Median : 823912   Median :  328.5  
+                    Mean   : 947811   Mean   : 947361   Mean   :  449.5  
+                    3rd Qu.:1282446   3rd Qu.:1282646   3rd Qu.: 1169.5  
+                    Max.   :3236321   Max.   :3231222   Max.   :12155.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-1.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:29055       Min.   :  41434   Min.   :  43094   Min.   :-4967.0  
+ Class :character   1st Qu.: 421766   1st Qu.: 421138   1st Qu.: -262.0  
+ Mode  :character   Median : 824344   Median : 823912   Median :  328.5  
+                    Mean   : 947811   Mean   : 947361   Mean   :  449.5  
+                    3rd Qu.:1282446   3rd Qu.:1282646   3rd Qu.: 1169.5  
+                    Max.   :3236321   Max.   :3231222   Max.   :12155.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-2.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:18268       Min.   :  41434   Min.   :  43094   Min.   :-4967.0  
+ Class :character   1st Qu.: 417702   1st Qu.: 417063   1st Qu.: -288.1  
+ Mode  :character   Median : 810819   Median : 811370   Median :  295.0  
+                    Mean   : 948485   Mean   : 948096   Mean   :  388.8  
+                    3rd Qu.:1286032   3rd Qu.:1286107   3rd Qu.: 1087.0  
+                    Max.   :3207218   Max.   :3207055   Max.   :12155.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-3.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:10086       Min.   :  41434   Min.   :  43094   Min.   :-4957.5  
+ Class :character   1st Qu.: 417660   1st Qu.: 417063   1st Qu.: -247.5  
+ Mode  :character   Median : 811348   Median : 811370   Median :  291.0  
+                    Mean   : 940319   Mean   : 939934   Mean   :  385.0  
+                    3rd Qu.:1284996   3rd Qu.:1284735   3rd Qu.: 1034.4  
+                    Max.   :3207218   Max.   :3207055   Max.   : 6628.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-4.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-4.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-4.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:4644        Min.   :  41434   Min.   :  43094   Min.   :-4948.5  
+ Class :character   1st Qu.: 397119   1st Qu.: 397397   1st Qu.: -259.5  
+ Mode  :character   Median : 766111   Median : 765911   Median :  244.8  
+                    Mean   : 934627   Mean   : 934337   Mean   :  289.9  
+                    3rd Qu.:1295386   3rd Qu.:1293965   3rd Qu.:  878.0  
+                    Max.   :3207218   Max.   :3207055   Max.   : 6100.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-5.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-5.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-5.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:1665        Min.   :  58482   Min.   :  59727   Min.   :-4948.5  
+ Class :character   1st Qu.: 369837   1st Qu.: 368586   1st Qu.: -258.0  
+ Mode  :character   Median : 792528   Median : 792937   Median :  227.5  
+                    Mean   : 968848   Mean   : 968578   Mean   :  270.5  
+                    3rd Qu.:1357263   3rd Qu.:1357159   3rd Qu.:  845.0  
+                    Max.   :2889297   Max.   :2888660   Max.   : 6100.0  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-6.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-6.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-6.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<pre><code> AssignedFeat          position           start              diff        
+ Length:511         Min.   :  83962   Min.   :  83928   Min.   :-4615.5  
+ Class :character   1st Qu.: 319338   1st Qu.: 318727   1st Qu.: -286.2  
+ Mode  :character   Median : 758262   Median : 758556   Median :  181.0  
+                    Mean   : 923067   Mean   : 922854   Mean   :  212.9  
+                    3rd Qu.:1302403   3rd Qu.:1301308   3rd Qu.:  740.0  
+                    Max.   :2889297   Max.   :2888660   Max.   : 4699.5  </code></pre>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-7.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-7.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-7.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p><img src="figure/comparing_utrs.Rmd/unnamed-chunk-9-8.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-9-8.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/docs/figure/comparing_utrs.Rmd/unnamed-chunk-9-8.png" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">rm</span>(tmp1,tmp2)</a></code></pre></div>
 </div>
 <div id="session-information" class="section level2">
-<h2>Session Information</h2>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<h2>Session information</h2>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
 <pre><code>R version 3.5.0 (2018-04-23)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Gentoo/Linux
@@ -576,72 +1596,74 @@ attached base packages:
 
 other attached packages:
  [1] bindrcpp_0.2.2                       
- [2] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
- [3] BSgenome_1.48.0                      
- [4] rtracklayer_1.40.6                   
- [5] Biostrings_2.48.0                    
- [6] XVector_0.20.0                       
- [7] GenomicRanges_1.32.6                 
- [8] GenomeInfoDb_1.16.0                  
- [9] org.Pf.plasmo.db_3.6.0               
-[10] AnnotationDbi_1.42.1                 
-[11] IRanges_2.14.10                      
-[12] S4Vectors_0.18.3                     
-[13] Biobase_2.40.0                       
-[14] BiocGenerics_0.26.0                  
-[15] scales_1.0.0                         
-[16] cowplot_0.9.3                        
-[17] magrittr_1.5                         
-[18] forcats_0.3.0                        
-[19] stringr_1.3.1                        
-[20] dplyr_0.7.6                          
-[21] purrr_0.2.5                          
-[22] readr_1.1.1                          
-[23] tidyr_0.8.1                          
-[24] tibble_1.4.2                         
-[25] ggplot2_3.0.0                        
-[26] tidyverse_1.2.1                      
+ [2] gdtools_0.1.7                        
+ [3] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [4] BSgenome_1.48.0                      
+ [5] rtracklayer_1.40.6                   
+ [6] Biostrings_2.48.0                    
+ [7] XVector_0.20.0                       
+ [8] GenomicRanges_1.32.7                 
+ [9] GenomeInfoDb_1.16.0                  
+[10] org.Pf.plasmo.db_3.6.0               
+[11] AnnotationDbi_1.42.1                 
+[12] IRanges_2.14.12                      
+[13] S4Vectors_0.18.3                     
+[14] Biobase_2.40.0                       
+[15] BiocGenerics_0.26.0                  
+[16] scales_1.0.0                         
+[17] cowplot_0.9.3                        
+[18] magrittr_1.5                         
+[19] forcats_0.3.0                        
+[20] stringr_1.3.1                        
+[21] dplyr_0.7.6                          
+[22] purrr_0.2.5                          
+[23] readr_1.1.1                          
+[24] tidyr_0.8.1                          
+[25] tibble_1.4.2                         
+[26] ggplot2_3.0.0                        
+[27] tidyverse_1.2.1                      
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-137                bitops_1.0-6               
  [3] matrixStats_0.54.0          lubridate_1.7.4            
  [5] bit64_0.9-7                 httr_1.3.1                 
  [7] rprojroot_1.3-2             tools_3.5.0                
- [9] backports_1.1.2             R6_2.2.2                   
+ [9] backports_1.1.2             R6_2.3.0                   
 [11] DBI_1.0.0                   lazyeval_0.2.1             
 [13] colorspace_1.3-2            withr_2.1.2                
 [15] tidyselect_0.2.4            bit_1.1-14                 
 [17] compiler_3.5.0              git2r_0.23.0               
-[19] cli_1.0.0                   rvest_0.3.2                
-[21] xml2_1.2.0                  DelayedArray_0.6.5         
-[23] labeling_0.3                digest_0.6.15              
-[25] Rsamtools_1.32.3            rmarkdown_1.10             
-[27] R.utils_2.6.0               pkgconfig_2.0.2            
-[29] htmltools_0.3.6             rlang_0.2.2                
-[31] readxl_1.1.0                rstudioapi_0.7             
-[33] RSQLite_2.1.1               bindr_0.1.1                
-[35] jsonlite_1.5                BiocParallel_1.14.2        
-[37] R.oo_1.22.0                 RCurl_1.95-4.11            
-[39] GenomeInfoDbData_1.1.0      Matrix_1.2-14              
-[41] Rcpp_0.12.18                munsell_0.5.0              
-[43] R.methodsS3_1.7.1           stringi_1.2.4              
-[45] yaml_2.2.0                  SummarizedExperiment_1.10.1
-[47] zlibbioc_1.26.0             plyr_1.8.4                 
-[49] grid_3.5.0                  blob_1.1.1                 
-[51] crayon_1.3.4                lattice_0.20-35            
-[53] haven_1.1.2                 hms_0.4.2                  
-[55] knitr_1.20                  pillar_1.3.0               
-[57] XML_3.98-1.16               glue_1.3.0                 
-[59] evaluate_0.11               modelr_0.1.2               
-[61] cellranger_1.1.0            gtable_0.2.0               
-[63] assertthat_0.2.0            broom_0.5.0                
-[65] GenomicAlignments_1.16.0    memoise_1.1.0              
-[67] workflowr_1.1.1            </code></pre>
+[19] cli_1.0.1                   rvest_0.3.2                
+[21] xml2_1.2.0                  DelayedArray_0.6.6         
+[23] labeling_0.3                digest_0.6.17              
+[25] Rsamtools_1.32.3            svglite_1.2.1              
+[27] rmarkdown_1.10              R.utils_2.7.0              
+[29] pkgconfig_2.0.2             htmltools_0.3.6            
+[31] rlang_0.2.2                 readxl_1.1.0               
+[33] rstudioapi_0.8              RSQLite_2.1.1              
+[35] bindr_0.1.1                 jsonlite_1.5               
+[37] BiocParallel_1.14.2         R.oo_1.22.0                
+[39] RCurl_1.95-4.11             GenomeInfoDbData_1.1.0     
+[41] Matrix_1.2-14               Rcpp_0.12.19               
+[43] munsell_0.5.0               R.methodsS3_1.7.1          
+[45] stringi_1.2.4               whisker_0.3-2              
+[47] yaml_2.2.0                  SummarizedExperiment_1.10.1
+[49] zlibbioc_1.26.0             plyr_1.8.4                 
+[51] grid_3.5.0                  blob_1.1.1                 
+[53] crayon_1.3.4                lattice_0.20-35            
+[55] haven_1.1.2                 hms_0.4.2                  
+[57] knitr_1.20                  pillar_1.3.0               
+[59] XML_3.98-1.16               glue_1.3.0                 
+[61] evaluate_0.11               modelr_0.1.2               
+[63] cellranger_1.1.0            gtable_0.2.0               
+[65] assertthat_0.2.0            broom_0.5.0                
+[67] GenomicAlignments_1.16.0    memoise_1.1.0              
+[69] workflowr_1.1.1            </code></pre>
 </div>
 
 <hr>
 <p>
-    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+    
 </p>
 <hr>
 
@@ -663,6 +1685,25 @@ loaded via a namespace (and not attached):
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 -->
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+<hr>
+<p>
+  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+  analysis was created with
+  <a href="https://github.com/jdblischak/workflowr">workflowr</a> 1.1.1
+</p>
+<hr>
 
 
 </div>

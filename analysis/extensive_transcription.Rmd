@@ -2,7 +2,7 @@
 title: "Extensive transcription"
 author: "Philipp Ross"
 date: 2017-03-02
-output: html_document
+output: workflowr::wflow_html
 ---
 
 ```{r read-chunk, include=FALSE, cache=FALSE}
@@ -11,8 +11,6 @@ source("../code/utils.R")
 load_R_essentials()
 ```
 
-```{r knitr-opts-chunk, include=FALSE}
-```
 
 **Last updated:** `r Sys.Date()`
 
@@ -72,5 +70,3 @@ print(g)
 
 ## Session Information
 
-```{r session-info}
-```

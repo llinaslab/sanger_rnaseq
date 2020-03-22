@@ -11,7 +11,7 @@
 
 <meta name="author" content="Philipp Ross" />
 
-<meta name="date" content="2017-03-08" />
+<meta name="date" content="2018-09-25" />
 
 <title>Make final UTRs</title>
 
@@ -359,19 +359,227 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
 <div class="fluid-row" id="header">
 
 
 
 <h1 class="title toc-ignore">Make final UTRs</h1>
 <h4 class="author"><em>Philipp Ross</em></h4>
-<h4 class="date"><em>2017-03-08</em></h4>
+<h4 class="date"><em>2018-09-25</em></h4>
 
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-09-25</p>
-<p><strong>Code version:</strong> 1e6d9bb</p>
+<p><strong>Last updated:</strong> 2018-10-24</p>
+<strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
+<ul>
+<li>
+<details>
+<p><summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Environment:</strong> empty </summary></p>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Seed:</strong> <code>set.seed(12345)</code> </summary></p>
+<p>The command <code>set.seed(12345)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Session information:</strong> recorded </summary></p>
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/llinaslab/sanger_rnaseq/tree/dd9d56a8fbb07e41b641cd5e2fda6fe162519c0a" target="_blank">dd9d56a</a> </summary></p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.DS_Store
+    Ignored:    analysis/.httr-oauth
+    Ignored:    code/.DS_Store
+    Ignored:    code/differential_expression/
+    Ignored:    code/differential_phase/
+    Ignored:    data/
+    Ignored:    docs/.DS_Store
+    Ignored:    docs/figure/.DS_Store
+    Ignored:    docs/figure/neighboring_genes.Rmd/.DS_Store
+    Ignored:    output/ctss_clustering/
+    Ignored:    output/differential_detection/
+    Ignored:    output/differential_expression/
+    Ignored:    output/differential_phase/
+    Ignored:    output/extensive_transcription/
+    Ignored:    output/final_utrs/
+    Ignored:    output/gcbias/
+    Ignored:    output/homopolymer_analysis/
+    Ignored:    output/neighboring_genes/
+    Ignored:    output/promoter_architecture/
+    Ignored:    output/tfbs_analysis/
+    Ignored:    output/transcript_abundance/
+
+Untracked files:
+    Untracked:  _workflowr.yml
+    Untracked:  figures/
+
+Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/_site.yml
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/analyze_neighboring_genes.Rmd
+    Modified:   analysis/array_correlations.Rmd
+    Modified:   analysis/calculate_transcript_abundance.Rmd
+    Deleted:    analysis/chunks.R
+    Modified:   analysis/comparing_utrs.Rmd
+    Modified:   analysis/ctss_clustering.Rmd
+    Modified:   analysis/dynamic_tss.Rmd
+    Modified:   analysis/extensive_transcription.Rmd
+    Modified:   analysis/final_utrs.Rmd
+    Modified:   analysis/gcbias.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
+    Modified:   analysis/process_neighboring_genes.Rmd
+    Modified:   analysis/promoter_architecture.Rmd
+    Modified:   analysis/strain_differential_detection.Rmd
+    Modified:   analysis/strain_differential_expression.Rmd
+    Modified:   analysis/strain_differential_phase.Rmd
+    Modified:   analysis/tfbs_analysis.Rmd
+    Deleted:    docs/Rplots.pdf
+
+</code></pre>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</details>
+</li>
+</ul>
+<details>
+<summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/analysis/final_utrs.Rmd" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+added homopolymer analysis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/final_utrs.html" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+<td style="text-align:left;">
+added homopolymer analysis
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/1e6d9bb5d1c2fb8fe76c5503529cad7b349d237a/analysis/final_utrs.Rmd" target="_blank">1e6d9bb</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-24
+</td>
+<td style="text-align:left;">
+comparing UTRs
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/analysis/final_utrs.Rmd" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+<td style="text-align:left;">
+hellooooo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/final_utrs.html" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+<td style="text-align:left;">
+hellooooo
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+</details>
+<hr />
 <div id="making-finallongest-utrs" class="section level2">
 <h2>Making final/longest UTRs</h2>
 <p>There were several methods and data sets used to predict 5’ and 3’ UTRs.</p>
@@ -386,38 +594,38 @@ div.tocify {
 <li>Original RNA-seq UTR predictions</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># 3D7</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="ex">../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="ex">../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="ex">TRUE</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  <span class="ex">../output/final_utrs/final_utrs_3d7.gff</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">Rscript</span> scripts/create_final_utrs.R \</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.3d7.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.3d7.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  ../data/utrs/original_utrs/final.5utrs.3d7.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  ../data/utrs/original_utrs/tso_thr5.gff \</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  ../data/utrs/original_utrs/final.3utrs.3d7.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  TRUE \</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">  ../output/final_utrs/final_utrs_3d7.gff</a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">  </a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># HB3</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">  <span class="ex">../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">  <span class="ex">../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="ex">TRUE</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">  <span class="ex">../output/final_utrs/final_utrs_hb3.gff</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="ex">Rscript</span> scripts/create_final_utrs.R \</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.hb3.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.hb3.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  ../data/utrs/original_utrs/final.5utrs.hb3.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">  ../data/utrs/original_utrs/tso_thr5.gff \</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">  ../data/utrs/original_utrs/final.3utrs.hb3.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">  TRUE \</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">  ../output/final_utrs/final_utrs_hb3.gff</a>
 <a class="sourceLine" id="cb1-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#IT</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="ex">Rscript</span> scripts/create_final_utrs.R </a>
-<a class="sourceLine" id="cb1-23" data-line-number="23">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24">  <span class="ex">../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25">  <span class="ex">../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">  <span class="ex">../data/utrs/original_utrs/tso_thr5.gff</span></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">  <span class="ex">../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff</span></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="ex">TRUE</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29">  <span class="ex">../output/final_utrs/final_utrs_it.gff</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="ex">Rscript</span> scripts/create_final_utrs.R \</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">  ../data/utrs/repaired_cov_utrs/repaired_with_TSO_5UTRs/repaired_with_tso_5UTRs.it.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">  ../data/utrs/repaired_cov_utrs/repaired_with_3D7_coverage_5UTRs/repaired_with_3d7_cov_5UTRs.it.filtered.rescued_5utrs.gff \</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">  ../data/utrs/original_utrs/final.5utrs.it.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">  ../data/utrs/original_utrs/tso_thr5.gff \</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">  ../data/utrs/original_utrs/final.3utrs.it.3d7_v3_chr.idc.gff \</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">  TRUE \</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">  ../output/final_utrs/final_utrs_it.gff</a></code></pre></div>
 <p>Finally, we should read in the resulting data:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># function to read in the data</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">read_utrs &lt;-<span class="st"> </span><span class="cf">function</span>(file, input_strain) {</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(file)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  df &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(file)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(Parent,type,width)</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">  df<span class="op">$</span>strain &lt;-<span class="st"> </span>input_strain</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6">  df<span class="op">$</span>Parent &lt;-<span class="st"> </span><span class="kw">as.character</span>(df<span class="op">$</span>Parent)</a>
@@ -439,11 +647,95 @@ div.tocify {
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>strain) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/5utrs-hist-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of 5utrs-hist-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/5utrs-hist-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/figure/final_utrs.Rmd/5utrs-hist-1.png" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/5utrs-boxplots-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of 5utrs-boxplots-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/5utrs-boxplots-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/figure/final_utrs.Rmd/5utrs-boxplots-1.png" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <p>How do summary statistics vary between strains?</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;5UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -466,11 +758,95 @@ div.tocify {
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>strain) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">55</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/3utrs-hist-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of 3utrs-hist-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/3utrs-hist-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/figure/final_utrs.Rmd/3utrs-hist-1.png" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>strain,<span class="dt">y=</span>width)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>)</a></code></pre></div>
 <p><img src="figure/final_utrs.Rmd/3utrs-boxplots-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of 3utrs-boxplots-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/3utrs-boxplots-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/figure/final_utrs.Rmd/3utrs-boxplots-1.png" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <p>How do summary statistics vary between strains?</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">utrs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &quot;3UTR&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -525,21 +901,59 @@ div.tocify {
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, utrplus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/final_utrs.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Length&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longest Homopolymer&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;All UTRs Plus 100 bps&quot;</span>)</a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/utrplus_homopolymers.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/utrplus_homopolymers.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/unnamed-chunk-6-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
 <pre><code># A tibble: 1 x 8
   estimate statistic   p.value parameter conf.low conf.high method
      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
-1   -0.346     -24.4 9.37e-124      4385   -0.372    -0.320 Pears…
+1   -0.335     -23.5 2.33e-115      4386   -0.361    -0.308 Pears…
 # ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, plus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"></a>
@@ -548,17 +962,52 @@ div.tocify {
 <a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/final_utrs.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb17-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/plus_homopolymers.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/plus_homopolymers.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/unnamed-chunk-7-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="co">#dplyr::filter(width &lt; 8000) %&gt;%</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width,.<span class="op">$</span>longest)))</a></code></pre></div>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width,.<span class="op">$</span>longest)))</a></code></pre></div>
 <pre><code># A tibble: 1 x 8
   estimate statistic  p.value parameter conf.low conf.high method
      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
-1   -0.174     -11.7 2.92e-31      4385   -0.203    -0.145 Pears…
+1   -0.174     -11.7 4.58e-31      4386   -0.202    -0.145 Pears…
 # ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(originalutrs, utrs, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"></a>
@@ -567,32 +1016,74 @@ div.tocify {
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb20-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb20-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
-<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/final_utrs.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb20-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb20-9" data-line-number="9">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/utr_homopolymers.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/utr_homopolymers.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb20-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb20-12" data-line-number="12"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-8-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/fa4fca88e2750a4c895ff6d85657879ceeb1b649/docs/figure/final_utrs.Rmd/unnamed-chunk-8-1.png" target="_blank">fa4fca8</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-25
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="co">#dplyr::filter(width &lt; 8000) %&gt;%</span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
 <pre><code># A tibble: 1 x 8
   estimate statistic p.value parameter conf.low conf.high method
      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
-1   0.0672      4.46 8.54e-6      4382   0.0376    0.0966 Pears…
+1   0.0662      4.39 1.15e-5      4383   0.0367    0.0956 Pears…
 # ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">tmp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(fixedutrs, utrplus, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;Parent&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>))</a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb23-3" data-line-number="3">g &lt;-<span class="st"> </span>tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>)</a>
-<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/final_utrs.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y=</span>width<span class="op">/</span>longest,<span class="dt">x=</span>longest)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span><span class="fl">0.25</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="st">  </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,<span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Normalized Length&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Longest Homopolymer&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Fixed UTRs&quot;</span>)</a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/fixedutr_homopolymers.png&quot;</span>,g)</a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="st">&quot;../output/final_utrs/fixedutr_homopolymers.svg&quot;</span>,g)</a>
+<a class="sourceLine" id="cb23-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb23-16" data-line-number="16"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/final_utrs.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">tmp <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(width <span class="op">&lt;</span><span class="st"> </span><span class="dv">8000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="st">  </span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(Parent) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">width=</span><span class="kw">unique</span>(width),<span class="dt">longest=</span><span class="kw">max</span>(longest)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(broom<span class="op">::</span><span class="kw">tidy</span>(<span class="kw">cor.test</span>(.<span class="op">$</span>width<span class="op">/</span>.<span class="op">$</span>longest,.<span class="op">$</span>longest)))</a></code></pre></div>
 <pre><code># A tibble: 1 x 8
   estimate statistic  p.value parameter conf.low conf.high method
      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; 
@@ -600,7 +1091,7 @@ div.tocify {
 # ... with 1 more variable: alternative &lt;chr&gt;</code></pre>
 </div>
 <div id="session-information" class="section level2">
-<h2>Session Information</h2>
+<h2>Session information</h2>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
 <pre><code>R version 3.5.0 (2018-04-23)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -623,32 +1114,33 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] bindrcpp_0.2.2                       
- [2] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
- [3] BSgenome_1.48.0                      
- [4] rtracklayer_1.40.6                   
- [5] Biostrings_2.48.0                    
- [6] XVector_0.20.0                       
- [7] GenomicRanges_1.32.6                 
- [8] GenomeInfoDb_1.16.0                  
- [9] org.Pf.plasmo.db_3.6.0               
-[10] AnnotationDbi_1.42.1                 
-[11] IRanges_2.14.10                      
-[12] S4Vectors_0.18.3                     
-[13] Biobase_2.40.0                       
-[14] BiocGenerics_0.26.0                  
-[15] scales_1.0.0                         
-[16] cowplot_0.9.3                        
-[17] magrittr_1.5                         
-[18] forcats_0.3.0                        
-[19] stringr_1.3.1                        
-[20] dplyr_0.7.6                          
-[21] purrr_0.2.5                          
-[22] readr_1.1.1                          
-[23] tidyr_0.8.1                          
-[24] tibble_1.4.2                         
-[25] ggplot2_3.0.0                        
-[26] tidyverse_1.2.1                      
+ [1] gdtools_0.1.7                        
+ [2] bindrcpp_0.2.2                       
+ [3] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [4] BSgenome_1.48.0                      
+ [5] rtracklayer_1.40.6                   
+ [6] Biostrings_2.48.0                    
+ [7] XVector_0.20.0                       
+ [8] GenomicRanges_1.32.7                 
+ [9] GenomeInfoDb_1.16.0                  
+[10] org.Pf.plasmo.db_3.6.0               
+[11] AnnotationDbi_1.42.1                 
+[12] IRanges_2.14.12                      
+[13] S4Vectors_0.18.3                     
+[14] Biobase_2.40.0                       
+[15] BiocGenerics_0.26.0                  
+[16] scales_1.0.0                         
+[17] cowplot_0.9.3                        
+[18] magrittr_1.5                         
+[19] forcats_0.3.0                        
+[20] stringr_1.3.1                        
+[21] dplyr_0.7.6                          
+[22] purrr_0.2.5                          
+[23] readr_1.1.1                          
+[24] tidyr_0.8.1                          
+[25] tibble_1.4.2                         
+[26] ggplot2_3.0.0                        
+[27] tidyverse_1.2.1                      
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-137                bitops_1.0-6               
@@ -656,41 +1148,42 @@ loaded via a namespace (and not attached):
  [5] bit64_0.9-7                 httr_1.3.1                 
  [7] rprojroot_1.3-2             tools_3.5.0                
  [9] backports_1.1.2             utf8_1.1.4                 
-[11] R6_2.2.2                    DBI_1.0.0                  
+[11] R6_2.3.0                    DBI_1.0.0                  
 [13] lazyeval_0.2.1              colorspace_1.3-2           
 [15] withr_2.1.2                 tidyselect_0.2.4           
 [17] bit_1.1-14                  compiler_3.5.0             
-[19] git2r_0.23.0                cli_1.0.0                  
+[19] git2r_0.23.0                cli_1.0.1                  
 [21] rvest_0.3.2                 xml2_1.2.0                 
-[23] DelayedArray_0.6.5          labeling_0.3               
-[25] digest_0.6.15               Rsamtools_1.32.3           
-[27] rmarkdown_1.10              R.utils_2.6.0              
-[29] pkgconfig_2.0.2             htmltools_0.3.6            
-[31] rlang_0.2.2                 readxl_1.1.0               
-[33] rstudioapi_0.7              RSQLite_2.1.1              
-[35] bindr_0.1.1                 jsonlite_1.5               
-[37] BiocParallel_1.14.2         R.oo_1.22.0                
-[39] RCurl_1.95-4.11             GenomeInfoDbData_1.1.0     
-[41] Matrix_1.2-14               fansi_0.3.0                
-[43] Rcpp_0.12.18                munsell_0.5.0              
-[45] R.methodsS3_1.7.1           stringi_1.2.4              
-[47] yaml_2.2.0                  SummarizedExperiment_1.10.1
-[49] zlibbioc_1.26.0             plyr_1.8.4                 
-[51] grid_3.5.0                  blob_1.1.1                 
-[53] crayon_1.3.4                lattice_0.20-35            
-[55] haven_1.1.2                 hms_0.4.2                  
-[57] knitr_1.20                  pillar_1.3.0               
-[59] reshape2_1.4.3              XML_3.98-1.16              
-[61] glue_1.3.0                  evaluate_0.11              
-[63] modelr_0.1.2                cellranger_1.1.0           
-[65] gtable_0.2.0                assertthat_0.2.0           
-[67] broom_0.5.0                 GenomicAlignments_1.16.0   
-[69] memoise_1.1.0               workflowr_1.1.1            </code></pre>
+[23] DelayedArray_0.6.6          labeling_0.3               
+[25] digest_0.6.17               Rsamtools_1.32.3           
+[27] svglite_1.2.1               rmarkdown_1.10             
+[29] R.utils_2.7.0               pkgconfig_2.0.2            
+[31] htmltools_0.3.6             rlang_0.2.2                
+[33] readxl_1.1.0                rstudioapi_0.8             
+[35] RSQLite_2.1.1               bindr_0.1.1                
+[37] jsonlite_1.5                BiocParallel_1.14.2        
+[39] R.oo_1.22.0                 RCurl_1.95-4.11            
+[41] GenomeInfoDbData_1.1.0      Matrix_1.2-14              
+[43] fansi_0.3.0                 Rcpp_0.12.19               
+[45] munsell_0.5.0               R.methodsS3_1.7.1          
+[47] stringi_1.2.4               whisker_0.3-2              
+[49] yaml_2.2.0                  SummarizedExperiment_1.10.1
+[51] zlibbioc_1.26.0             plyr_1.8.4                 
+[53] grid_3.5.0                  blob_1.1.1                 
+[55] crayon_1.3.4                lattice_0.20-35            
+[57] haven_1.1.2                 hms_0.4.2                  
+[59] knitr_1.20                  pillar_1.3.0               
+[61] reshape2_1.4.3              XML_3.98-1.16              
+[63] glue_1.3.0                  evaluate_0.11              
+[65] modelr_0.1.2                cellranger_1.1.0           
+[67] gtable_0.2.0                assertthat_0.2.0           
+[69] broom_0.5.0                 GenomicAlignments_1.16.0   
+[71] memoise_1.1.0               workflowr_1.1.1            </code></pre>
 </div>
 
 <hr>
 <p>
-    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+    
 </p>
 <hr>
 
@@ -712,6 +1205,25 @@ loaded via a namespace (and not attached):
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 -->
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+<hr>
+<p>
+  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+  analysis was created with
+  <a href="https://github.com/jdblischak/workflowr">workflowr</a> 1.1.1
+</p>
+<hr>
 
 
 </div>

@@ -2,24 +2,26 @@
 title: "Transcription Factor Binding Site Analysis"
 author: "Philipp Ross"
 date: 2018-09-25
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Refined motif search
 
@@ -116,80 +118,112 @@ for strain in 3d7 hb3 it; do fimo --bgfile ../output/tfbs_analysis/promoters_${s
 Now we can import that data and analyze it for positional information:
 
 ```{r}
+fig_theme <- theme(axis.text=element_text(size=18),
+          axis.title=element_text(size=26,face="bold"),
+          axis.line.x=element_line(colour="black",size=1.5),
+          axis.ticks.x=element_line(colour="black",size=1.5),
+          axis.line.y=element_line(colour="black",size=1.5),
+          axis.ticks.y=element_line(colour="black",size=1.5),
+          plot.title=element_text(size=26,face="bold"),
+          legend.position="none")
+
 motifs_upstream_ORF <- readr::read_tsv("../output/tfbs_analysis/upstream_ORF/fimo.txt") %>%
   dplyr::rename(motif_id=`# motif_id`)
-
-for (motif in unique(motifs_upstream_ORF$motif_id)) {
-  n <- motifs_upstream_ORF %>% 
-    dplyr::filter(motif_id==motif)
-  #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + 
-    geom_line(stat="density") + 
-    xlab("Start Site") + 
-    ylab("Density") +
-    ggtitle(motif)
-  #print(g)
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/upstream_ORF/",motif,".svg"))
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/upstream_ORF/",motif,".png"))
-}
-
-rm(motifs_upstream_ORF)
 
 motifs_3d7 <- readr::read_tsv("../output/tfbs_analysis/promoters_3d7/fimo.txt") %>%
   dplyr::rename(motif_id=`# motif_id`)
 
 for (motif in unique(motifs_3d7$motif_id)) {
-  n <- motifs_3d7 %>% 
-    dplyr::filter(motif_id==motif)
-  #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + 
-    geom_line(stat="density") + 
-    xlab("Start Site") + 
-    ylab("Density") +
-    ggtitle(motif)
-  #print(g)
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_3d7/",motif,".svg"))
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_3d7/",motif,".png"))
+  s <- motifs_3d7 %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of TSS")
+  u <- motifs_upstream_ORF %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of ATG")
+  n <- dplyr::bind_rows(s,u)
+  g <- n %>% ggplot(aes(x=start,group=type,color=type)) + 
+    geom_line(stat="density",size=2) + 
+    ylab("") +
+    xlab("") + 
+    ggtitle(motif) + 
+    scale_color_manual(values = c("Upstream of TSS"="#000000", 
+                                  "Upstream of ATG"="#9B9B9B")) +
+    fig_theme
+  assign(x=motif,value=g)
+  print(g)
 }
 
+plots <- cowplot::plot_grid(`PF3D7_1342900-D1`,`PF3D7_0613800-D1`,`PF3D7_1408200`,`PF3D7_1222600`,`PF3D7_1143100`,
+                            `PF3D7_1466400`,`PF3D7_0802100`,`PF3D7_0604100-DsL`,`PF3D7_1007700-D3`,`PF3D7_1007700-D1`,
+                            `PF3D7_0420300-D1`,`PF3D7_1007700-D2`,`PF3D7_1107800`,`PF3D7_1350900`,`PF3D7_1456000`,
+                            `PF3D7_1305200`,`PF3D7_1317200`,`PF3D7_0516800-D2`,`PF3D7_0613800-D2ext`,`PF3D7_0420300-D2`,
+                            `PF3D7_1239200-DsL`,`PF3D7_1139300-D1`,`PF3D7_0730300-DsL`)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_3d7/all_motifs.svg",base_width=26,base_height=20)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_3d7/all_motifs.pdf",base_width=26,base_height=20)
 rm(motifs_3d7)
 
 motifs_hb3 <- readr::read_tsv("../output/tfbs_analysis/promoters_hb3/fimo.txt") %>%
   dplyr::rename(motif_id=`# motif_id`)
 
 for (motif in unique(motifs_hb3$motif_id)) {
-  n <- motifs_hb3 %>% 
-    dplyr::filter(motif_id==motif)
-  #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + 
-    geom_line(stat="density") + 
-    xlab("Start Site") + 
-    ylab("Density") +
-    ggtitle(motif)
-  #print(g)
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_hb3/",motif,".svg"))
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_hb3/",motif,".png"))
+  s <- motifs_hb3 %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of TSS")
+  u <- motifs_upstream_ORF %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of ATG")
+  n <- dplyr::bind_rows(s,u)
+  g <- n %>% ggplot(aes(x=start,group=type,color=type)) + 
+    geom_line(stat="density",size=2) + 
+    ylab("") +
+    xlab("") + 
+    ggtitle(motif) + 
+    scale_color_manual(values = c("Upstream of TSS"="#000000", 
+                                  "Upstream of ATG"="#9B9B9B")) +
+    fig_theme
+  assign(x=motif,value=g)
+  print(g)
 }
 
+plots <- cowplot::plot_grid(`PF3D7_1342900-D1`,`PF3D7_0613800-D1`,`PF3D7_1408200`,`PF3D7_1222600`,`PF3D7_1143100`,
+                            `PF3D7_1466400`,`PF3D7_0802100`,`PF3D7_0604100-DsL`,`PF3D7_1007700-D3`,`PF3D7_1007700-D1`,
+                            `PF3D7_0420300-D1`,`PF3D7_1007700-D2`,`PF3D7_1107800`,`PF3D7_1350900`,`PF3D7_1456000`,
+                            `PF3D7_1305200`,`PF3D7_1317200`,`PF3D7_0516800-D2`,`PF3D7_0613800-D2ext`,`PF3D7_0420300-D2`,
+                            `PF3D7_1239200-DsL`,`PF3D7_1139300-D1`,`PF3D7_0730300-DsL`)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_hb3/all_motifs.svg",base_width=26,base_height=20)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_hb3/all_motifs.pdf",base_width=26,base_height=20)
 rm(motifs_hb3)
 
 motifs_it <- readr::read_tsv("../output/tfbs_analysis/promoters_it/fimo.txt") %>%
   dplyr::rename(motif_id=`# motif_id`)
 
 for (motif in unique(motifs_it$motif_id)) {
-  n <- motifs_it %>% 
-    dplyr::filter(motif_id==motif)
-  #print(ks.test(n$start,runif(10000),alternative="less"))
-  g <- n %>% ggplot(aes(x=start)) + 
-    geom_line(stat="density") + 
-    xlab("Start Site") + 
-    ylab("Density") +
-    ggtitle(motif)
-  #print(g)
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_it/",motif,".svg"))
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/promoters_it/",motif,".png"))
+  s <- motifs_it %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of TSS")
+  u <- motifs_upstream_ORF %>% 
+    dplyr::filter(motif_id==motif) %>%
+    dplyr::mutate(type="Upstream of ATG")
+  n <- dplyr::bind_rows(s,u)
+  g <- n %>% ggplot(aes(x=start,group=type,color=type)) + 
+    geom_line(stat="density",size=2) + 
+    ylab("") +
+    xlab("") + 
+    ggtitle(motif) + 
+    scale_color_manual(values = c("Upstream of TSS"="#000000", 
+                                  "Upstream of ATG"="#9B9B9B")) +
+    fig_theme
+  assign(x=motif,value=g)
+  print(g)
 }
 
+plots <- cowplot::plot_grid(`PF3D7_1342900-D1`,`PF3D7_0613800-D1`,`PF3D7_1408200`,`PF3D7_1222600`,`PF3D7_1143100`,
+                            `PF3D7_1466400`,`PF3D7_0802100`,`PF3D7_0604100-DsL`,`PF3D7_1007700-D3`,`PF3D7_1007700-D1`,
+                            `PF3D7_0420300-D1`,`PF3D7_1007700-D2`,`PF3D7_1107800`,`PF3D7_1350900`,`PF3D7_1456000`,
+                            `PF3D7_1305200`,`PF3D7_1317200`,`PF3D7_0516800-D2`,`PF3D7_0613800-D2ext`,`PF3D7_0420300-D2`,
+                            `PF3D7_1239200-DsL`,`PF3D7_1139300-D1`,`PF3D7_0730300-DsL`)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_it/all_motifs.svg",base_width=26,base_height=20)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/promoters_it/all_motifs.pdf",base_width=26,base_height=20)
 rm(motifs_it)
 ```
 
@@ -258,16 +292,90 @@ bimotifs_3d7 <- readr::read_tsv("../output/tfbs_analysis/bidirectional_3d7/fimo.
 biprom_3d7 <- rtracklayer::import.gff("../output/tfbs_analysis/bidirectional_3d7.gff") %>%
   tibble::as_tibble()
 
-tmp <- dplyr::inner_join(bimotifs_3d7,biprom_3d7, by=c("sequence_name"="ID")) %>%
+tmp1 <- dplyr::inner_join(bimotifs_3d7,biprom_3d7, by=c("sequence_name"="ID")) %>%
   dplyr::select(motif_id,sequence_name,start.x,width) %>%
-  dplyr::mutate(norm_start=start.x/width)
+  dplyr::mutate(norm_start=start.x/width,type="Predicted")
+```
 
-for (m in unique(tmp$motif_id)) {
-  b <- tmp %>% dplyr::filter(motif_id==m)
-  g <- b %>% ggplot(aes(x=norm_start)) + geom_line(stat="density")
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/bidirectional_3d7/",m,".svg"))
-  ggsave(plot=g,filename=paste0("../output/tfbs_analysis/bidirectional_3d7/",m,".png"))
+```{r}
+library(BSgenome.Pfalciparum.PlasmoDB.v24)
+genes      <- rtracklayer::import.gff3("../data/annotations/genes_nuclear_3D7_v24.gff")
+telomeres  <- rtracklayer::import.gff3("../data/annotations/Pf3D7_v3_subtelomeres.gff")
+intergenic <- GenomicRanges::gaps(genes)
+intergenic <- intergenic[is.na(GenomicRanges::findOverlaps(intergenic,telomeres,select="arbitrary"))]
+intergenic_seqs <- BSgenome::getSeq(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)
+
+# create random seqs to compare to
+extract_random_seqs1 <- function(seqs,widths) {
+  # start with the first sequence,
+  # filter by width to avoid errors,
+  # sample randomly from filtered sequences,
+  # grab random interval that matches the length of the
+  # promoter sequence
+  fseqs       <- seqs[width(seqs) > widths[1]]
+  rsample     <- sample(1:length(fseqs),size=1)
+  rseq        <- fseqs[rsample][[1]]
+  rstart      <- sample(x=1:(length(rseq)-widths[1]),size=1)
+  random_seqs <- rseq[rstart:(rstart+widths[1]-1)]
+  # do this for all sequences
+  for (i in 2:length(widths)) {
+    fseqs       <- seqs[width(seqs) > widths[i]]
+    rsample     <- sample(1:length(fseqs),size=1)
+    rseq        <- fseqs[rsample][[1]]
+    rstart      <- sample(x=1:(length(rseq)-widths[i]-1),size=1)
+    random_seqs <- unlist(Biostrings::DNAStringSetList(
+      Biostrings::DNAStringSet(random_seqs),
+      Biostrings::DNAStringSet(rseq[rstart:(rstart+widths[i]-1)])))
+  }
+  return(random_seqs)
 }
+
+random_seqs <- extract_random_seqs1(intergenic_seqs,biprom_3d7$width)
+names(random_seqs) <- paste(rep("seq",length(random_seqs)),1:length(random_seqs),sep="")
+Biostrings::writeXStringSet(x=random_seqs,filepath="../output/tfbs_analysis/random_bidrectional_seqs.fasta")
+```
+
+```{r, engine='bash',eval=F}
+fasta-get-markov -m 3 ../output/tfbs_analysis/random_bidrectional_seqs.fasta ../output/tfbs_analysis/random_bidrectional_seqs.background
+
+fimo --bgfile ../output/tfbs_analysis/random_bidrectional_seqs.background --no-qvalue -oc ../output/tfbs_analysis/random_bidrectional --thresh 1e-2 ../data/motif_cores/ap2_pbm_cores.meme ../output/tfbs_analysis/random_bidrectional_seqs.fasta
+```
+
+```{r}
+random_bimotifs <- readr::read_tsv("../output/tfbs_analysis/random_bidrectional/fimo.txt") %>%
+  dplyr::rename(motif_id=`# motif_id`) %>%
+  dplyr::mutate(type="Random")
+
+random_lengths <- tibble::tibble(sequence_name=names(random_seqs),width=width(random_seqs))
+
+tmp2 <- dplyr::inner_join(random_bimotifs,random_lengths) %>%
+  dplyr::select(motif_id,sequence_name,start,width) %>%
+  dplyr::mutate(norm_start=start/width,type="Random")
+
+bimotifs <- dplyr::bind_rows(tmp1,tmp2)
+
+for (m in unique(bimotifs$motif_id)) {
+  b <- bimotifs %>% dplyr::filter(motif_id==m)
+  g <- b %>% ggplot(aes(x=norm_start,group=type,color=type)) + 
+    geom_line(stat="density",size=2) + 
+    scale_x_continuous(breaks=c(0.0,0.25,0.5,0.75,1.0),labels=c("TSS1","25%","50%","75%","TSS2")) +
+    ggtitle(m) + 
+    xlab("") + 
+    ylab("") + 
+    scale_color_manual(values = c("Predicted"="#000000", 
+                                  "Random"="#9B9B9B")) +
+    fig_theme
+  assign(x=m,value=g)
+  print(g)
+}
+
+plots <- cowplot::plot_grid(`PF3D7_1342900-D1`,`PF3D7_0613800-D1`,`PF3D7_1408200`,`PF3D7_1222600`,`PF3D7_1143100`,
+                            `PF3D7_1466400`,`PF3D7_0802100`,`PF3D7_0604100-DsL`,`PF3D7_1007700-D3`,`PF3D7_1007700-D1`,
+                            `PF3D7_0420300-D1`,`PF3D7_1007700-D2`,`PF3D7_1107800`,`PF3D7_1350900`,`PF3D7_1456000`,
+                            `PF3D7_1305200`,`PF3D7_1317200`,`PF3D7_0516800-D2`,`PF3D7_0613800-D2ext`,`PF3D7_0420300-D2`,
+                            `PF3D7_1239200-DsL`,`PF3D7_1139300-D1`,`PF3D7_0730300-DsL`,`PF3D7_1222400`)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/bidirectional_3d7/all_motifs.svg",base_width=26,base_height=20)
+cowplot::save_plot(plot=plots,filename="../output/tfbs_analysis/bidirectional_3d7/all_motifs.pdf",base_width=26,base_height=20)
 ```
 
 ## Dynamic motif usage
@@ -298,9 +406,4 @@ long_unique <- kahrp_long %>% dplyr::filter(!(motif_id %in% kahrp_short$motif_id
 
 DT::datatable(short_unique, rownames = FALSE)
 DT::datatable(long_unique, rownames = FALSE)
-```
-
-## Session Information
-
-```{r session-info}
 ```

@@ -2,24 +2,26 @@
 title: "Promoter Architecture"
 author: "Philipp Ross"
 date: 09-25-2018
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## Sequence features surrounding transcription start sites
 
@@ -344,6 +346,7 @@ This is really interesting! Do we see the same thing if we look at the original 
 ```{r}
 x3d7pwm <- generate_pwm(x3d7_tso)
 plot_frequencies(x3d7pwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
+plot_frequencies(x3d7pwm$pwm) + scale_x_continuous(limits=c(400,600),breaks=c(400,501,600),labels=c("-100","TSS","100"))
 plot_info(x3d7pwm$pwm) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
 plot_logo(x3d7pwm$pwm,c(480,520))
 ```
@@ -352,28 +355,20 @@ plot_logo(x3d7pwm$pwm,c(480,520))
 
 ```{r}
 fetcs <- filter_tag_clusters(tc_exonic,5,15)
-fetcssharppwm <- generate_pwm(fetcs$sharp)
-fetcsbroadpwm <- generate_pwm(fetcs$broad)
-plot_frequencies(fetcssharppwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
-plot_frequencies(fetcsbroadpwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
-plot_info(fetcssharppwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
-plot_info(fetcsbroadpwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
-plot_logo(fetcssharppwm$pwm,c(480,520))
-plot_logo(fetcsbroadpwm$pwm,c(480,520))
+fetcspwm <- generate_pwm(unlist(GenomicRanges::GRangesList(fetcs$sharp,fetcs$broad)))
+plot_frequencies(fetcspwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
+plot_info(fetcspwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
+plot_logo(fetcspwm$pwm,c(480,520))
 ```
 
 #### Intronic
 
 ```{r}
 fitcs <- filter_tag_clusters(tc_intronic,5,15)
-fitcssharppwm <- generate_pwm(fitcs$sharp)
-fitcsbroadpwm <- generate_pwm(fitcs$broad)
-plot_frequencies(fitcssharppwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
-plot_frequencies(fitcsbroadpwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
-plot_info(fitcssharppwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
-plot_info(fitcsbroadpwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
-plot_logo(fitcssharppwm$pwm,c(480,520))
-plot_logo(fitcsbroadpwm$pwm,c(480,520))
+fitcspwm <- generate_pwm(unlist(GenomicRanges::GRangesList(fitcs$sharp,fitcs$broad)))
+plot_frequencies(fitcspwm$pwm) + scale_x_continuous(limits=c(480,520),breaks=c(480,501,520),labels=c("-20","TSS","20"))
+plot_info(fitcspwm$pwm) + scale_y_continuous(limits=c(0,1)) + scale_x_continuous(breaks=c(1,250,501,750,1001),labels=c("-500","-250","TSS","250","500"))
+plot_logo(fitcspwm$pwm,c(480,520))
 ```
 
 ## Nucleotide composition of sharp and broad promoters
@@ -591,17 +586,92 @@ print(g)
 ### How many tag clusters?
 
 ```{r}
-tc_intergenic %>% tibble::as_tibble() %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
-tc_exonic %>% tibble::as_tibble() %>% dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
-tc_intronic %>% tibble::as_tibble() %>%  dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+tc_intergenic %>% 
+  tibble::as_tibble() %>% 
+  dplyr::filter(tpm.dominant_ctss >= 2) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
+tc_exonic %>% 
+ tibble::as_tibble() %>% 
+  dplyr::filter(tpm.dominant_ctss >= 2) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
+tc_intronic %>% 
+tibble::as_tibble() %>% 
+  dplyr::filter(tpm.dominant_ctss >= 2) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
 ```
 
 ### How many promoter clusters?
 
 ```{r}
-pc_intergenic %>% tibble::as_tibble() %>%  dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
-pc_exonic %>% tibble::as_tibble() %>%  dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
-pc_intronic %>% tibble::as_tibble() %>%  dplyr::filter(tpm.dominant_ctss >= 2) %>% dplyr::group_by(seqnames, start,end) %>% nrow
+pc_intergenic %>% 
+  tibble::as_tibble() %>% 
+  dplyr::group_by(seqnames,start,full_end,tp,name) %>%
+  dplyr::summarise(tpm=sum(as.double(tpm))) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(tpm >= 5) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
+pc_exonic %>% 
+  tibble::as_tibble() %>% 
+  dplyr::group_by(seqnames,start,full_end,tp,name) %>%
+  dplyr::summarise(tpm=sum(as.double(tpm))) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(tpm >= 5) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
+pc_intronic %>% 
+  tibble::as_tibble() %>% 
+  dplyr::group_by(seqnames,start,full_end,tp,name) %>%
+  dplyr::summarise(tpm=sum(as.double(tpm))) %>%
+  dplyr::ungroup() %>%
+  dplyr::filter(tpm >= 5) %>% 
+  dplyr::group_by(seqnames,start,full_end) %>%
+  dplyr::summarise(n=n()) %>%
+  dplyr::ungroup() %>%
+  nrow
+```
+
+### How many tag clusters per gene per time point?
+
+```{r}
+g <- tc_intergenic %>% 
+  tibble::as_tibble() %>% 
+  dplyr::group_by(seqnames,start,end,name,tp) %>%
+  dplyr::filter(as.numeric(tpm.dominant_ctss) >= 2) %>%
+  dplyr::group_by(name, tp) %>% 
+  dplyr::summarise(n=n()) %>% 
+  dplyr::ungroup() %>% 
+  ggplot(aes(x=n)) + 
+  geom_bar(stat="count",color="black",fill="grey70",size=0.75) + 
+  facet_grid(.~tp) +
+  xlab("") + 
+  ylab("") +
+  scale_x_continuous(breaks=c(1,5,9,13)) +
+  scale_y_continuous(breaks=c(0,500,1000)) + 
+  theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=16,face="bold"),
+        axis.line.x=element_line(colour="black",size=1.0),
+        axis.ticks.x=element_line(colour="black",size=1.0),
+        axis.line.y=element_line(colour="black",size=1.0),
+        axis.ticks.y=element_line(colour="black",size=1.0),
+        legend.text=element_text(size=16))
+
+cowplot::save_plot(filename="../output/promoter_architecture/tagclusters_per_gene_per_timepoint.png",plot=g,base_width=12)
+cowplot::save_plot(filename="../output/promoter_architecture/tagclusters_per_gene_per_timepoint.svg",plot=g,base_width=12)
+print(g)
 ```
 
 ### Is there anything functionally enriched in the set of genes with many TSSs?
@@ -610,7 +680,7 @@ pc_intronic %>% tibble::as_tibble() %>%  dplyr::filter(tpm.dominant_ctss >= 2) %
 core_genes <- readr::read_tsv("../data/gene_lists/core_pf3d7_genes.txt",col_names=F)$X1
 out <- tc_intergenic %>%
   tibble::as_tibble() %>% 
-  dplyr::group_by(seqnames,start,end,name,tp) %>% 
+  dplyr::group_by(seqnames,start,full_end,name,tp) %>% 
   dplyr::filter(as.numeric(tpm.dominant_ctss) >= 2) %>%
   dplyr::group_by(name,tp) %>% 
   dplyr::summarise(n=n()) %>% 
@@ -625,7 +695,7 @@ readr::write_lines(x=out,path="../output/promoter_architecture/5_annotated_tcs.t
 Rscript code/topgo.R --gene_list output/promoter_architecture/5_annotated_tcs.txt --go_terms data/gene_ontology/Pf3D7_go_sept2014.txt --anno data/gene_ontology/Pf3D7_desc_sept2014.txt --out_prefix output/promoter_architecture/5_annotated_tcs
 ```
 
-### How many broad/sharp promoters per timepoint?
+### How many broad/sharp TSSs per timepoint?
 
 ```{r}
 # abundance estimates
@@ -647,10 +717,10 @@ fx3d7 <- get_filtered_ids(x3d7_abund,5)
 fxhb3 <- get_filtered_ids(xhb3_abund,5)
 fxit  <- get_filtered_ids(xit_abund,5)
 
-intertags <- dplyr::inner_join(as_tibble(tc_intergenic) %>% dplyr::mutate(tp=as.integer(tp)),x3d7_abund,by=c("name" = "gene_id","tp"))
+intertags <- dplyr::inner_join(tibble::as_tibble(tc_intergenic) %>% dplyr::mutate(tp=as.integer(tp)),x3d7_abund,by=c("name" = "gene_id","tp"))
 
-intertags$type <- ifelse(intertags$interquantile_width >= 15, "broad", "sharp")
-intertags %>% 
+intertags$type <- ifelse(as.integer(intertags$interquantile_width) >= 15,"broad","sharp")
+g <- intertags %>%
   dplyr::filter(as.numeric(tpm.dominant_ctss) >= 2 & abs(as.numeric(anno_start) - as.numeric(dominant_ctss)) <= 2500) %>% 
   ggplot(aes(x=tp,fill=type)) + 
   geom_bar(colour="black",size=1.0) + 
@@ -667,11 +737,43 @@ intertags %>%
         legend.title=element_blank()) +
   labs("") +
   scale_x_continuous(breaks=c(1,2,3,4,5,6,7))
+
+cowplot::save_plot(filename="../output/promoter_architecture/shape_tagclusters_per_timepoint.png",plot=g)
+cowplot::save_plot(filename="../output/promoter_architecture/shape_tagclusters_per_timepoint.svg",plot=g)
+print(g)
+
+
+for (i in c(1,2,3,4,5,6,7)) {
+  intertags %>% 
+    dplyr::filter(tp==i) %>% 
+    dplyr::select(seqnames,strand,q_0.1,q_0.9,
+                  dominant_ctss,tpm,tpm.dominant_ctss,name,TPM,type) %>%
+    dplyr::rename(Chromosome=seqnames,
+                  Strand=strand,
+                  Quantile_10=q_0.1,
+                  Quantile_90=q_0.9,
+                  Quantile_TPM=tpm,
+                  Dominant_tag=dominant_ctss,
+                  Dominant_tag_TPM=tpm.dominant_ctss,
+                  Annotation=name,
+                  Annotation_TPM=TPM,
+                  Shape=type) %>%
+    readr::write_tsv(paste0("../output/promoter_architecture/intertags_tp",i,".tsv"))
+  
+  #googledrive::drive_upload(media=paste0("../output/promoter_architecture/intertags_tp",i,".tsv"),
+  #                        path="Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables",
+  #                        name=paste0("intertags_tp",i,".tsv"),
+  #                        type="spreadsheet")
+}
 ```
 
-### Is there actually an expression difference between genes annotated with sharp and genes annotated with broad PCs?
+### Is there actually an expression difference between genes annotated with sharp and genes annotated with broad TCs?
+
+We look at tag clusters here rather than promoter clusters since the width of a promoter cluster could be due to the fact that TSSs can be dynamic throughout the falciparum IDC, not just that the TSS at a certain time point is "sharp" or "broad."
 
 ```{r}
+intertags <- dplyr::inner_join(intertags %>% dplyr::mutate(tp=as.integer(tp)),x3d7_abund,by=c("name"="gene_id","tp"))
+
 s <- dplyr::filter(intertags, type=="sharp")
 b <- dplyr::filter(intertags, type=="broad")
 
@@ -680,12 +782,26 @@ babund <- x3d7_abund %>% dplyr::filter(gene_id %in% b$name) %>% dplyr::mutate(ty
 
 nabund <- dplyr::bind_rows(sabund,babund)
 
-nabund %>% dplyr::filter(strain == "3d7") %>% 
-  ggplot(aes(x=type,y=log2(TPM+1))) + 
-  geom_boxplot() + 
+g <- nabund %>% 
+  dplyr::filter(TPM > 5) %>% 
+  ggplot(aes(x=type,y=log10(TPM+1),fill=type)) + 
+  geom_boxplot(size=1) + 
   facet_grid(~tp) +
-  ylab("Log2 TPM") +
-  xlab("")
+  ylab("Log10 TPM") +
+  xlab("") +
+  theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=16,face="bold"),
+        axis.line.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.line.y=element_line(colour="black",size=1.0),
+        axis.ticks.y=element_line(colour="black",size=1.0),
+        legend.text=element_text(size=16),
+        axis.text.x=element_blank()) +
+  scale_fill_manual(values = c("sharp"="#b29ed1","broad"="#edc074"))
+
+cowplot::save_plot(filename="../output/promoter_architecture/shape_gene_expression.png",plot=g,base_width=12)
+cowplot::save_plot(filename="../output/promoter_architecture/shape_gene_expression.svg",plot=g,base_width=12)
+print(g)
 
 for (i in c(1,2,3,4,5,6,7)) {
   h1 <- sabund %>% dplyr::filter(tp==i)
@@ -699,9 +815,4 @@ for (i in c(1,2,3,4,5,6,7)) {
 ```{r}
 shifting <- readr::read_tsv(file="../output/ctss_clustering/modified/annotated_shifting.tsv")
 readr::write_lines(x=unique(shifting$name),path="../output/ctss_clustering/modified/annotated_shifting_genes.txt")
-```
-
-## Session Information
-
-```{r session-info}
 ```

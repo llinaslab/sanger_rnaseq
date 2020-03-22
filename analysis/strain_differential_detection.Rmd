@@ -2,24 +2,26 @@
 title: "Differential transcript detection"
 author: "Philipp Ross"
 date: 2018-09-25
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+```{r,echo=F}
+# ---- knitr-opts-chunk ----
+knitr::opts_chunk$set(
+  comment = NA,
+  fig.align = "center",
+  tidy = FALSE,
+  fig.path = paste0("figure/", knitr::current_input(), "/"),
+  warning = FALSE,
+  message = FALSE
+)
+
+# ---- load-libraries ----
+source("../code/utils.R")
+load_essentials()
 ```
-
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
-
-**Last updated:** `r Sys.Date()`
-
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
 ## What transcripts can we detect in one strain, but not the others?
 
@@ -163,148 +165,44 @@ Some genes may barely get over the threshold of 5 TPMs, which was chosen arbitra
 
 Looking through this CGH data will help as well: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2901668/
 
-```{r}
-off_3d7_hb3 <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
-DT::datatable(off_3d7_hb3,rownames = F)
-```
-
+### Off in HB3 not in 3D7
 
 ```{r}
-off_3d7_it <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
-DT::datatable(off_3d7_hb3,rownames = F)
+readr::read_tsv("../output/differential_detection/off_hb3_not_3d7.tsv") %>%
+  DT::datatable(rownames = F)
 ```
+
+### Off in 3D7 not in HB3
 
 ```{r}
-off_hb3_it <- readr::read_tsv("../output/differential_detection/off_genes_3d7_hb3.tsv")
-DT::datatable(off_3d7_hb3,rownames = F)
+readr::read_tsv("../output/differential_detection/off_3d7_not_hb3.tsv") %>% 
+  DT::datatable(rownames = F)
 ```
 
-#### Up in 3D7
+### Off in IT not in 3D7
 
-PF3D7_0202000 2145.335 versus 2.995
-knob-associated histidine-rich protein (KAHRP)
+```{r}
+readr::read_tsv("../output/differential_detection/off_it_not_3d7.tsv") %>% 
+DT::datatable(rownames = F)
+```
 
-PF3D7_1372200 836.830 versus 0.599
-histidine-rich protein III (HRPIII)
+### Off in 3D7 not in IT
 
-PF3D7_0201700 110.712 versus 0.052
-DnaJ protein, putative
+```{r}
+readr::read_tsv("../output/differential_detection/off_3d7_not_it.tsv") %>% 
+  DT::datatable(rownames = F)
+```
 
-PF3D7_1429200 24.382 versus 0.99
-transcription factor with AP2 domain(s)
+### Off in IT not in HB3
 
-PF3D7_0518700 30.287 versus 1.4
-mRNA-binding protein PUF1 (PUF1)
+```{r}
+readr::read_tsv("../output/differential_detection/off_it_not_hb3.tsv") %>%
+  DT::datatable(rownames = F)
+```
 
-PF3D7_1126800 37.441 versus 2.2023
-RNA-binding protein, putative
+### Off in HB3 not in IT
 
-PF3D7_1350900 43.551 versus 1.301
-transcription factor with AP2 domain(s) (ApiAP2)
-
-PF3D7_1222600 50.469 versus 0.951
-transcription factor with AP2 domain(s) (AP2-G)
-
-PF3D7_1241400 19.426 versus 1.633
-RNA-binding protein, putative
-
-PF3D7_0209000 34.424 versus 0.084
-6-cysteine protein (P230)
-
-PF3D7_1346700 46.211 versus 2.543
-6-cysteine protein (P48/45)
-
-PF3D7_1346800 13.754 versus 1.110
-6-cysteine protein (P47)
-
-PF3D7_1038400 14.784 versus 0.030
-gametocyte-specific protein (Pf11-1)
-
-PF3D7_0625600 31.212 versus 2.054
-poly(A) polymerase PAP, putative
-
-PF3D7_1031000 27.841 versus 0.468
-25 kDa ookinete surface antigen precursor (Pfs25)
-
-#### Up in HB3
-
-10 out of top 30 are pseudogenes
-
-Not many differences beyond highly variant genes (variant due to clonal variation or polymorphic regions? Both?)
-
-stevor, exported protein family 4, pfmc-2tm mauler’s cleft two transmembrane protein, mspr4, g-beta repeat protein
-
-### 3D7 and IT
-
-#### Up in 3D7
-
-See a lot of the same genes here as I did in 3D7 versus HB3.
-
-PF3D7_1222600
-transcription factor with AP2 domain(s) (AP2-G)
-
-PF3D7_1346700
-6-cysteine protein (P48/45)
-
-PF3D7_0209000
-6-cysteine protein (P230)
-
-PF3D7_1477800
-acyl-CoA binding protein (ACBP)
-
-PF3D7_0414500
-RNA-binding protein, putative
-
-PF3D7_1031000
-25 kDa ookinete surface antigen precursor (Pfs25)
-
-PF3D7_1429200
-transcription factor with AP2 domain(s)
-
-PF3D7_0311700
-plasmepsin VI
-
-PF3D7_0109300
-fatty acid elongation protein, GNS1/SUR4 family, putative
-
-PF3D7_1038400
-gametocyte-specific protein (Pf11-1)
-
-#### Up in IT
-
-PF3D7_0114300
-exported protein family 4, pseudogene (EPF4)
-
-PF3D7_0936700
-lysophospholipase, putative
-
-### HB3 and IT
-
-Not much difference here.
-
-#### Up in HB3
-
-PF3D7_1477800
-acyl-CoA binding protein (ACBP)
-
-#### Up in IT
-
-PF3D7_0202000
-knob-associated histidine-rich protein (KAHRP)
-
-PF3D7_1372200
-histidine-rich protein III (HRPIII)
-
-PF3D7_0201800
-knob associated heat shock protein 40 (KAHsp40)
-
-PF3D7_0201700
-DnaJ protein, putative
-
-PF3D7_0625600
-poly(A) polymerase PAP, putative
-
-## Session Information
-
-```{r session-info}
+```{r}
+readr::read_tsv("../output/differential_detection/off_hb3_not_it.tsv") %>%
+  DT::datatable(rownames = F)
 ```

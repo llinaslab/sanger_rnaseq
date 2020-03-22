@@ -2,20 +2,12 @@
 title: "Alternative TSS Usage"
 author: "Philipp Ross"
 date: 09-25-2018
-output: html_document
+output: workflowr::wflow_html
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
-```
 
-```{r knitr-opts-chunk, include=FALSE}
-```
-
-```{r load-libraries, include=FALSE}
-```
 
 **Last updated:** `r Sys.Date()`
 
@@ -92,5 +84,3 @@ sx3d7_abund <- sx3d7_abund %>%
 
 ## Session Information
 
-```{r session-info}
-```

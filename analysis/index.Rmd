@@ -1,7 +1,8 @@
 ---
+site: workflowr::wflow_site
 title: "Home"
 output:
-  html_document:
+  workflowr::wflow_html:
     toc: false
 ---
 
@@ -79,6 +80,6 @@ What genes are differentially expressed between the three strains? What genes ar
 
 Comparing 3D7, HB3 and IT:
 
+* [Detection of transcription](strain_differential_detection.html)
 * [Differential expression](strain_differential_expression.html)
 * [Phase comparison](strain_differential_phase.html)
-* [Detection of transcription](strain_differential_detection.html)

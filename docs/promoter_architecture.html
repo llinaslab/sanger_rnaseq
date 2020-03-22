@@ -358,6 +358,13 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
 <div class="fluid-row" id="header">
 
 
@@ -369,8 +376,196 @@ div.tocify {
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-09-30</p>
-<p><strong>Code version:</strong> 3e6a944</p>
+<p><strong>Last updated:</strong> 2018-11-20</p>
+<strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
+<ul>
+<li>
+<details>
+<p><summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Environment:</strong> empty </summary></p>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Seed:</strong> <code>set.seed(12345)</code> </summary></p>
+<p>The command <code>set.seed(12345)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Session information:</strong> recorded </summary></p>
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</details>
+</li>
+<li>
+<details>
+<p><summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/llinaslab/sanger_rnaseq/tree/dd9d56a8fbb07e41b641cd5e2fda6fe162519c0a" target="_blank">dd9d56a</a> </summary></p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.DS_Store
+    Ignored:    analysis/.httr-oauth
+    Ignored:    code/.DS_Store
+    Ignored:    code/differential_expression/
+    Ignored:    code/differential_phase/
+    Ignored:    data/
+    Ignored:    docs/.DS_Store
+    Ignored:    docs/figure/.DS_Store
+    Ignored:    docs/figure/neighboring_genes.Rmd/.DS_Store
+    Ignored:    output/compare/
+    Ignored:    output/ctss_clustering/
+    Ignored:    output/differential_detection/
+    Ignored:    output/differential_expression/
+    Ignored:    output/differential_phase/
+    Ignored:    output/extensive_transcription/
+    Ignored:    output/final_utrs/
+    Ignored:    output/gcbias/
+    Ignored:    output/homopolymer_analysis/
+    Ignored:    output/neighboring_genes/
+    Ignored:    output/promoter_architecture/
+    Ignored:    output/tfbs_analysis/
+    Ignored:    output/transcript_abundance/
+
+Untracked files:
+    Untracked:  _workflowr.yml
+    Untracked:  docs/figure/tfbs_analysis.Rmd/
+    Untracked:  figures/
+
+Unstaged changes:
+    Modified:   README.md
+    Modified:   analysis/_site.yml
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/analyze_neighboring_genes.Rmd
+    Modified:   analysis/array_correlations.Rmd
+    Modified:   analysis/calculate_transcript_abundance.Rmd
+    Deleted:    analysis/chunks.R
+    Modified:   analysis/comparing_utrs.Rmd
+    Modified:   analysis/ctss_clustering.Rmd
+    Modified:   analysis/dynamic_tss.Rmd
+    Modified:   analysis/extensive_transcription.Rmd
+    Modified:   analysis/final_utrs.Rmd
+    Modified:   analysis/gcbias.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
+    Modified:   analysis/process_neighboring_genes.Rmd
+    Modified:   analysis/promoter_architecture.Rmd
+    Modified:   analysis/strain_differential_detection.Rmd
+    Modified:   analysis/strain_differential_expression.Rmd
+    Modified:   analysis/strain_differential_phase.Rmd
+    Modified:   analysis/tfbs_analysis.Rmd
+    Modified:   code/differential_detection/detect_transcripts.R
+    Modified:   code/figures.R
+    Deleted:    docs/Rplots.pdf
+
+</code></pre>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</details>
+</li>
+</ul>
+<details>
+<summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/analysis/promoter_architecture.Rmd" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+<td style="text-align:left;">
+you’re what message
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/b1b89808d44aab66572a52174ef09c607bec1f18/docs/promoter_architecture.html" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+<td style="text-align:left;">
+you’re what message
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/f59e2e352af3a95d97e00cda9084806c9d33bd03/analysis/promoter_architecture.Rmd" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+<td style="text-align:left;">
+hellooooo
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/llinaslab/sanger_rnaseq/f59e2e352af3a95d97e00cda9084806c9d33bd03/docs/promoter_architecture.html" target="_blank">f59e2e3</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-22
+</td>
+<td style="text-align:left;">
+hellooooo
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+</details>
+<hr />
 <div id="sequence-features-surrounding-transcription-start-sites" class="section level2">
 <h2>Sequence features surrounding transcription start sites</h2>
 <p>For this analysis we want to plot nucleotide frequencies up and downstream of predicted TSSs. We can do this by looking at most commonly used TSSs, tag clusters, and promoter clusters.</p>
@@ -516,31 +711,310 @@ div.tocify {
 <h4>3D7</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x3d7pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(x3d7_tss)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">plot_frequencies</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-5-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-5-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">plot_info</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-5-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-5-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">plot_logo</span>(x3d7pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-5-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-5-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 </div>
 <div id="hb3" class="section level4">
 <h4>HB3</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">xhb3pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(xhb3_tss)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">plot_frequencies</span>(xhb3pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">470</span>,<span class="dv">530</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-6-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">plot_info</span>(xhb3pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">251</span>,<span class="dv">501</span>,<span class="dv">751</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-6-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">plot_logo</span>(xhb3pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-6-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-6-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 </div>
 <div id="it" class="section level4">
 <h4>IT</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">xitpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(xit_tss)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw">plot_frequencies</span>(xitpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">470</span>,<span class="dv">530</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-7-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">plot_info</span>(xitpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">251</span>,<span class="dv">501</span>,<span class="dv">751</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-7-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">plot_logo</span>(xitpwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-7-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-7-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 </div>
 </div>
 <div id="most-commonly-used-3-tts" class="section level3">
@@ -548,11 +1022,11 @@ div.tocify {
 <p>We can also look at the most commonly used TTS in 3D7:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">x3d7pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(x3d7_tts)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">plot_frequencies</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">470</span>,<span class="dv">530</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">plot_info</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">251</span>,<span class="dv">501</span>,<span class="dv">751</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TTS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">plot_logo</span>(x3d7pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can also compare this to random intergenic sequences:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">33</span>)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">intergenic &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">gaps</span>(genes)</a>
@@ -607,11 +1081,11 @@ div.tocify {
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">random_seqs &lt;-<span class="st"> </span>Biostrings<span class="op">::</span><span class="kw">readDNAStringSet</span>(<span class="dt">filepath=</span><span class="st">&quot;../output/promoter_architecture/random_intergenic_seqs.fasta&quot;</span>)</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">random_pwm &lt;-<span class="st"> </span><span class="kw">generate_random_pwm</span>(random_seqs)</a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw">plot_frequencies</span>(random_pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Random&quot;</span>)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">plot_info</span>(random_pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">251</span>,<span class="dv">501</span>,<span class="dv">751</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">plot_logo</span>(random_pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;" /></p>
 <p>And we can see that the signal sort of goes away. However, there also wasn’t a very strong signal to begin with.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">Biostrings<span class="op">::</span><span class="kw">writeXStringSet</span>(<span class="dt">x=</span>random_pwm<span class="op">$</span>seqs,<span class="dt">filepath=</span><span class="st">&quot;../output/promoter_architecture/random_intergenic_seqs.fasta&quot;</span>)</a></code></pre></div>
 </div>
@@ -658,61 +1132,359 @@ div.tocify {
 <a class="sourceLine" id="cb22-5" data-line-number="5">ftcssharppwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(ftcs<span class="op">$</span>sharp)</a>
 <a class="sourceLine" id="cb22-6" data-line-number="6">ftcsbroadpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(ftcs<span class="op">$</span>broad)</a>
 <a class="sourceLine" id="cb22-7" data-line-number="7"><span class="kw">plot_frequencies</span>(ftcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-13-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-13-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">plot_frequencies</span>(ftcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-13-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-13-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">plot_info</span>(ftcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-13-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-13-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">plot_info</span>(ftcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-4.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">plot_logo</span>(ftcssharppwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-5.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">plot_logo</span>(ftcsbroadpwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-12-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-6.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This is really interesting! Do we see the same thing if we look at the original TSO-predicted TSSs using a more biased approach? This method looked a certain distance upstream of every translation start site, used a 5 read threshold to discard positions that were not able to distinguish signal from noise, and designated the position with the greatest coverage upstream of an annotated protein-coding gene as the TSS.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">x3d7pwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(x3d7_tso)</a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">plot_frequencies</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">plot_info</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">plot_logo</span>(x3d7pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-13-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-14-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-14-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">plot_frequencies</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">400</span>,<span class="dv">600</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">400</span>,<span class="dv">501</span>,<span class="dv">600</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-100&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;100&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-14-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-14-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">plot_info</span>(x3d7pwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-14-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-14-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">plot_logo</span>(x3d7pwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-14-4.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-14-4.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 </div>
 <div id="exonic" class="section level4">
 <h4>Exonic</h4>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">fetcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_exonic,<span class="dv">5</span>,<span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">fetcssharppwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fetcs<span class="op">$</span>sharp)</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">fetcsbroadpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fetcs<span class="op">$</span>broad)</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="kw">plot_frequencies</span>(fetcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">plot_frequencies</span>(fetcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">plot_info</span>(fetcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">plot_info</span>(fetcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-4.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">plot_logo</span>(fetcssharppwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-5.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">plot_logo</span>(fetcsbroadpwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-14-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">fetcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_exonic,<span class="dv">5</span>,<span class="dv">15</span>)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">fetcspwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(<span class="kw">unlist</span>(GenomicRanges<span class="op">::</span><span class="kw">GRangesList</span>(fetcs<span class="op">$</span>sharp,fetcs<span class="op">$</span>broad)))</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw">plot_frequencies</span>(fetcspwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-15-1.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-15-1.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">plot_info</span>(fetcspwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-15-2.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-15-2.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">plot_logo</span>(fetcspwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
+<details>
+<summary><em>Expand here to see past versions of unnamed-chunk-15-3.png:</em></summary>
+<table style = "border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/llinaslab/sanger_rnaseq/blob/b1b89808d44aab66572a52174ef09c607bec1f18/docs/figure/promoter_architecture.Rmd/unnamed-chunk-15-3.png" target="_blank">b1b8980</a>
+</td>
+<td style="text-align:left;">
+Philipp Ross
+</td>
+<td style="text-align:left;">
+2018-09-30
+</td>
+</tr>
+</tbody>
+</table>
+</details>
 </div>
 <div id="intronic" class="section level4">
 <h4>Intronic</h4>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">fitcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_intronic,<span class="dv">5</span>,<span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">fitcssharppwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fitcs<span class="op">$</span>sharp)</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3">fitcsbroadpwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(fitcs<span class="op">$</span>broad)</a>
-<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw">plot_frequencies</span>(fitcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw">plot_frequencies</span>(fitcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">plot_info</span>(fitcssharppwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-3.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">plot_info</span>(fitcsbroadpwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-4.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">plot_logo</span>(fitcssharppwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-5.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">plot_logo</span>(fitcsbroadpwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-15-6.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">fitcs &lt;-<span class="st"> </span><span class="kw">filter_tag_clusters</span>(tc_intronic,<span class="dv">5</span>,<span class="dv">15</span>)</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">fitcspwm &lt;-<span class="st"> </span><span class="kw">generate_pwm</span>(<span class="kw">unlist</span>(GenomicRanges<span class="op">::</span><span class="kw">GRangesList</span>(fitcs<span class="op">$</span>sharp,fitcs<span class="op">$</span>broad)))</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">plot_frequencies</span>(fitcspwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>),<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">501</span>,<span class="dv">520</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-20&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;20&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">plot_info</span>(fitcspwm<span class="op">$</span>pwm) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">250</span>,<span class="dv">501</span>,<span class="dv">750</span>,<span class="dv">1001</span>),<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;-500&quot;</span>,<span class="st">&quot;-250&quot;</span>,<span class="st">&quot;TSS&quot;</span>,<span class="st">&quot;250&quot;</span>,<span class="st">&quot;500&quot;</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">plot_logo</span>(fitcspwm<span class="op">$</span>pwm,<span class="kw">c</span>(<span class="dv">480</span>,<span class="dv">520</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-16-3.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -720,334 +1492,447 @@ div.tocify {
 <h2>Nucleotide composition of sharp and broad promoters</h2>
 <p>In order to determine whether sharp and broad promoters are of significantly different nucleotide compositions, we first need to divide them up into sharp and broad promoters, then generate random sequences of similar length distributions, and compare the nucleotide content of the actual promoters to those of the randomly generated ones.</p>
 <p>First let’s create random intergenic sequences:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># filter by total TPM</span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2">filter_promoter_clusters2 &lt;-<span class="st"> </span><span class="cf">function</span>(pcs,tpm_threshold) {</a>
-<a class="sourceLine" id="cb43-3" data-line-number="3">  <span class="co"># remove duplicates, add up total TPM, filter by threshold</span></a>
-<a class="sourceLine" id="cb43-4" data-line-number="4">  fpcs &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(pcs) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb43-5" data-line-number="5"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,strand,full_end,name) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm)),<span class="dt">dominant_ctss=</span><span class="kw">max</span>(dominant_ctss)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb43-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm <span class="op">&gt;=</span><span class="st"> </span>tpm_threshold) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-8" data-line-number="8"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-9" data-line-number="9"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">end=</span>full_end) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-10" data-line-number="10"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">end=</span><span class="kw">as.numeric</span>(end))</a>
-<a class="sourceLine" id="cb43-11" data-line-number="11">  <span class="kw">return</span>(fpcs)</a>
-<a class="sourceLine" id="cb43-12" data-line-number="12">}</a>
-<a class="sourceLine" id="cb43-13" data-line-number="13"><span class="co"># split by an arbitrary width and extract broad and sharp sequences</span></a>
-<a class="sourceLine" id="cb43-14" data-line-number="14">extract_cluster_seqs &lt;-<span class="st"> </span><span class="cf">function</span>(pcs, width) {</a>
-<a class="sourceLine" id="cb43-15" data-line-number="15">  <span class="co"># split them by promoter width</span></a>
-<a class="sourceLine" id="cb43-16" data-line-number="16">  broad_pcs &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">GRanges</span>(dplyr<span class="op">::</span><span class="kw">filter</span>(pcs, end<span class="op">-</span>start <span class="op">&gt;=</span><span class="st"> </span>width))</a>
-<a class="sourceLine" id="cb43-17" data-line-number="17">  sharp_pcs &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">GRanges</span>(dplyr<span class="op">::</span><span class="kw">filter</span>(pcs, end<span class="op">-</span>start <span class="op">&lt;</span><span class="st"> </span>width))</a>
-<a class="sourceLine" id="cb43-18" data-line-number="18">  <span class="co"># retrieve the sequences</span></a>
-<a class="sourceLine" id="cb43-19" data-line-number="19">  broad_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,broad_pcs)</a>
-<a class="sourceLine" id="cb43-20" data-line-number="20">  sharp_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,sharp_pcs)</a>
-<a class="sourceLine" id="cb43-21" data-line-number="21">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">broad=</span>broad_seqs,<span class="dt">sharp=</span>sharp_seqs))</a>
-<a class="sourceLine" id="cb43-22" data-line-number="22">}</a>
-<a class="sourceLine" id="cb43-23" data-line-number="23"><span class="co"># create random seqs to compare to</span></a>
-<a class="sourceLine" id="cb43-24" data-line-number="24">extract_random_seqs2 &lt;-<span class="st"> </span><span class="cf">function</span>(seqs,widths) {</a>
-<a class="sourceLine" id="cb43-25" data-line-number="25">  <span class="co"># start with the first sequence,</span></a>
-<a class="sourceLine" id="cb43-26" data-line-number="26">  <span class="co"># filter by width to avoid errors,</span></a>
-<a class="sourceLine" id="cb43-27" data-line-number="27">  <span class="co"># sample randomly from filtered sequences,</span></a>
-<a class="sourceLine" id="cb43-28" data-line-number="28">  <span class="co"># grab random interval that matches the length of the</span></a>
-<a class="sourceLine" id="cb43-29" data-line-number="29">  <span class="co"># promoter sequence</span></a>
-<a class="sourceLine" id="cb43-30" data-line-number="30">  fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) <span class="op">&gt;</span><span class="st"> </span>widths[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb43-31" data-line-number="31">  rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb43-32" data-line-number="32">  rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb43-33" data-line-number="33">  rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(rseq)<span class="op">-</span>widths[<span class="dv">1</span>]),<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb43-34" data-line-number="34">  random_seqs &lt;-<span class="st"> </span>rseq[rstart<span class="op">:</span>(rstart<span class="op">+</span>widths[<span class="dv">1</span>]<span class="op">-</span><span class="dv">1</span>)]</a>
-<a class="sourceLine" id="cb43-35" data-line-number="35">  <span class="co"># do this for all sequences</span></a>
-<a class="sourceLine" id="cb43-36" data-line-number="36">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">length</span>(widths)) {</a>
-<a class="sourceLine" id="cb43-37" data-line-number="37">    fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) <span class="op">&gt;</span><span class="st"> </span>widths[i]]</a>
-<a class="sourceLine" id="cb43-38" data-line-number="38">    rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb43-39" data-line-number="39">    rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb43-40" data-line-number="40">    rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(rseq)<span class="op">-</span>widths[i]<span class="op">-</span><span class="dv">1</span>),<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb43-41" data-line-number="41">    random_seqs &lt;-<span class="st"> </span><span class="kw">unlist</span>(Biostrings<span class="op">::</span><span class="kw">DNAStringSetList</span>(</a>
-<a class="sourceLine" id="cb43-42" data-line-number="42">      Biostrings<span class="op">::</span><span class="kw">DNAStringSet</span>(random_seqs),</a>
-<a class="sourceLine" id="cb43-43" data-line-number="43">      Biostrings<span class="op">::</span><span class="kw">DNAStringSet</span>(rseq[rstart<span class="op">:</span>(rstart<span class="op">+</span>widths[i]<span class="op">-</span><span class="dv">1</span>)])))</a>
-<a class="sourceLine" id="cb43-44" data-line-number="44">  }</a>
-<a class="sourceLine" id="cb43-45" data-line-number="45">  <span class="kw">return</span>(random_seqs)</a>
-<a class="sourceLine" id="cb43-46" data-line-number="46">}</a>
-<a class="sourceLine" id="cb43-47" data-line-number="47"></a>
-<a class="sourceLine" id="cb43-48" data-line-number="48"><span class="co"># calculate promoter cluster nucleotide frequencies </span></a>
-<a class="sourceLine" id="cb43-49" data-line-number="49">calculate_frequencies &lt;-<span class="st"> </span><span class="cf">function</span>(cluster_seqs,random_seqs) {</a>
-<a class="sourceLine" id="cb43-50" data-line-number="50">  <span class="co"># calculate nucleotide frequencies for broad promoters</span></a>
-<a class="sourceLine" id="cb43-51" data-line-number="51">  clengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>broad)</a>
-<a class="sourceLine" id="cb43-52" data-line-number="52">  cfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs<span class="op">$</span>broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb43-53" data-line-number="53">  rlengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(random_seqs<span class="op">$</span>broad)</a>
-<a class="sourceLine" id="cb43-54" data-line-number="54">  rfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs<span class="op">$</span>broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb43-55" data-line-number="55">  cluster_broad_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>clengths,</a>
-<a class="sourceLine" id="cb43-56" data-line-number="56">                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]<span class="op">+</span>cfreqs[,<span class="dv">4</span>]),</a>
-<a class="sourceLine" id="cb43-57" data-line-number="57">                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]<span class="op">+</span>cfreqs[,<span class="dv">3</span>]),</a>
-<a class="sourceLine" id="cb43-58" data-line-number="58">                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-59" data-line-number="59"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
-<a class="sourceLine" id="cb43-60" data-line-number="60">  random_broad_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>rlengths,</a>
-<a class="sourceLine" id="cb43-61" data-line-number="61">                                 <span class="dt">AT=</span>(rfreqs[,<span class="dv">1</span>]<span class="op">+</span>rfreqs[,<span class="dv">4</span>]),</a>
-<a class="sourceLine" id="cb43-62" data-line-number="62">                                 <span class="dt">GC=</span>(rfreqs[,<span class="dv">2</span>]<span class="op">+</span>rfreqs[,<span class="dv">3</span>]),</a>
-<a class="sourceLine" id="cb43-63" data-line-number="63">                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-64" data-line-number="64"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
-<a class="sourceLine" id="cb43-65" data-line-number="65">  <span class="co"># calculate nucleotide frequencies for sharp promoters</span></a>
-<a class="sourceLine" id="cb43-66" data-line-number="66">  clengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>sharp)</a>
-<a class="sourceLine" id="cb43-67" data-line-number="67">  cfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs<span class="op">$</span>sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb43-68" data-line-number="68">  rlengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(random_seqs<span class="op">$</span>sharp)</a>
-<a class="sourceLine" id="cb43-69" data-line-number="69">  rfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs<span class="op">$</span>sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb43-70" data-line-number="70">  cluster_sharp_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>clengths,</a>
-<a class="sourceLine" id="cb43-71" data-line-number="71">                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]<span class="op">+</span>cfreqs[,<span class="dv">4</span>]),</a>
-<a class="sourceLine" id="cb43-72" data-line-number="72">                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]<span class="op">+</span>cfreqs[,<span class="dv">3</span>]),</a>
-<a class="sourceLine" id="cb43-73" data-line-number="73">                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-74" data-line-number="74"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
-<a class="sourceLine" id="cb43-75" data-line-number="75">  random_sharp_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>rlengths,</a>
-<a class="sourceLine" id="cb43-76" data-line-number="76">                                 <span class="dt">AT=</span>(rfreqs[,<span class="dv">1</span>]<span class="op">+</span>rfreqs[,<span class="dv">4</span>]),</a>
-<a class="sourceLine" id="cb43-77" data-line-number="77">                                 <span class="dt">GC=</span>(rfreqs[,<span class="dv">2</span>]<span class="op">+</span>rfreqs[,<span class="dv">3</span>]),</a>
-<a class="sourceLine" id="cb43-78" data-line-number="78">                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb43-79" data-line-number="79"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
-<a class="sourceLine" id="cb43-80" data-line-number="80">  <span class="co"># combine into one tibble</span></a>
-<a class="sourceLine" id="cb43-81" data-line-number="81">  cluster_shape_tibble &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(cluster_broad_tibble,cluster_sharp_tibble)</a>
-<a class="sourceLine" id="cb43-82" data-line-number="82">  random_shape_tibble &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(random_broad_tibble,random_sharp_tibble)</a>
-<a class="sourceLine" id="cb43-83" data-line-number="83">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">cluster_shape_tibble=</span>cluster_shape_tibble,<span class="dt">random_shape_tibble=</span>random_shape_tibble))</a>
-<a class="sourceLine" id="cb43-84" data-line-number="84">}</a>
-<a class="sourceLine" id="cb43-85" data-line-number="85"></a>
-<a class="sourceLine" id="cb43-86" data-line-number="86"><span class="co"># generate shape nucleotide frequency</span></a>
-<a class="sourceLine" id="cb43-87" data-line-number="87">generate_shape_frequencies &lt;-<span class="st"> </span><span class="cf">function</span>(pcs,seqs,filter_threshold,split_width,freq_fun) {</a>
-<a class="sourceLine" id="cb43-88" data-line-number="88">  <span class="co"># filter by TPM threshold</span></a>
-<a class="sourceLine" id="cb43-89" data-line-number="89">  fpcs &lt;-<span class="st"> </span><span class="kw">filter_promoter_clusters2</span>(pcs,filter_threshold)</a>
-<a class="sourceLine" id="cb43-90" data-line-number="90">  <span class="co"># split by arbitrary width</span></a>
-<a class="sourceLine" id="cb43-91" data-line-number="91">  cluster_seqs &lt;-<span class="st"> </span><span class="kw">extract_cluster_seqs</span>(fpcs,split_width)</a>
-<a class="sourceLine" id="cb43-92" data-line-number="92">  <span class="co"># generate random promoter clusters of similar widths</span></a>
-<a class="sourceLine" id="cb43-93" data-line-number="93">  random_seqs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">broad=</span><span class="kw">extract_random_seqs2</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>broad)),</a>
-<a class="sourceLine" id="cb43-94" data-line-number="94">                      <span class="dt">sharp=</span><span class="kw">extract_random_seqs2</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>sharp))</a>
-<a class="sourceLine" id="cb43-95" data-line-number="95">                  )</a>
-<a class="sourceLine" id="cb43-96" data-line-number="96">  <span class="co"># normalize by nucleotide frequencies of random sequences</span></a>
-<a class="sourceLine" id="cb43-97" data-line-number="97">  shape_tibble &lt;-<span class="st"> </span><span class="kw">do.call</span>(freq_fun,<span class="kw">list</span>(<span class="dt">cluster_seqs=</span>cluster_seqs,<span class="dt">random_seqs=</span><span class="kw">list</span>(<span class="dt">broad=</span>random_seqs<span class="op">$</span>broad,<span class="dt">sharp=</span>random_seqs<span class="op">$</span>sharp)))</a>
-<a class="sourceLine" id="cb43-98" data-line-number="98">  <span class="kw">return</span>(shape_tibble)</a>
-<a class="sourceLine" id="cb43-99" data-line-number="99">}</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># filter by total TPM</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">filter_promoter_clusters2 &lt;-<span class="st"> </span><span class="cf">function</span>(pcs,tpm_threshold) {</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">  <span class="co"># remove duplicates, add up total TPM, filter by threshold</span></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4">  fpcs &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(pcs) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,strand,full_end,name) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.numeric</span>(tpm)),<span class="dt">dominant_ctss=</span><span class="kw">max</span>(dominant_ctss)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm <span class="op">&gt;=</span><span class="st"> </span>tpm_threshold) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-8" data-line-number="8"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-9" data-line-number="9"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">end=</span>full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-10" data-line-number="10"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">end=</span><span class="kw">as.numeric</span>(end))</a>
+<a class="sourceLine" id="cb38-11" data-line-number="11">  <span class="kw">return</span>(fpcs)</a>
+<a class="sourceLine" id="cb38-12" data-line-number="12">}</a>
+<a class="sourceLine" id="cb38-13" data-line-number="13"><span class="co"># split by an arbitrary width and extract broad and sharp sequences</span></a>
+<a class="sourceLine" id="cb38-14" data-line-number="14">extract_cluster_seqs &lt;-<span class="st"> </span><span class="cf">function</span>(pcs, width) {</a>
+<a class="sourceLine" id="cb38-15" data-line-number="15">  <span class="co"># split them by promoter width</span></a>
+<a class="sourceLine" id="cb38-16" data-line-number="16">  broad_pcs &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">GRanges</span>(dplyr<span class="op">::</span><span class="kw">filter</span>(pcs, end<span class="op">-</span>start <span class="op">&gt;=</span><span class="st"> </span>width))</a>
+<a class="sourceLine" id="cb38-17" data-line-number="17">  sharp_pcs &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">GRanges</span>(dplyr<span class="op">::</span><span class="kw">filter</span>(pcs, end<span class="op">-</span>start <span class="op">&lt;</span><span class="st"> </span>width))</a>
+<a class="sourceLine" id="cb38-18" data-line-number="18">  <span class="co"># retrieve the sequences</span></a>
+<a class="sourceLine" id="cb38-19" data-line-number="19">  broad_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,broad_pcs)</a>
+<a class="sourceLine" id="cb38-20" data-line-number="20">  sharp_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,sharp_pcs)</a>
+<a class="sourceLine" id="cb38-21" data-line-number="21">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">broad=</span>broad_seqs,<span class="dt">sharp=</span>sharp_seqs))</a>
+<a class="sourceLine" id="cb38-22" data-line-number="22">}</a>
+<a class="sourceLine" id="cb38-23" data-line-number="23"><span class="co"># create random seqs to compare to</span></a>
+<a class="sourceLine" id="cb38-24" data-line-number="24">extract_random_seqs2 &lt;-<span class="st"> </span><span class="cf">function</span>(seqs,widths) {</a>
+<a class="sourceLine" id="cb38-25" data-line-number="25">  <span class="co"># start with the first sequence,</span></a>
+<a class="sourceLine" id="cb38-26" data-line-number="26">  <span class="co"># filter by width to avoid errors,</span></a>
+<a class="sourceLine" id="cb38-27" data-line-number="27">  <span class="co"># sample randomly from filtered sequences,</span></a>
+<a class="sourceLine" id="cb38-28" data-line-number="28">  <span class="co"># grab random interval that matches the length of the</span></a>
+<a class="sourceLine" id="cb38-29" data-line-number="29">  <span class="co"># promoter sequence</span></a>
+<a class="sourceLine" id="cb38-30" data-line-number="30">  fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) <span class="op">&gt;</span><span class="st"> </span>widths[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb38-31" data-line-number="31">  rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb38-32" data-line-number="32">  rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb38-33" data-line-number="33">  rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(rseq)<span class="op">-</span>widths[<span class="dv">1</span>]),<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb38-34" data-line-number="34">  random_seqs &lt;-<span class="st"> </span>rseq[rstart<span class="op">:</span>(rstart<span class="op">+</span>widths[<span class="dv">1</span>]<span class="op">-</span><span class="dv">1</span>)]</a>
+<a class="sourceLine" id="cb38-35" data-line-number="35">  <span class="co"># do this for all sequences</span></a>
+<a class="sourceLine" id="cb38-36" data-line-number="36">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">length</span>(widths)) {</a>
+<a class="sourceLine" id="cb38-37" data-line-number="37">    fseqs       &lt;-<span class="st"> </span>seqs[<span class="kw">width</span>(seqs) <span class="op">&gt;</span><span class="st"> </span>widths[i]]</a>
+<a class="sourceLine" id="cb38-38" data-line-number="38">    rsample     &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(fseqs),<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb38-39" data-line-number="39">    rseq        &lt;-<span class="st"> </span>fseqs[rsample][[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb38-40" data-line-number="40">    rstart      &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x=</span><span class="dv">1</span><span class="op">:</span>(<span class="kw">length</span>(rseq)<span class="op">-</span>widths[i]<span class="op">-</span><span class="dv">1</span>),<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb38-41" data-line-number="41">    random_seqs &lt;-<span class="st"> </span><span class="kw">unlist</span>(Biostrings<span class="op">::</span><span class="kw">DNAStringSetList</span>(</a>
+<a class="sourceLine" id="cb38-42" data-line-number="42">      Biostrings<span class="op">::</span><span class="kw">DNAStringSet</span>(random_seqs),</a>
+<a class="sourceLine" id="cb38-43" data-line-number="43">      Biostrings<span class="op">::</span><span class="kw">DNAStringSet</span>(rseq[rstart<span class="op">:</span>(rstart<span class="op">+</span>widths[i]<span class="op">-</span><span class="dv">1</span>)])))</a>
+<a class="sourceLine" id="cb38-44" data-line-number="44">  }</a>
+<a class="sourceLine" id="cb38-45" data-line-number="45">  <span class="kw">return</span>(random_seqs)</a>
+<a class="sourceLine" id="cb38-46" data-line-number="46">}</a>
+<a class="sourceLine" id="cb38-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb38-48" data-line-number="48"><span class="co"># calculate promoter cluster nucleotide frequencies </span></a>
+<a class="sourceLine" id="cb38-49" data-line-number="49">calculate_frequencies &lt;-<span class="st"> </span><span class="cf">function</span>(cluster_seqs,random_seqs) {</a>
+<a class="sourceLine" id="cb38-50" data-line-number="50">  <span class="co"># calculate nucleotide frequencies for broad promoters</span></a>
+<a class="sourceLine" id="cb38-51" data-line-number="51">  clengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>broad)</a>
+<a class="sourceLine" id="cb38-52" data-line-number="52">  cfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs<span class="op">$</span>broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb38-53" data-line-number="53">  rlengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(random_seqs<span class="op">$</span>broad)</a>
+<a class="sourceLine" id="cb38-54" data-line-number="54">  rfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs<span class="op">$</span>broad,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb38-55" data-line-number="55">  cluster_broad_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>clengths,</a>
+<a class="sourceLine" id="cb38-56" data-line-number="56">                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]<span class="op">+</span>cfreqs[,<span class="dv">4</span>]),</a>
+<a class="sourceLine" id="cb38-57" data-line-number="57">                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]<span class="op">+</span>cfreqs[,<span class="dv">3</span>]),</a>
+<a class="sourceLine" id="cb38-58" data-line-number="58">                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-59" data-line-number="59"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
+<a class="sourceLine" id="cb38-60" data-line-number="60">  random_broad_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>rlengths,</a>
+<a class="sourceLine" id="cb38-61" data-line-number="61">                                 <span class="dt">AT=</span>(rfreqs[,<span class="dv">1</span>]<span class="op">+</span>rfreqs[,<span class="dv">4</span>]),</a>
+<a class="sourceLine" id="cb38-62" data-line-number="62">                                 <span class="dt">GC=</span>(rfreqs[,<span class="dv">2</span>]<span class="op">+</span>rfreqs[,<span class="dv">3</span>]),</a>
+<a class="sourceLine" id="cb38-63" data-line-number="63">                                 <span class="dt">shape=</span><span class="st">&quot;broad&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-64" data-line-number="64"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
+<a class="sourceLine" id="cb38-65" data-line-number="65">  <span class="co"># calculate nucleotide frequencies for sharp promoters</span></a>
+<a class="sourceLine" id="cb38-66" data-line-number="66">  clengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>sharp)</a>
+<a class="sourceLine" id="cb38-67" data-line-number="67">  cfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>cluster_seqs<span class="op">$</span>sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb38-68" data-line-number="68">  rlengths &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">width</span>(random_seqs<span class="op">$</span>sharp)</a>
+<a class="sourceLine" id="cb38-69" data-line-number="69">  rfreqs   &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">oligonucleotideFrequency</span>(<span class="dt">x=</span>random_seqs<span class="op">$</span>sharp,<span class="dt">width=</span><span class="dv">1</span>,<span class="dt">step=</span><span class="dv">1</span>,<span class="dt">as.prob=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb38-70" data-line-number="70">  cluster_sharp_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>clengths,</a>
+<a class="sourceLine" id="cb38-71" data-line-number="71">                                 <span class="dt">AT=</span>(cfreqs[,<span class="dv">1</span>]<span class="op">+</span>cfreqs[,<span class="dv">4</span>]),</a>
+<a class="sourceLine" id="cb38-72" data-line-number="72">                                 <span class="dt">GC=</span>(cfreqs[,<span class="dv">2</span>]<span class="op">+</span>cfreqs[,<span class="dv">3</span>]),</a>
+<a class="sourceLine" id="cb38-73" data-line-number="73">                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-74" data-line-number="74"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
+<a class="sourceLine" id="cb38-75" data-line-number="75">  random_sharp_tibble &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>(<span class="dt">length=</span>rlengths,</a>
+<a class="sourceLine" id="cb38-76" data-line-number="76">                                 <span class="dt">AT=</span>(rfreqs[,<span class="dv">1</span>]<span class="op">+</span>rfreqs[,<span class="dv">4</span>]),</a>
+<a class="sourceLine" id="cb38-77" data-line-number="77">                                 <span class="dt">GC=</span>(rfreqs[,<span class="dv">2</span>]<span class="op">+</span>rfreqs[,<span class="dv">3</span>]),</a>
+<a class="sourceLine" id="cb38-78" data-line-number="78">                                 <span class="dt">shape=</span><span class="st">&quot;sharp&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb38-79" data-line-number="79"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(length,AT,GC,shape)</a>
+<a class="sourceLine" id="cb38-80" data-line-number="80">  <span class="co"># combine into one tibble</span></a>
+<a class="sourceLine" id="cb38-81" data-line-number="81">  cluster_shape_tibble &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(cluster_broad_tibble,cluster_sharp_tibble)</a>
+<a class="sourceLine" id="cb38-82" data-line-number="82">  random_shape_tibble &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(random_broad_tibble,random_sharp_tibble)</a>
+<a class="sourceLine" id="cb38-83" data-line-number="83">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">cluster_shape_tibble=</span>cluster_shape_tibble,<span class="dt">random_shape_tibble=</span>random_shape_tibble))</a>
+<a class="sourceLine" id="cb38-84" data-line-number="84">}</a>
+<a class="sourceLine" id="cb38-85" data-line-number="85"></a>
+<a class="sourceLine" id="cb38-86" data-line-number="86"><span class="co"># generate shape nucleotide frequency</span></a>
+<a class="sourceLine" id="cb38-87" data-line-number="87">generate_shape_frequencies &lt;-<span class="st"> </span><span class="cf">function</span>(pcs,seqs,filter_threshold,split_width,freq_fun) {</a>
+<a class="sourceLine" id="cb38-88" data-line-number="88">  <span class="co"># filter by TPM threshold</span></a>
+<a class="sourceLine" id="cb38-89" data-line-number="89">  fpcs &lt;-<span class="st"> </span><span class="kw">filter_promoter_clusters2</span>(pcs,filter_threshold)</a>
+<a class="sourceLine" id="cb38-90" data-line-number="90">  <span class="co"># split by arbitrary width</span></a>
+<a class="sourceLine" id="cb38-91" data-line-number="91">  cluster_seqs &lt;-<span class="st"> </span><span class="kw">extract_cluster_seqs</span>(fpcs,split_width)</a>
+<a class="sourceLine" id="cb38-92" data-line-number="92">  <span class="co"># generate random promoter clusters of similar widths</span></a>
+<a class="sourceLine" id="cb38-93" data-line-number="93">  random_seqs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">broad=</span><span class="kw">extract_random_seqs2</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>broad)),</a>
+<a class="sourceLine" id="cb38-94" data-line-number="94">                      <span class="dt">sharp=</span><span class="kw">extract_random_seqs2</span>(<span class="dt">seqs=</span>seqs,<span class="dt">widths=</span><span class="kw">width</span>(cluster_seqs<span class="op">$</span>sharp))</a>
+<a class="sourceLine" id="cb38-95" data-line-number="95">                  )</a>
+<a class="sourceLine" id="cb38-96" data-line-number="96">  <span class="co"># normalize by nucleotide frequencies of random sequences</span></a>
+<a class="sourceLine" id="cb38-97" data-line-number="97">  shape_tibble &lt;-<span class="st"> </span><span class="kw">do.call</span>(freq_fun,<span class="kw">list</span>(<span class="dt">cluster_seqs=</span>cluster_seqs,<span class="dt">random_seqs=</span><span class="kw">list</span>(<span class="dt">broad=</span>random_seqs<span class="op">$</span>broad,<span class="dt">sharp=</span>random_seqs<span class="op">$</span>sharp)))</a>
+<a class="sourceLine" id="cb38-98" data-line-number="98">  <span class="kw">return</span>(shape_tibble)</a>
+<a class="sourceLine" id="cb38-99" data-line-number="99">}</a></code></pre></div>
 <p>First we can look at the nucleotide composition for intergenic promoters:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co"># first we can do this for intergenic sequences</span></a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">genes      &lt;-<span class="st"> </span>rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/genes_nuclear_3D7_v24.gff&quot;</span>)</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">telomeres  &lt;-<span class="st"> </span>rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/Pf3D7_v3_subtelomeres.gff&quot;</span>)</a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">intergenic &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">gaps</span>(genes)</a>
-<a class="sourceLine" id="cb44-5" data-line-number="5">intergenic &lt;-<span class="st"> </span>intergenic[<span class="kw">is.na</span>(GenomicRanges<span class="op">::</span><span class="kw">findOverlaps</span>(intergenic,telomeres,<span class="dt">select=</span><span class="st">&quot;arbitrary&quot;</span>))]</a>
-<a class="sourceLine" id="cb44-6" data-line-number="6">intergenic_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># first we can do this for intergenic sequences</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">genes      &lt;-<span class="st"> </span>rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/genes_nuclear_3D7_v24.gff&quot;</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">telomeres  &lt;-<span class="st"> </span>rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/Pf3D7_v3_subtelomeres.gff&quot;</span>)</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">intergenic &lt;-<span class="st"> </span>GenomicRanges<span class="op">::</span><span class="kw">gaps</span>(genes)</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5">intergenic &lt;-<span class="st"> </span>intergenic[<span class="kw">is.na</span>(GenomicRanges<span class="op">::</span><span class="kw">findOverlaps</span>(intergenic,telomeres,<span class="dt">select=</span><span class="st">&quot;arbitrary&quot;</span>))]</a>
+<a class="sourceLine" id="cb39-6" data-line-number="6">intergenic_seqs &lt;-<span class="st"> </span>BSgenome<span class="op">::</span><span class="kw">getSeq</span>(BSgenome.Pfalciparum.PlasmoDB.v24,intergenic)</a></code></pre></div>
 <p>Now we’ll generate the frequencies without normalization:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">shape_tibble &lt;-<span class="st"> </span><span class="kw">generate_shape_frequencies</span>(<span class="dt">pcs=</span>pc_intergenic,</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">                                           <span class="dt">seqs=</span>intergenic_seqs,</a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">                                           <span class="dt">filter_threshold=</span><span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4">                                           <span class="dt">split_width=</span><span class="dv">15</span>,</a>
-<a class="sourceLine" id="cb45-5" data-line-number="5">                                           <span class="dt">freq_fun=</span>calculate_frequencies)</a>
-<a class="sourceLine" id="cb45-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb45-7" data-line-number="7">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>shape_tibble<span class="op">$</span>cluster_shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/cluster_shape_frequencies.tsv&quot;</span>)</a>
-<a class="sourceLine" id="cb45-8" data-line-number="8">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>shape_tibble<span class="op">$</span>random_shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/random_shape_frequencies.tsv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">shape_tibble &lt;-<span class="st"> </span><span class="kw">generate_shape_frequencies</span>(<span class="dt">pcs=</span>pc_intergenic,</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">                                           <span class="dt">seqs=</span>intergenic_seqs,</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">                                           <span class="dt">filter_threshold=</span><span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">                                           <span class="dt">split_width=</span><span class="dv">15</span>,</a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">                                           <span class="dt">freq_fun=</span>calculate_frequencies)</a>
+<a class="sourceLine" id="cb40-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb40-7" data-line-number="7">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>shape_tibble<span class="op">$</span>cluster_shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/cluster_shape_frequencies.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb40-8" data-line-number="8">readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="dt">x=</span>shape_tibble<span class="op">$</span>random_shape_tibble,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/random_shape_frequencies.tsv&quot;</span>)</a></code></pre></div>
 <p>But we’ll also generate them within normalization and repeat the random sampling 100 times:</p>
 <p>Now we can look at some plots of the frequencies:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># read in precalculated frequencies</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">cluster_shape_tibble &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/promoter_architecture/cluster_shape_frequencies.tsv&quot;</span>)</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">random_shape_tibble &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/promoter_architecture/random_shape_frequencies.tsv&quot;</span>)</a>
-<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="co"># plot nucleotide frequencies</span></a>
-<a class="sourceLine" id="cb46-5" data-line-number="5">g &lt;-<span class="st"> </span>cluster_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</a>
-<a class="sourceLine" id="cb46-6" data-line-number="6"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">g &lt;-<span class="st"> </span>random_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">g &lt;-<span class="st"> </span>cluster_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>GC,<span class="dt">color=</span>shape)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">g &lt;-<span class="st"> </span>random_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>GC,<span class="dt">color=</span>shape)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-20-4.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co"># read in precalculated frequencies</span></a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">cluster_shape_tibble &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/promoter_architecture/cluster_shape_frequencies.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">random_shape_tibble &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/promoter_architecture/random_shape_frequencies.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="co"># plot nucleotide frequencies</span></a>
+<a class="sourceLine" id="cb41-5" data-line-number="5">g &lt;-<span class="st"> </span>cluster_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</a>
+<a class="sourceLine" id="cb41-6" data-line-number="6"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">g &lt;-<span class="st"> </span>random_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>shape,<span class="dt">y=</span>GC)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">g &lt;-<span class="st"> </span>cluster_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>GC,<span class="dt">color=</span>shape)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">g &lt;-<span class="st"> </span>random_shape_tibble <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>GC,<span class="dt">color=</span>shape)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">stat=</span><span class="st">&quot;density&quot;</span>,<span class="dt">size=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="manuscript-numbers" class="section level2">
 <h2>Manuscript numbers</h2>
 <div id="how-many-tag-clusters" class="section level3">
 <h3>How many tag clusters?</h3>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">tc_intergenic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 17375</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">tc_exonic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 1175</code></pre>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">tc_intronic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 186</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">tc_intergenic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 14405</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">tc_exonic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 970</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">tc_intronic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-7" data-line-number="7"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 150</code></pre>
 </div>
 <div id="how-many-promoter-clusters" class="section level3">
 <h3>How many promoter clusters?</h3>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">pc_intergenic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 20879</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">pc_exonic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 1253</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">pc_intronic <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm.dominant_ctss <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames, start,end) <span class="op">%&gt;%</span><span class="st"> </span>nrow</a></code></pre></div>
-<pre><code>[1] 197</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">pc_intergenic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end,tp,name) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.double</span>(tpm))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-9" data-line-number="9"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-10" data-line-number="10"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 4144</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">pc_exonic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end,tp,name) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.double</span>(tpm))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-9" data-line-number="9"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-10" data-line-number="10"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 316</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">pc_intronic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end,tp,name) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">tpm=</span><span class="kw">sum</span>(<span class="kw">as.double</span>(tpm))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tpm <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb55-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-9" data-line-number="9"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb55-10" data-line-number="10"><span class="st">  </span>nrow</a></code></pre></div>
+<pre><code>[1] 56</code></pre>
+</div>
+<div id="how-many-tag-clusters-per-gene-per-time-point" class="section level3">
+<h3>How many tag clusters per gene per time point?</h3>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">g &lt;-<span class="st"> </span>tc_intergenic <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,end,name,tp) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb57-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb57-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(name, tp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-8" data-line-number="8"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>n)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">&quot;count&quot;</span>,<span class="dt">color=</span><span class="st">&quot;black&quot;</span>,<span class="dt">fill=</span><span class="st">&quot;grey70&quot;</span>,<span class="dt">size=</span><span class="fl">0.75</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-10" data-line-number="10"><span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>tp) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-11" data-line-number="11"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-12" data-line-number="12"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">13</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb57-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">1000</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb57-15" data-line-number="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb57-16" data-line-number="16">        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</a>
+<a class="sourceLine" id="cb57-17" data-line-number="17">        <span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb57-18" data-line-number="18">        <span class="dt">axis.ticks.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb57-19" data-line-number="19">        <span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb57-20" data-line-number="20">        <span class="dt">axis.ticks.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb57-21" data-line-number="21">        <span class="dt">legend.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>))</a>
+<a class="sourceLine" id="cb57-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb57-23" data-line-number="23">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/promoter_architecture/tagclusters_per_gene_per_timepoint.png&quot;</span>,<span class="dt">plot=</span>g,<span class="dt">base_width=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb57-24" data-line-number="24">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/promoter_architecture/tagclusters_per_gene_per_timepoint.svg&quot;</span>,<span class="dt">plot=</span>g,<span class="dt">base_width=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb57-25" data-line-number="25"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="is-there-anything-functionally-enriched-in-the-set-of-genes-with-many-tsss" class="section level3">
 <h3>Is there anything functionally enriched in the set of genes with many TSSs?</h3>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">core_genes &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gene_lists/core_pf3d7_genes.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
-<a class="sourceLine" id="cb62-2" data-line-number="2">out &lt;-<span class="st"> </span>tc_intergenic <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-3" data-line-number="3"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,end,name,tp) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb62-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(name,tp) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span> <span class="op">&amp;</span><span class="st"> </span>name <span class="op">%in%</span><span class="st"> </span>core_genes) <span class="op">%$%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb62-9" data-line-number="9"><span class="st">  </span><span class="kw">unique</span>(name)</a>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">core_genes &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="st">&quot;../data/gene_lists/core_pf3d7_genes.txt&quot;</span>,<span class="dt">col_names=</span>F)<span class="op">$</span>X1</a>
+<a class="sourceLine" id="cb58-2" data-line-number="2">out &lt;-<span class="st"> </span>tc_intergenic <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">  </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(seqnames,start,full_end,name,tp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(name,tp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n=</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span> <span class="op">&amp;</span><span class="st"> </span>name <span class="op">%in%</span><span class="st"> </span>core_genes) <span class="op">%$%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb58-9" data-line-number="9"><span class="st">  </span><span class="kw">unique</span>(name)</a>
+<a class="sourceLine" id="cb58-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb58-11" data-line-number="11">readr<span class="op">::</span><span class="kw">write_lines</span>(<span class="dt">x=</span>out,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/5_annotated_tcs.txt&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="co"># Then run this from the command line</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="ex">Rscript</span> code/topgo.R --gene_list output/promoter_architecture/5_annotated_tcs.txt --go_terms data/gene_ontology/Pf3D7_go_sept2014.txt --anno data/gene_ontology/Pf3D7_desc_sept2014.txt --out_prefix output/promoter_architecture/5_annotated_tcs</a></code></pre></div>
+</div>
+<div id="how-many-broadsharp-tsss-per-timepoint" class="section level3">
+<h3>How many broad/sharp TSSs per timepoint?</h3>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co"># abundance estimates</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">x3d7_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb60-3" data-line-number="3">xhb3_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb60-4" data-line-number="4">xit_abund  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb60-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb60-6" data-line-number="6">pcg &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/PF3D7_codinggenes_for_bedtools.gff&quot;</span>))<span class="op">$</span>ID</a>
+<a class="sourceLine" id="cb60-7" data-line-number="7">get_filtered_ids &lt;-<span class="st"> </span><span class="cf">function</span>(abund,tpm_threshold) {</a>
+<a class="sourceLine" id="cb60-8" data-line-number="8">  fabund &lt;-<span class="st"> </span>abund <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-9" data-line-number="9"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-10" data-line-number="10"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">f=</span><span class="kw">sum</span>(TPM<span class="op">&gt;=</span>tpm_threshold)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-11" data-line-number="11"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-12" data-line-number="12"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(f<span class="op">&gt;</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>pcg)</a>
+<a class="sourceLine" id="cb60-13" data-line-number="13">  <span class="kw">return</span>(fabund<span class="op">$</span>gene_id)</a>
+<a class="sourceLine" id="cb60-14" data-line-number="14">}</a>
+<a class="sourceLine" id="cb60-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb60-16" data-line-number="16">fx3d7 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(x3d7_abund,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb60-17" data-line-number="17">fxhb3 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xhb3_abund,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb60-18" data-line-number="18">fxit  &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xit_abund,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb60-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb60-20" data-line-number="20">intertags &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(tibble<span class="op">::</span><span class="kw">as_tibble</span>(tc_intergenic) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">tp=</span><span class="kw">as.integer</span>(tp)),x3d7_abund,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;name&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>,<span class="st">&quot;tp&quot;</span>))</a>
+<a class="sourceLine" id="cb60-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb60-22" data-line-number="22">intertags<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">as.integer</span>(intertags<span class="op">$</span>interquantile_width) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">15</span>,<span class="st">&quot;broad&quot;</span>,<span class="st">&quot;sharp&quot;</span>)</a>
+<a class="sourceLine" id="cb60-23" data-line-number="23">intertags <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb60-24" data-line-number="24"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">as.numeric</span>(anno_start) <span class="op">-</span><span class="st"> </span><span class="kw">as.numeric</span>(dominant_ctss)) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2500</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb60-25" data-line-number="25"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>tp,<span class="dt">fill=</span>type)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb60-26" data-line-number="26"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb60-27" data-line-number="27"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Greys&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb60-28" data-line-number="28"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb60-29" data-line-number="29"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Timepoint&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb60-30" data-line-number="30"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">18</span>),</a>
+<a class="sourceLine" id="cb60-31" data-line-number="31">        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</a>
+<a class="sourceLine" id="cb60-32" data-line-number="32">        <span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb60-33" data-line-number="33">        <span class="dt">axis.ticks.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb60-34" data-line-number="34">        <span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb60-35" data-line-number="35">        <span class="dt">axis.ticks.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
+<a class="sourceLine" id="cb60-36" data-line-number="36">        <span class="dt">legend.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb60-37" data-line-number="37">        <span class="dt">legend.title=</span><span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb60-38" data-line-number="38"><span class="st">  </span><span class="kw">labs</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb60-39" data-line-number="39"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>))</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</a>
+<a class="sourceLine" id="cb61-2" data-line-number="2">  intertags <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp<span class="op">==</span>i) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(seqnames,strand,q_<span class="fl">0.1</span>,q_<span class="fl">0.9</span>,</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5">                  dominant_ctss,tpm,tpm.dominant_ctss,name,TPM,type) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb61-6" data-line-number="6"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">Chromosome=</span>seqnames,</a>
+<a class="sourceLine" id="cb61-7" data-line-number="7">                  <span class="dt">Strand=</span>strand,</a>
+<a class="sourceLine" id="cb61-8" data-line-number="8">                  <span class="dt">Quantile_10=</span>q_<span class="fl">0.1</span>,</a>
+<a class="sourceLine" id="cb61-9" data-line-number="9">                  <span class="dt">Quantile_90=</span>q_<span class="fl">0.9</span>,</a>
+<a class="sourceLine" id="cb61-10" data-line-number="10">                  <span class="dt">Quantile_TPM=</span>tpm,</a>
+<a class="sourceLine" id="cb61-11" data-line-number="11">                  <span class="dt">Dominant_tag=</span>dominant_ctss,</a>
+<a class="sourceLine" id="cb61-12" data-line-number="12">                  <span class="dt">Dominant_tag_TPM=</span>tpm.dominant_ctss,</a>
+<a class="sourceLine" id="cb61-13" data-line-number="13">                  <span class="dt">Annotation=</span>name,</a>
+<a class="sourceLine" id="cb61-14" data-line-number="14">                  <span class="dt">Annotation_TPM=</span>TPM,</a>
+<a class="sourceLine" id="cb61-15" data-line-number="15">                  <span class="dt">Shape=</span>type) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb61-16" data-line-number="16"><span class="st">    </span>readr<span class="op">::</span><span class="kw">write_tsv</span>(<span class="kw">paste0</span>(<span class="st">&quot;../output/promoter_architecture/intertags_tp&quot;</span>,i,<span class="st">&quot;.tsv&quot;</span>))</a>
+<a class="sourceLine" id="cb61-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb61-18" data-line-number="18">  <span class="co">#googledrive::drive_upload(media=paste0(&quot;../output/promoter_architecture/intertags_tp&quot;,i,&quot;.tsv&quot;),</span></a>
+<a class="sourceLine" id="cb61-19" data-line-number="19">  <span class="co">#                        path=&quot;Shared/Pf RNA-seq manuscript 2017/Supplementary tables/Named tables&quot;,</span></a>
+<a class="sourceLine" id="cb61-20" data-line-number="20">  <span class="co">#                        name=paste0(&quot;intertags_tp&quot;,i,&quot;.tsv&quot;),</span></a>
+<a class="sourceLine" id="cb61-21" data-line-number="21">  <span class="co">#                        type=&quot;spreadsheet&quot;)</span></a>
+<a class="sourceLine" id="cb61-22" data-line-number="22">}</a></code></pre></div>
+</div>
+<div id="is-there-actually-an-expression-difference-between-genes-annotated-with-sharp-and-genes-annotated-with-broad-tcs" class="section level3">
+<h3>Is there actually an expression difference between genes annotated with sharp and genes annotated with broad TCs?</h3>
+<p>We look at tag clusters here rather than promoter clusters since the width of a promoter cluster could be due to the fact that TSSs can be dynamic throughout the falciparum IDC, not just that the TSS at a certain time point is “sharp” or “broad.”</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">intertags &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(intertags <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">tp=</span><span class="kw">as.integer</span>(tp)),x3d7_abund,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;name&quot;</span>=<span class="st">&quot;gene_id&quot;</span>,<span class="st">&quot;tp&quot;</span>))</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">s &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(intertags, type<span class="op">==</span><span class="st">&quot;sharp&quot;</span>)</a>
+<a class="sourceLine" id="cb62-4" data-line-number="4">b &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(intertags, type<span class="op">==</span><span class="st">&quot;broad&quot;</span>)</a>
+<a class="sourceLine" id="cb62-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb62-6" data-line-number="6">sabund &lt;-<span class="st"> </span>x3d7_abund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>s<span class="op">$</span>name) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">type=</span><span class="st">&quot;sharp&quot;</span>)</a>
+<a class="sourceLine" id="cb62-7" data-line-number="7">babund &lt;-<span class="st"> </span>x3d7_abund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>b<span class="op">$</span>name) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">type=</span><span class="st">&quot;broad&quot;</span>)</a>
+<a class="sourceLine" id="cb62-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb62-9" data-line-number="9">nabund &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(sabund,babund)</a>
 <a class="sourceLine" id="cb62-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb62-11" data-line-number="11">readr<span class="op">::</span><span class="kw">write_lines</span>(<span class="dt">x=</span>out,<span class="dt">path=</span><span class="st">&quot;../output/promoter_architecture/5_annotated_tcs.txt&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="co"># Then run this from the command line</span></a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="ex">Rscript</span> code/topgo.R --gene_list output/promoter_architecture/5_annotated_tcs.txt --go_terms data/gene_ontology/Pf3D7_go_sept2014.txt --anno data/gene_ontology/Pf3D7_desc_sept2014.txt --out_prefix output/promoter_architecture/5_annotated_tcs</a></code></pre></div>
-</div>
-<div id="how-many-broadsharp-promoters-per-timepoint" class="section level3">
-<h3>How many broad/sharp promoters per timepoint?</h3>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="co"># abundance estimates</span></a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">x3d7_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_3d7_abund.rds&quot;</span>)</a>
-<a class="sourceLine" id="cb64-3" data-line-number="3">xhb3_abund &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_hb3_abund.rds&quot;</span>)</a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">xit_abund  &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;../output/neighboring_genes/gene_reduced_it_abund.rds&quot;</span>)</a>
-<a class="sourceLine" id="cb64-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb64-6" data-line-number="6">pcg &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(rtracklayer<span class="op">::</span><span class="kw">import.gff3</span>(<span class="st">&quot;../data/annotations/PF3D7_codinggenes_for_bedtools.gff&quot;</span>))<span class="op">$</span>ID</a>
-<a class="sourceLine" id="cb64-7" data-line-number="7">get_filtered_ids &lt;-<span class="st"> </span><span class="cf">function</span>(abund,tpm_threshold) {</a>
-<a class="sourceLine" id="cb64-8" data-line-number="8">  fabund &lt;-<span class="st"> </span>abund <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-9" data-line-number="9"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(gene_id) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-10" data-line-number="10"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">f=</span><span class="kw">sum</span>(TPM<span class="op">&gt;=</span>tpm_threshold)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-11" data-line-number="11"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb64-12" data-line-number="12"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">filter</span>(f<span class="op">&gt;</span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>gene_id <span class="op">%in%</span><span class="st"> </span>pcg)</a>
-<a class="sourceLine" id="cb64-13" data-line-number="13">  <span class="kw">return</span>(fabund<span class="op">$</span>gene_id)</a>
-<a class="sourceLine" id="cb64-14" data-line-number="14">}</a>
-<a class="sourceLine" id="cb64-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb64-16" data-line-number="16">fx3d7 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(x3d7_abund,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb64-17" data-line-number="17">fxhb3 &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xhb3_abund,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb64-18" data-line-number="18">fxit  &lt;-<span class="st"> </span><span class="kw">get_filtered_ids</span>(xit_abund,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb64-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb64-20" data-line-number="20">intertags &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">inner_join</span>(<span class="kw">as_tibble</span>(tc_intergenic) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">tp=</span><span class="kw">as.integer</span>(tp)),x3d7_abund,<span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;name&quot;</span> =<span class="st"> &quot;gene_id&quot;</span>,<span class="st">&quot;tp&quot;</span>))</a>
-<a class="sourceLine" id="cb64-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb64-22" data-line-number="22">intertags<span class="op">$</span>type &lt;-<span class="st"> </span><span class="kw">ifelse</span>(intertags<span class="op">$</span>interquantile_width <span class="op">&gt;=</span><span class="st"> </span><span class="dv">15</span>, <span class="st">&quot;broad&quot;</span>, <span class="st">&quot;sharp&quot;</span>)</a>
-<a class="sourceLine" id="cb64-23" data-line-number="23">intertags <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb64-24" data-line-number="24"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(tpm.dominant_ctss) <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">abs</span>(<span class="kw">as.numeric</span>(anno_start) <span class="op">-</span><span class="st"> </span><span class="kw">as.numeric</span>(dominant_ctss)) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2500</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb64-25" data-line-number="25"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>tp,<span class="dt">fill=</span>type)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb64-26" data-line-number="26"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb64-27" data-line-number="27"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette=</span><span class="st">&quot;Greys&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb64-28" data-line-number="28"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-29" data-line-number="29"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Timepoint&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-30" data-line-number="30"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">18</span>),</a>
-<a class="sourceLine" id="cb64-31" data-line-number="31">        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">20</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</a>
-<a class="sourceLine" id="cb64-32" data-line-number="32">        <span class="dt">axis.line.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb64-33" data-line-number="33">        <span class="dt">axis.ticks.x=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb64-34" data-line-number="34">        <span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb64-35" data-line-number="35">        <span class="dt">axis.ticks.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.5</span>),</a>
-<a class="sourceLine" id="cb64-36" data-line-number="36">        <span class="dt">legend.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>),</a>
-<a class="sourceLine" id="cb64-37" data-line-number="37">        <span class="dt">legend.title=</span><span class="kw">element_blank</span>()) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-38" data-line-number="38"><span class="st">  </span><span class="kw">labs</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb64-39" data-line-number="39"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>))</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="is-there-actually-an-expression-difference-between-genes-annotated-with-sharp-and-genes-annotated-with-broad-pcs" class="section level3">
-<h3>Is there actually an expression difference between genes annotated with sharp and genes annotated with broad PCs?</h3>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">s &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(intertags, type<span class="op">==</span><span class="st">&quot;sharp&quot;</span>)</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">b &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(intertags, type<span class="op">==</span><span class="st">&quot;broad&quot;</span>)</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb65-4" data-line-number="4">sabund &lt;-<span class="st"> </span>x3d7_abund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>s<span class="op">$</span>name) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">type=</span><span class="st">&quot;sharp&quot;</span>)</a>
-<a class="sourceLine" id="cb65-5" data-line-number="5">babund &lt;-<span class="st"> </span>x3d7_abund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(gene_id <span class="op">%in%</span><span class="st"> </span>b<span class="op">$</span>name) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">type=</span><span class="st">&quot;broad&quot;</span>)</a>
-<a class="sourceLine" id="cb65-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb65-7" data-line-number="7">nabund &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(sabund,babund)</a>
-<a class="sourceLine" id="cb65-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb65-9" data-line-number="9">nabund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;3d7&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb65-10" data-line-number="10"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>type,<span class="dt">y=</span><span class="kw">log2</span>(TPM<span class="op">+</span><span class="dv">1</span>))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb65-11" data-line-number="11"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb65-12" data-line-number="12"><span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span>tp) <span class="op">+</span></a>
-<a class="sourceLine" id="cb65-13" data-line-number="13"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Log2 TPM&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb65-14" data-line-number="14"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>)</a></code></pre></div>
-<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2">  h1 &lt;-<span class="st"> </span>sabund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp<span class="op">==</span>i)</a>
-<a class="sourceLine" id="cb66-3" data-line-number="3">  h2 &lt;-<span class="st"> </span>babund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp<span class="op">==</span>i)</a>
-<a class="sourceLine" id="cb66-4" data-line-number="4">  <span class="kw">print</span>(<span class="kw">t.test</span>(<span class="kw">log2</span>(h1<span class="op">$</span>TPM<span class="op">+</span><span class="dv">1</span>),<span class="kw">log2</span>(h2<span class="op">$</span>TPM<span class="op">+</span><span class="dv">1</span>)))</a>
-<a class="sourceLine" id="cb66-5" data-line-number="5">}</a></code></pre></div>
+<a class="sourceLine" id="cb62-11" data-line-number="11">g &lt;-<span class="st"> </span>nabund <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb62-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(strain <span class="op">==</span><span class="st"> &quot;3d7&quot;</span> <span class="op">&amp;</span><span class="st"> </span>TPM <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb62-13" data-line-number="13"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>type,<span class="dt">y=</span><span class="kw">log10</span>(TPM<span class="op">+</span><span class="dv">1</span>),<span class="dt">fill=</span>type)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb62-14" data-line-number="14"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb62-15" data-line-number="15"><span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span>tp) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-16" data-line-number="16"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Log10 TPM&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-17" data-line-number="17"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-18" data-line-number="18"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb62-19" data-line-number="19">        <span class="dt">axis.title=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>,<span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</a>
+<a class="sourceLine" id="cb62-20" data-line-number="20">        <span class="dt">axis.line.x=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb62-21" data-line-number="21">        <span class="dt">axis.ticks.x=</span><span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb62-22" data-line-number="22">        <span class="dt">axis.line.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb62-23" data-line-number="23">        <span class="dt">axis.ticks.y=</span><span class="kw">element_line</span>(<span class="dt">colour=</span><span class="st">&quot;black&quot;</span>,<span class="dt">size=</span><span class="fl">1.0</span>),</a>
+<a class="sourceLine" id="cb62-24" data-line-number="24">        <span class="dt">legend.text=</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb62-25" data-line-number="25">        <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-26" data-line-number="26"><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;sharp&quot;</span>=<span class="st">&quot;#b29ed1&quot;</span>,<span class="st">&quot;broad&quot;</span>=<span class="st">&quot;#edc074&quot;</span>))</a>
+<a class="sourceLine" id="cb62-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb62-28" data-line-number="28">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/promoter_architecture/shape_gene_expression.png&quot;</span>,<span class="dt">plot=</span>g,<span class="dt">base_width=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb62-29" data-line-number="29">cowplot<span class="op">::</span><span class="kw">save_plot</span>(<span class="dt">filename=</span><span class="st">&quot;../output/promoter_architecture/shape_gene_expression.svg&quot;</span>,<span class="dt">plot=</span>g,<span class="dt">base_width=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb62-30" data-line-number="30"><span class="kw">print</span>(g)</a></code></pre></div>
+<p><img src="figure/promoter_architecture.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</a>
+<a class="sourceLine" id="cb63-2" data-line-number="2">  h1 &lt;-<span class="st"> </span>sabund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp<span class="op">==</span>i)</a>
+<a class="sourceLine" id="cb63-3" data-line-number="3">  h2 &lt;-<span class="st"> </span>babund <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(tp<span class="op">==</span>i)</a>
+<a class="sourceLine" id="cb63-4" data-line-number="4">  <span class="kw">print</span>(<span class="kw">t.test</span>(<span class="kw">log2</span>(h1<span class="op">$</span>TPM<span class="op">+</span><span class="dv">1</span>),<span class="kw">log2</span>(h2<span class="op">$</span>TPM<span class="op">+</span><span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb63-5" data-line-number="5">}</a></code></pre></div>
 <pre><code>
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.6435, df = 5248.1, p-value = 1.754e-08
+t = -6.7821, df = 5416, p-value = 1.311e-11
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1641908 0.3389816
+ -0.3861753 -0.2129839
 sample estimates:
 mean of x mean of y 
- 6.996609  6.745023 
+  6.72247   7.02205 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.9559, df = 5250.9, p-value = 2.755e-09
+t = -6.9608, df = 5400.3, p-value = 3.787e-12
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1874511 0.3714007
+ -0.4155964 -0.2329437
 sample estimates:
 mean of x mean of y 
- 6.905630  6.626204 
+ 6.605683  6.929953 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.4934, df = 5245.1, p-value = 4.129e-08
+t = -6.2211, df = 5351.9, p-value = 5.311e-10
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.181309 0.382524
+ -0.4182292 -0.2178022
 sample estimates:
 mean of x mean of y 
- 6.701573  6.419657 
+ 6.402663  6.720679 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.6408, df = 5270.8, p-value = 1.781e-08
+t = -6.0286, df = 5402.4, p-value = 1.763e-09
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1704441 0.3520227
+ -0.3682973 -0.1875464
 sample estimates:
 mean of x mean of y 
- 7.060800  6.799567 
+ 6.788421  7.066343 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.1856, df = 5253.1, p-value = 2.234e-07
+t = -6.0978, df = 5450.1, p-value = 1.149e-09
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1489161 0.3299533
+ -0.3674217 -0.1886488
 sample estimates:
 mean of x mean of y 
- 6.999417  6.759982 
+ 6.745237  7.023272 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.3448, df = 5270.1, p-value = 9.434e-08
+t = -6.0034, df = 5419.4, p-value = 2.058e-09
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1551941 0.3349887
+ -0.3623882 -0.1839739
 sample estimates:
 mean of x mean of y 
- 6.937661  6.692569 
+ 6.679580  6.952761 
 
 
     Welch Two Sample t-test
 
 data:  log2(h1$TPM + 1) and log2(h2$TPM + 1)
-t = 5.4173, df = 5228.2, p-value = 6.321e-08
+t = -6.3478, df = 5389.4, p-value = 2.362e-10
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1609049 0.3434045
+ -0.3830553 -0.2022844
 sample estimates:
 mean of x mean of y 
- 6.856455  6.604300 </code></pre>
+ 6.585352  6.878021 </code></pre>
 </div>
 <div id="is-there-anything-significant-about-gene-annotated-with-shifting-tsss" class="section level3">
 <h3>Is there anything significant about gene annotated with shifting TSSs?</h3>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">shifting &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/ctss_clustering/modified/annotated_shifting.tsv&quot;</span>)</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">readr<span class="op">::</span><span class="kw">write_lines</span>(<span class="dt">x=</span><span class="kw">unique</span>(shifting<span class="op">$</span>name),<span class="dt">path=</span><span class="st">&quot;../output/ctss_clustering/modified/annotated_shifting_genes.txt&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">shifting &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_tsv</span>(<span class="dt">file=</span><span class="st">&quot;../output/ctss_clustering/modified/annotated_shifting.tsv&quot;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">readr<span class="op">::</span><span class="kw">write_lines</span>(<span class="dt">x=</span><span class="kw">unique</span>(shifting<span class="op">$</span>name),<span class="dt">path=</span><span class="st">&quot;../output/ctss_clustering/modified/annotated_shifting_genes.txt&quot;</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level2">
-<h2>Session Information</h2>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+<h2>Session information</h2>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">sessionInfo</span>()</a></code></pre></div>
 <pre><code>R version 3.5.0 (2018-04-23)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Gentoo/Linux
@@ -1069,32 +1954,33 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] bindrcpp_0.2.2                       
- [2] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
- [3] BSgenome_1.48.0                      
- [4] rtracklayer_1.40.6                   
- [5] Biostrings_2.48.0                    
- [6] XVector_0.20.0                       
- [7] GenomicRanges_1.32.6                 
- [8] GenomeInfoDb_1.16.0                  
- [9] org.Pf.plasmo.db_3.6.0               
-[10] AnnotationDbi_1.42.1                 
-[11] IRanges_2.14.10                      
-[12] S4Vectors_0.18.3                     
-[13] Biobase_2.40.0                       
-[14] BiocGenerics_0.26.0                  
-[15] scales_1.0.0                         
-[16] cowplot_0.9.3                        
-[17] magrittr_1.5                         
-[18] forcats_0.3.0                        
-[19] stringr_1.3.1                        
-[20] dplyr_0.7.6                          
-[21] purrr_0.2.5                          
-[22] readr_1.1.1                          
-[23] tidyr_0.8.1                          
-[24] tibble_1.4.2                         
-[25] ggplot2_3.0.0                        
-[26] tidyverse_1.2.1                      
+ [1] gdtools_0.1.7                        
+ [2] bindrcpp_0.2.2                       
+ [3] BSgenome.Pfalciparum.PlasmoDB.v24_1.0
+ [4] BSgenome_1.48.0                      
+ [5] rtracklayer_1.40.6                   
+ [6] Biostrings_2.48.0                    
+ [7] XVector_0.20.0                       
+ [8] GenomicRanges_1.32.7                 
+ [9] GenomeInfoDb_1.16.0                  
+[10] org.Pf.plasmo.db_3.6.0               
+[11] AnnotationDbi_1.42.1                 
+[12] IRanges_2.14.12                      
+[13] S4Vectors_0.18.3                     
+[14] Biobase_2.40.0                       
+[15] BiocGenerics_0.26.0                  
+[16] scales_1.0.0                         
+[17] cowplot_0.9.3                        
+[18] magrittr_1.5                         
+[19] forcats_0.3.0                        
+[20] stringr_1.3.1                        
+[21] dplyr_0.7.6                          
+[22] purrr_0.2.5                          
+[23] readr_1.1.1                          
+[24] tidyr_0.8.1                          
+[25] tibble_1.4.2                         
+[26] ggplot2_3.0.0                        
+[27] tidyverse_1.2.1                      
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-137                bitops_1.0-6               
@@ -1102,41 +1988,42 @@ loaded via a namespace (and not attached):
  [5] bit64_0.9-7                 RColorBrewer_1.1-2         
  [7] httr_1.3.1                  rprojroot_1.3-2            
  [9] tools_3.5.0                 backports_1.1.2            
-[11] R6_2.2.2                    seqLogo_1.34.0             
+[11] R6_2.3.0                    seqLogo_1.46.0             
 [13] DBI_1.0.0                   lazyeval_0.2.1             
 [15] colorspace_1.3-2            withr_2.1.2                
 [17] tidyselect_0.2.4            bit_1.1-14                 
 [19] compiler_3.5.0              git2r_0.23.0               
-[21] cli_1.0.0                   rvest_0.3.2                
-[23] xml2_1.2.0                  DelayedArray_0.6.5         
-[25] labeling_0.3                digest_0.6.15              
-[27] Rsamtools_1.32.3            rmarkdown_1.10             
-[29] R.utils_2.6.0               pkgconfig_2.0.2            
-[31] htmltools_0.3.6             rlang_0.2.2                
-[33] readxl_1.1.0                rstudioapi_0.7             
-[35] RSQLite_2.1.1               bindr_0.1.1                
-[37] jsonlite_1.5                BiocParallel_1.14.2        
-[39] R.oo_1.22.0                 RCurl_1.95-4.11            
-[41] GenomeInfoDbData_1.1.0      Matrix_1.2-14              
-[43] Rcpp_0.12.18                munsell_0.5.0              
-[45] R.methodsS3_1.7.1           stringi_1.2.4              
-[47] yaml_2.2.0                  SummarizedExperiment_1.10.1
-[49] zlibbioc_1.26.0             plyr_1.8.4                 
-[51] grid_3.5.0                  blob_1.1.1                 
-[53] crayon_1.3.4                lattice_0.20-35            
-[55] haven_1.1.2                 hms_0.4.2                  
-[57] knitr_1.20                  pillar_1.3.0               
-[59] reshape2_1.4.3              XML_3.98-1.16              
-[61] glue_1.3.0                  evaluate_0.11              
-[63] modelr_0.1.2                cellranger_1.1.0           
-[65] gtable_0.2.0                assertthat_0.2.0           
-[67] broom_0.5.0                 GenomicAlignments_1.16.0   
-[69] memoise_1.1.0               workflowr_1.1.1            </code></pre>
+[21] cli_1.0.1                   rvest_0.3.2                
+[23] xml2_1.2.0                  DelayedArray_0.6.6         
+[25] labeling_0.3                digest_0.6.17              
+[27] Rsamtools_1.32.3            svglite_1.2.1              
+[29] rmarkdown_1.10              R.utils_2.7.0              
+[31] pkgconfig_2.0.2             htmltools_0.3.6            
+[33] rlang_0.2.2                 readxl_1.1.0               
+[35] rstudioapi_0.8              RSQLite_2.1.1              
+[37] bindr_0.1.1                 jsonlite_1.5               
+[39] BiocParallel_1.14.2         R.oo_1.22.0                
+[41] RCurl_1.95-4.11             GenomeInfoDbData_1.1.0     
+[43] Matrix_1.2-14               Rcpp_0.12.19               
+[45] munsell_0.5.0               R.methodsS3_1.7.1          
+[47] stringi_1.2.4               whisker_0.3-2              
+[49] yaml_2.2.0                  SummarizedExperiment_1.10.1
+[51] zlibbioc_1.26.0             plyr_1.8.4                 
+[53] grid_3.5.0                  blob_1.1.1                 
+[55] crayon_1.3.4                lattice_0.20-35            
+[57] haven_1.1.2                 hms_0.4.2                  
+[59] knitr_1.20                  pillar_1.3.0               
+[61] reshape2_1.4.3              XML_3.98-1.16              
+[63] glue_1.3.0                  evaluate_0.11              
+[65] modelr_0.1.2                cellranger_1.1.0           
+[67] gtable_0.2.0                assertthat_0.2.0           
+[69] broom_0.5.0                 GenomicAlignments_1.16.0   
+[71] memoise_1.1.0               workflowr_1.1.1            </code></pre>
 </div>
 
 <hr>
 <p>
-    This <a href="http://rmarkdown.rstudio.com">R Markdown</a> site was created with <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+    
 </p>
 <hr>
 
@@ -1158,6 +2045,25 @@ loaded via a namespace (and not attached):
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 -->
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+<hr>
+<p>
+  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+  analysis was created with
+  <a href="https://github.com/jdblischak/workflowr">workflowr</a> 1.1.1
+</p>
+<hr>
 
 
 </div>
